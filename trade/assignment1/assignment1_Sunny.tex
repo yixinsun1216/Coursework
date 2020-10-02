@@ -1,0 +1,95 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{fullpage}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{dsfont}
+\usepackage{graphicx}
+\usepackage{enumerate}
+\usepackage[margin=1in]{geometry}
+\usepackage{multicol}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{pgfplots}
+\usepackage{pdfpages}
+\usepackage{natbib}
+\usepackage{bbold}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage[hang,flushmargin]{footmisc} % gets rid of indentation in footnote
+\usepackage[parfill]{parskip}
+\usepackage{listings}
+\usepackage[space]{grffile} % pkg for allowing spaces in image file names
+\usepackage{color}
+\definecolor{mygreen}{RGB}{28,172,0} % color values Red, Green, Blue
+\definecolor{mylilas}{RGB}{170,55,241}
+
+\pgfplotsset{compat=1.16}
+
+\usepackage{color}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true, % make the links colored
+    linkcolor=blue, % color TOC links in blue
+    urlcolor=red, % color URLs in red
+    citecolor=black,
+    linktoc=all % 'all' will create links for everything in the TOC
+}
+
+\title{\vspace{-1.5cm}Assignment 1 Writeup}
+\author{Yixin Sun}
+\date{\today}
+\begin{document}
+
+\maketitle
+
+\section{Figure 1}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{fig1.png}
+\end{figure}
+
+\section{Solving for Equilibrium}
+\begin{table}[H]
+    \centering
+    \caption{Equilibrium $\omega$ and Specialization}
+    \input{equilibrium_values.tex}
+\end{table}
+
+\section{Calculating Welfare}
+From class, we can calculate welfare using:
+\begin{align*}
+    \ln (U / L)=\ln w-\int_{0}^{1} b(z) \ln p(z) d z
+\end{align*}
+
+Reformulating this equation, setting $w = 1$ and $L = L^* = 1$, Home's welfares in autarky and trade are:
+\begin{align*}
+    \ln (U^a / L) &=\ln w-\int_{0}^{1} b(z) \ln (a(z) w L) d z \\
+    &= -\int_{0}^{1} b(z) \ln (a(z)) d z \\
+    \ln (U^t / L) &= \ln w-\int_{0}^{\bar{z}} b(z) \ln (w a(z) ) d z-\int_{\bar{z}}^{1} b(z) \ln \left(a^{*}(z) \frac{w^{*} L^{*}}{g}\right) d z \\
+    &= -\int_{0}^{\bar{z}} b(z) \ln (a(z)) d z-\int_{\bar{z}}^{1} b(z) \ln \left(\frac{a^{*}(z) }{\bar{\omega}g}\right) d z
+\end{align*}
+
+Similarly, Foreign's welfares are:
+\begin{align*}
+    \ln (U^{* a} / L^*) &=\ln \left(\frac{1}{\bar{\omega}}\right)-\int_{0}^{1} b(z) \ln (w* a^*(z)) dz \\
+    \ln (U^{* t} / L^*) &= \ln \left(\frac{1}{\bar{\omega}}\right) -\int_{\bar{z}^*}^{1} b(z) \ln \left(\frac{a^*(z)}{\bar{\omega}}\right) d z-\int_{0}^{\bar{z}^*} b(z) \ln \left(\frac{a(z) }{g}\right) d z
+\end{align*}
+
+
+\begin{table}[H]
+    \centering
+    \caption{Welfare}
+    \input{welfare.tex}
+\end{table}
+
+\section{Volume of Trade and Gains from Trade}
+\begin{table}[H]
+    \centering
+    \caption{Changing $b(z)$}
+    \input{b_economies.tex}
+\end{table}
+
+\end{document}
