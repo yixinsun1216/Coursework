@@ -27,7 +27,6 @@ df <-
          perc_PROT25 = 100*c25prot/c25pop)
 
 
-
 # =============================================================================
 # Table VI Panel A
 # =============================================================================
@@ -39,14 +38,17 @@ reg_data <-
 
 # regress pog20 on controls if exist1349==1
 # cluster at kreis_nr level
-xvars <- cbind(1, as.matrix(select(reg_data, xnames)))
-yvar <- as.matrix(select(reg_data, pog20s))
-
-beta <- solve(t(xvars) %*% xvars) %*% (t(xvars) %*% yvar)
-
 f <-
   paste(c("pog20s", paste(xnames, collapse = "+")), collapse = "~") %>%
   as.formula()
 
-reg <- lm(f, reg_data)
-coeftest(reg, vcovHC("HC1"))
+panel_a <- ols(f, reg_data, cluster = "kreis_nr")
+
+
+# =============================================================================
+# Table VI Panel B
+# =============================================================================
+
+
+
+
