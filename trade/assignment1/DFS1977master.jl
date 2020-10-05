@@ -63,9 +63,6 @@ welfare = DataFrame(Var = ["Home - Autarky", "Home - Trade",
 # =============================================================================
 # Volume and Gains from Trade
 # =============================================================================
-# X = value of exports
-# I = value of imports
-# V = X + I total volume of trade
 # Fix L*/L = 1 and g = 0.9
 
 # Economy 1 - Original Economy
