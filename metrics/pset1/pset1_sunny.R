@@ -27,19 +27,22 @@ df <-
          perc_PROT25 = 100*c25prot/c25pop)
 
 
+dname <- "pog1349"
+xnames <- c("logpop25c", "perc_JEW25", "perc_PROT25")
+geonames <- c("Longitude", "Latitude")
+
 # =============================================================================
 # Table VI Panel A
 # =============================================================================
-xnames <- c("pog1349", "logpop25c", "perc_JEW25", "perc_PROT25")
 reg_data <-
   filter(df, exist1349) %>%
-  select(pog20s, xnames, kreis_nr) %>%
+  select(pog20s, dname, xnames, geonames, kreis_nr) %>%
   drop_na()
 
 # regress pog20 on controls if exist1349==1
 # cluster at kreis_nr level
 f <-
-  paste(c("pog20s", paste(xnames, collapse = "+")), collapse = "~") %>%
+  paste(c("pog20s", paste(c(dname, xnames), collapse = "+")), collapse = "~") %>%
   as.formula()
 
 panel_a <- ols(f, reg_data, cluster = "kreis_nr")
@@ -48,7 +51,15 @@ panel_a <- ols(f, reg_data, cluster = "kreis_nr")
 # =============================================================================
 # Table VI Panel B
 # =============================================================================
+# Nearest-neighbor matching, ATT + mahalanobis
+# documnetation for nnmatch https://www.stata.com/manuals13/teteffectsnnmatch.pdf
+# more documentation https://scholar.harvard.edu/files/imbens/files/sjpdf-1.html_.pdf
+f <-
+  paste(c("pog20s", paste(xnames, collapse = "+")), collapse = "~") %>%
+  as.formula()
+
+panel_b <- nnmatch(f, dname, reg_data)
 
 
-
-
+f_c <- as.formula(pog20s~ Latitude + Longitude)
+panel_c <- nnmatch(f_c, dname, reg_data)

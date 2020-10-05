@@ -10,18 +10,19 @@ using Latexify
 using Pipe
 
 
-root = "C:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/trade/assignment1"
+odir = "C:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/trade/assignment1"
+ddir = "C:/Users/Yixin Sun/Dropbox (Personal)/Coursework/field_courses/International Macro and Trade/Assignments/assignment1"
 
 # Define Variables
-a = readdlm(join([root, "DFS1977_example_a.txt"], "/"))
-b = convert(Array{Float64, 1}, vec(readdlm(join([root, "DFS1977_example_b.txt"], "/"))))
+a = readdlm(join([ddir, "DFS1977_example_a.txt"], "/"))
+b = convert(Array{Float64, 1}, vec(readdlm(join([ddir, "DFS1977_example_b.txt"], "/"))))
 
 A_z = a[:,1] ./ a[:, 2]
 L = [1.0, 1.0]
 g = 0.9
 
 # load DFS1977solver, DFS1977welfare, and DFS1977volume functions
-include(joinpath(root, "output", "DFS1977solver.jl"))
+include(joinpath(odir,"DFS1977solver.jl"))
 
 # =============================================================================
 # Plot A(z) and B(z; L*/L), the supply and demand curves that mimic DFS Fig. 1
@@ -32,7 +33,7 @@ z = 1:length(A_z)
 theme(:wong)
 plot(z, B_z, ylim = (0, 20), xlim = (0, 140), xlabel = "z", ylabel = "ω", label = "B(z, L*/L)")  
 plot!(z, A_z,  label = "A(z)")  
-png(join([root, "output", "fig1.png"], "/"))
+png(join([odir,"fig1.png"], "/"))
 
 # =============================================================================
 # Run and format output for DFS solver + welfare
@@ -44,7 +45,7 @@ eqm = DataFrame(Var = ["z^star", "z", "ω"],
     g9 = round.(collect(output9), digits= 3))
 
 # output equilibrium values to latex
-# write(joinpath(root, "output", "equilibrium_values.tex"), latexify(eqm; env=:table))
+# write(joinpath(odir,"equilibrium_values.tex"), latexify(eqm; env=:table))
 
 output9_welfare = DFS1977welfare(a, b, L, 0.9)
 output1_welfare = DFS1977welfare(a, b, L, 1.0)
@@ -53,7 +54,7 @@ welfare = DataFrame(Var = ["Home - Autarky", "Home - Trade",
     g1 = round.(collect(output1_welfare), digits = 3), 
     g9 = round.(collect(output9_welfare), digits = 3))
 
-# write(joinpath(root, "output", "welfare.tex"), latexify(welfare; env=:table))
+# write(joinpath(odir,"welfare.tex"), latexify(welfare; env=:table))
 
 # uniform technical progress for Foreign
 # a2 = hcat(a[:,1] ./ 2, a[:,2])
@@ -99,7 +100,7 @@ econ3 = round.(vcat(collect(DFS1977solver(a, b3, L, g)),
 economies = DataFrame(Var = ["z", "z^star", "ω", "Volume", "Gains - Home", "Gains - Foreign"], 
     Economy1 = econ1, Economy2 = econ2, Economy3 = econ3)
 
-# write(joinpath(root, "output", "b_economies.tex"), latexify(economies; env=:table))
+# write(joinpath(odir,"b_economies.tex"), latexify(economies; env=:table))
 
 
 # attempt to change a around, holding b fixed - big fail! ---------
@@ -109,6 +110,6 @@ a1 = a[:,1]
 V_diff = zeros(length(coef))
 for i in 1:length(coef)
     a2 = hcat(a[:,1] .* coef[i], a[:,2])
-    V_diff[i] = abs(V1 - DFS1977volume(a2, b, L, g)) < .001
+    V_diff[i] = abs(volume - DFS1977volume(a2, b, L, g)) < .001
 end
 findall(x -> x == 1, V_diff)  # can't find any values!!!

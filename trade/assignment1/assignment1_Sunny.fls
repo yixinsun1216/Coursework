@@ -1,7 +1,7 @@
-PWD c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/field_courses/International Macro and Trade/Assignments/assignment1/output
+PWD c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/trade/assignment1
 INPUT C:/Users/Yixin Sun/AppData/Local/MiKTeX/2.9/miktex/data/le/pdftex/pdflatex.fmt
-INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/field_courses/International Macro and Trade/Assignments/assignment1/output/assignment1_Sunny.tex
-OUTPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/field_courses/International Macro and Trade/Assignments/assignment1/output/assignment1_Sunny.log
+INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/trade/assignment1/assignment1_Sunny.tex
+OUTPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/trade/assignment1/assignment1_Sunny.log
 INPUT C:/Program Files/MiKTeX 2.9/tex/latex/base/article.cls
 INPUT C:/Program Files/MiKTeX 2.9/tex/latex/base/article.cls
 INPUT C:/Program Files/MiKTeX 2.9/tex/latex/base/size11.clo
@@ -279,9 +279,9 @@ INPUT C:/Program Files/MiKTeX 2.9/tex/latex/hyperref/hpdftex.def
 INPUT C:/Program Files/MiKTeX 2.9/tex/latex/hyperref/hpdftex.def
 INPUT C:/Program Files/MiKTeX 2.9/tex/latex/oberdiek/rerunfilecheck.sty
 INPUT C:/Program Files/MiKTeX 2.9/tex/latex/oberdiek/rerunfilecheck.sty
-INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/field_courses/International Macro and Trade/Assignments/assignment1/output/assignment1_Sunny.aux
-INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/field_courses/International Macro and Trade/Assignments/assignment1/output/assignment1_Sunny.aux
-OUTPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/field_courses/International Macro and Trade/Assignments/assignment1/output/assignment1_Sunny.aux
+INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/trade/assignment1/assignment1_Sunny.aux
+INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/trade/assignment1/assignment1_Sunny.aux
+OUTPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/trade/assignment1/assignment1_Sunny.aux
 INPUT C:/Program Files/MiKTeX 2.9/tex/context/base/supp-pdf.mkii
 INPUT C:/Program Files/MiKTeX 2.9/tex/context/base/supp-pdf.mkii
 INPUT C:/Program Files/MiKTeX 2.9/tex/latex/oberdiek/epstopdf-base.sty
@@ -296,14 +296,14 @@ INPUT C:/Program Files/MiKTeX 2.9/tex/latex/hyperref/nameref.sty
 INPUT C:/Program Files/MiKTeX 2.9/tex/latex/hyperref/nameref.sty
 INPUT C:/Program Files/MiKTeX 2.9/tex/generic/oberdiek/gettitlestring.sty
 INPUT C:/Program Files/MiKTeX 2.9/tex/generic/oberdiek/gettitlestring.sty
-INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/field_courses/International Macro and Trade/Assignments/assignment1/output/assignment1_Sunny.out
-INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/field_courses/International Macro and Trade/Assignments/assignment1/output/assignment1_Sunny.out
-INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/field_courses/International Macro and Trade/Assignments/assignment1/output/assignment1_Sunny.out
-INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/field_courses/International Macro and Trade/Assignments/assignment1/output/assignment1_Sunny.out
-OUTPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/field_courses/International Macro and Trade/Assignments/assignment1/output/assignment1_Sunny.pdf
-INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/field_courses/International Macro and Trade/Assignments/assignment1/output/assignment1_Sunny.out
-INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/field_courses/International Macro and Trade/Assignments/assignment1/output/assignment1_Sunny.out
-OUTPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/field_courses/International Macro and Trade/Assignments/assignment1/output/assignment1_Sunny.out
+INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/trade/assignment1/assignment1_Sunny.out
+INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/trade/assignment1/assignment1_Sunny.out
+INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/trade/assignment1/assignment1_Sunny.out
+INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/trade/assignment1/assignment1_Sunny.out
+OUTPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/trade/assignment1/assignment1_Sunny.pdf
+INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/trade/assignment1/assignment1_Sunny.out
+INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/trade/assignment1/assignment1_Sunny.out
+OUTPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/trade/assignment1/assignment1_Sunny.out
 INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/cm/cmr17.tfm
 INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/cm/cmr12.tfm
 INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/cm/cmr8.tfm
@@ -329,27 +329,27 @@ INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
 INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/amsfonts/symbols/msbm7.tfm
 INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/cm/cmr12.tfm
 INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/cm/cmbx12.tfm
-INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/field_courses/International Macro and Trade/Assignments/assignment1/output/fig1.png
-INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/field_courses/International Macro and Trade/Assignments/assignment1/output/fig1.png
-INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/field_courses/International Macro and Trade/Assignments/assignment1/output/fig1.png
-INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/field_courses/International Macro and Trade/Assignments/assignment1/output/fig1.png
-INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/field_courses/International Macro and Trade/Assignments/assignment1/output/fig1.png
-INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/field_courses/International Macro and Trade/Assignments/assignment1/output/fig1.png
+INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/trade/assignment1/fig1.png
+INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/trade/assignment1/fig1.png
+INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/trade/assignment1/fig1.png
+INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/trade/assignment1/fig1.png
+INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/trade/assignment1/fig1.png
+INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/trade/assignment1/fig1.png
 INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/cm/cmmi10.tfm
 INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/cm/cmsy10.tfm
 INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/cm/cmex10.tfm
 INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/amsfonts/symbols/msam10.tfm
 INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
-INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/field_courses/International Macro and Trade/Assignments/assignment1/output/equilibrium_values.tex
-INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/field_courses/International Macro and Trade/Assignments/assignment1/output/equilibrium_values.tex
+INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/trade/assignment1/equilibrium_values.tex
+INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/trade/assignment1/equilibrium_values.tex
 INPUT C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map
-INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/field_courses/International Macro and Trade/Assignments/assignment1/output/welfare.tex
-INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/field_courses/International Macro and Trade/Assignments/assignment1/output/welfare.tex
-INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/field_courses/International Macro and Trade/Assignments/assignment1/output/b_economies.tex
-INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/field_courses/International Macro and Trade/Assignments/assignment1/output/b_economies.tex
-INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/field_courses/International Macro and Trade/Assignments/assignment1/output/assignment1_Sunny.aux
-INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/field_courses/International Macro and Trade/Assignments/assignment1/output/assignment1_Sunny.out
-INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/field_courses/International Macro and Trade/Assignments/assignment1/output/assignment1_Sunny.out
+INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/trade/assignment1/welfare.tex
+INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/trade/assignment1/welfare.tex
+INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/trade/assignment1/b_economies.tex
+INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/trade/assignment1/b_economies.tex
+INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/trade/assignment1/assignment1_Sunny.aux
+INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/trade/assignment1/assignment1_Sunny.out
+INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/trade/assignment1/assignment1_Sunny.out
 INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb
 INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb
 INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb
