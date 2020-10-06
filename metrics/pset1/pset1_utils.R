@@ -150,7 +150,7 @@ nnmatch <- function(f, d, data, outcome = "ate", k = 4){
     var_hat <- 1/nrow(X)^2 * sum(var_hat0, var_hat1)
   }
 
-  return(coef)
+  return(list(coefs = coef, se = sqrt(var_hat / nrow(X))))
 }
 
 # get variance-covariance matrix for matrices a and b
