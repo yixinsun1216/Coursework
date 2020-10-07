@@ -45,7 +45,7 @@ eqm = DataFrame(Var = ["z^star", "z", "ω"],
     g9 = round.(collect(output9), digits= 3))
 
 # output equilibrium values to latex
-# write(joinpath(odir,"equilibrium_values.tex"), latexify(eqm; env=:table))
+write(joinpath(odir,"equilibrium_values.tex"), latexify(eqm; env=:table))
 
 output9_welfare = DFS1977welfare(a, b, L, 0.9)
 output1_welfare = DFS1977welfare(a, b, L, 1.0)
@@ -54,14 +54,14 @@ welfare = DataFrame(Var = ["Home - Autarky", "Home - Trade",
     g1 = round.(collect(output1_welfare), digits = 3), 
     g9 = round.(collect(output9_welfare), digits = 3))
 
-# write(joinpath(odir,"welfare.tex"), latexify(welfare; env=:table))
+write(joinpath(odir,"welfare.tex"), latexify(welfare; env=:table))
 
 # uniform technical progress for Foreign
 # a2 = hcat(a[:,1] ./ 2, a[:,2])
 # DFS1977solver(a2, b, L, g)
 
 # =============================================================================
-# Volume and Gains from Trade
+# Volume and Gains from Trade - changing b around
 # =============================================================================
 # Fix L*/L = 1 and g = 0.9
 
@@ -97,10 +97,13 @@ econ3 = round.(vcat(collect(DFS1977solver(a, b3, L, g)),
 economies = DataFrame(Var = ["z", "z^star", "ω", "Volume", "Gains - Home", "Gains - Foreign"], 
     Economy1 = econ1, Economy2 = econ2, Economy3 = econ3)
 
-# write(joinpath(odir,"b_economies.tex"), latexify(economies; env=:table))
+write(joinpath(odir,"b_economies.tex"), latexify(economies; env=:table))
 
 
-# attempt to change a around, holding b fixed - big fail! ---------
+# =============================================================================
+# Volume and Gains from Trade - changing b around
+# =============================================================================
+# attempt to change a around, holding b fixed - big fail! 
 coef = 0.5:0.01:2
 coef = setdiff(coef, [1])
 a1 = a[:,1]
@@ -110,3 +113,28 @@ for i in 1:length(coef)
     V_diff[i] = abs(volume - DFS1977volume(a2, b, L, g)) < .001
 end
 findall(x -> x == 1, V_diff)  # can't find any values!!!
+
+# let's create some economies for different a's that generate different volumes
+# to analyze relationship between volume and gains from trade
+# uniform increase in Foreign tech
+a2 = hcat(a[:,1] .* 1.5, a[:,2])
+econ4_welfare = DFS1977welfare(a2, b, L, g)
+gft_h4 = econ4_welfare[2] - econ4_welfare[1]
+gft_f4 = econ4_welfare[4] - econ4_welfare[3]
+econ4 = round.(vcat(collect(DFS1977solver(a2, b, L, g)), 
+    collect(DFS1977volume(a2, b, L, g)),
+    gft_h4, gft_f4), digits = 3)
+
+# uniform increase in Home teceh
+a3 = hcat(a[:,1] , a[:,2]*1.5)
+econ5_welfare = DFS1977welfare(a3, b, L, g)
+gft_h5 = econ5_welfare[2] - econ5_welfare[1]
+gft_f5 = econ5_welfare[4] - econ5_welfare[3]
+econ5 = round.(vcat(collect(DFS1977solver(a3, b, L, g)), 
+    collect(DFS1977volume(a3, b, L, g)),
+    gft_h5, gft_f5), digits = 3)
+
+economies_a = DataFrame(Var = ["z", "z^star", "ω", "Volume", "Gains - Home", "Gains - Foreign"], 
+    Economy1 = econ1, Economy4 = econ4, Economy5 = econ5)
+
+write(joinpath(odir,"a_economies.tex"), latexify(economies_a; env=:table))
