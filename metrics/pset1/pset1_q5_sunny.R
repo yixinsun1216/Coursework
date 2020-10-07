@@ -45,7 +45,10 @@ f <-
   paste(c("pog20s", paste(c(dname, xnames), collapse = "+")), collapse = "~") %>%
   as.formula()
 
-panel_a <- ols(f, reg_data, cluster = "kreis_nr")
+xvars <- reg_data[, c(dname, xnames)]
+yvars <- reg_data[, "pog20s"]
+
+panel_a <- ols(xvars, yvars, reg_data, cluster = "kreis_nr")
 
 # =============================================================================
 # Table VI Panel B

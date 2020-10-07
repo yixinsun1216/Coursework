@@ -14,11 +14,11 @@ function DFS1977solver(a::Array{Float64,2}, b::Array{Float64,1}, L::Array{Float6
 
     # basic error checking ---------------------------------------------
     #1. check dimensions of a and b
-    if size(a) != (150, 2)
+    if size(a) != (N, 2)
         error("a must be an N by 2 array")
     elseif size(a, 1) != size(b, 1)
         error("a and b must be the same length")
-    elseif size(b) != (150,)
+    elseif size(b) != (N,)
         error("b must be an N by 1 array")
     elseif abs(sum(b) - 1) > 0.00001
         error("sum(b) must equal 1")

@@ -1,19 +1,14 @@
 # =============================================================================
 # OLS regression
 # =============================================================================
-ols <- function(f, data, intercept = TRUE, cluster= NULL){
-  X <-
-    data[, all.vars(f)[-1]] %>%
-    as.matrix()
+ols <- function(X, Y, intercept = TRUE, cluster= NULL){
+  X <- as.matrix(X)
+  Y <- as.matrix(Y)
 
   if(intercept) X <- cbind(1, X)
 
-  Y <-
-    data[, all.vars(f)[1]] %>%
-    as.matrix()
-
   beta <- as.vector(solve(t(X) %*% X) %*% (t(X) %*% Y))
-  colnames <- c("Intercept", all.vars(f)[-1])
+  colnames <- c("Intercept", names(X))
 
   # find standard errors
   e <- Y - X %*% beta
