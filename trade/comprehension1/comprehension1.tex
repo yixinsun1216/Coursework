@@ -1,0 +1,96 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{fullpage}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{dsfont}
+\usepackage{graphicx}
+\usepackage{enumerate}
+\usepackage[margin=1in]{geometry}
+\usepackage{multicol}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{pgfplots}
+\usepackage{pdfpages}
+\usepackage{natbib}
+\usepackage{bbold}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage[hang,flushmargin]{footmisc} % gets rid of indentation in footnote
+\usepackage[parfill]{parskip}
+\usepackage{listings}
+\usepackage[space]{grffile} % pkg for allowing spaces in image file names
+\usepackage{color}
+\definecolor{mygreen}{RGB}{28,172,0} % color values Red, Green, Blue
+\definecolor{mylilas}{RGB}{170,55,241}
+
+\pgfplotsset{compat=1.16}
+
+\usepackage{color}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true, % make the links colored
+    linkcolor=blue, % color TOC links in blue
+    urlcolor=red, % color URLs in red
+    citecolor=black,
+    linktoc=all % 'all' will create links for everything in the TOC
+}
+
+\title{\vspace{-1.5cm}Comprehension Check 1}
+\author{Yixin Sun}
+\date{\today}
+\begin{document}
+
+\maketitle
+
+\section{Free-trade Equilibrium}
+
+\textbf{Set Up:} 
+\begin{itemize}
+    \item Balanced Budgets: $Y_{i}=\sum_{j} X_{i j}$
+    \item Free trade: $\tau_{ij} = 1, \forall i, j$
+    \item $\psi = 1$
+    \item Preferences: $C_{j}=\left(\sum_{i=1}^{n} C_{i j}^{(\sigma-1) / \sigma}\right)^{\sigma /(\sigma-1)}$, where $C_{i j}$ is the demand for good $i$ in country $j$
+    \item Price Index: $P_{j}=\left(\sum_{i=1}^{n} P_{i j}^{1-\sigma}\right)^{1 /(1-\sigma)}$
+    \item With free trade, $P_{ij} = P_{ii}$
+\end{itemize}
+
+
+\textbf{Trade Flows:}
+\begin{align*}
+    X_{i j} & =\left(\frac{P_{i j}}{P_{j}}\right)^{1-\sigma} \sum_{i} X_{i j} \\
+    X_{i j} &=\frac{Y_i^{1-\sigma} Q_{i}^{\sigma-1}}{\sum_{l}Y_{l}^{1-\sigma} Q_{l}^{\sigma-1}} \sum_{i} X_{i j}
+\end{align*}
+
+Summing up imports over $j$, we have
+\begin{align*}
+    \sum_j X_{ij} = Y_i &= \sum_j\frac{Y_i^{1-\sigma}Q_i^{\sigma - 1}}{\sigma_l Y^{1-\sigma}Q_l^{\sigma-1}}Y_j \\
+    &= \left(\frac{Y_i}{Q_i}\right)^{1-\sigma}\sum_j\frac{Y_j}{\sum_l (Y_l/Q_l)^{1-\sigma}}
+\end{align*}
+
+Now plug in $Y_i = Q_i^{\frac{\epsilon}{\epsilon - 1}}$
+\begin{align*}
+    Q^{\frac{\epsilon}{\epsilon - 1}} = \left(Q^{\frac{1}{\epsilon-1}}\right)^{1-\sigma} \sum_j \frac{Q_j^{\frac{\epsilon}{\epsilon - 1}}}{\sum_l Q_l^{\frac{1-\sigma}{\epsilon - 1}}} \\
+    \Rightarrow Q_{i}^{\frac{\varepsilon}{c-1}-\frac{1-\sigma}{\varepsilon-1}}=\frac{\sum_{j=1}^{N} Q_{j}^{\frac{\varepsilon}{\varepsilon-1}}}{\sum_{\ell=1}^{N} Q_{\ell}^{\frac{1-\sigma}{e-1}}}
+\end{align*}
+
+We see that setting $\epsilon = 1 - \sigma$, both sides of the equation would equal 1. 
+
+\section{Welfare}
+\begin{align*}
+    \frac{Y_i}{P_i} &= \frac{Q^{\frac{\epsilon}{\epsilon-1}}}{\left(\sum_j P_{ij}^{1-\sigma}\right)^{\frac{1}{1-\sigma}}} \\
+    &= \frac{Q^{\frac{\epsilon}{\epsilon-1}}}{\sum_j \left(Q_i^{\frac{1-\sigma}{\epsilon - 1}}\right)^{\frac{1}{1-\sigma}}} \\
+    &= \frac{Q^{\frac{\epsilon}{\epsilon-1}}}{ \left(n \times Q_i^{\frac{1-\sigma}{\epsilon - 1}}\right)^{\frac{1}{1-\sigma}}} \\
+    &= n^{\frac{1}{\sigma-1}} \times Q^{\frac{\epsilon}{\epsilon - 1} - \frac{1}{\epsilon -1}} \\
+    &= n^{\frac{1}{\sigma-1}} Q
+\end{align*}
+
+\section{Immiserizing Growth}
+In order for there to be immiserizing growth, it must be that at some point, $\frac{\partial \frac{Y_i}{P_i}}{\partial Q_i} < 0$. Using the welfare result above, we have
+\begin{align*}
+    \frac{\partial \frac{Y_i}{P_i}}{\partial Q_i} = n^{\frac{1}{\sigma-1}} 
+\end{align*}
+This is always greater than 0, so there can never be immiserizing growth in the Armington model. 
+\end{document}
