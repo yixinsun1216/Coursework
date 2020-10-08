@@ -85,8 +85,8 @@ function DFS1977volume(a::Array{Float64,2}, b::Array{Float64,1}, L::Array{Float6
     z_star_bar, z_bar = out[1:2]
     w_star = 1/out[3]
 
-    exports = sum(b[1:z_star_bar]*w_star*L[1])    
-    imports = sum(b[z_bar:end]*L[2])              
+    exports = sum(b[1:z_star_bar]*w_star*L[1]) / g
+    imports = sum(b[z_bar:end]*L[2]) / g
     volume = exports + imports
 
     return volume

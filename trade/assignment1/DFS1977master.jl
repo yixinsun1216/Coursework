@@ -138,3 +138,5 @@ economies_a = DataFrame(Var = ["z", "z^star", "ω", "Volume", "Gains - Home", "G
     Economy1 = econ1, Economy4 = econ4, Economy5 = econ5)
 
 write(joinpath(odir,"a_economies.tex"), latexify(economies_a; env=:table))
+
+

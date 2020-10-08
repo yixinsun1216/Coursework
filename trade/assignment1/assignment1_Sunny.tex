@@ -93,12 +93,12 @@ DFS1977solver.jl has another function that computes the log welfare for Home and
 \section{Volume of Trade and Gains from Trade}
 To calculate the amount traded, we want to find 
 \begin{align*}
-    Volume =\int_{0}^{\bar{z}^{*}} p(z) c(z) d z + \int_{\bar{z}}^{1} p(z) c(z) d z
+    Volume = \int_{0}^{\bar{z}^{*}} p(z) c^(z) d z + \int_{\bar{z}}^{1} p(z) c^*(z) d z
 \end{align*}
 
-We have that $b(z) = \frac{p(z)c(z)}{wL}$ and $w = 1$, so we can write 
+We have that $b(z) = g\frac{p(z)c(z)}{wL}$ and $w = 1$, so we can write 
 \begin{align*}
-    Volume = \int_{0}^{\bar{z}^{*}} b(z) w^* L^{*} d z+\int_{\bar{z}}^{1} b(z) L d z
+    Volume = \frac{1}{g}\left(\int_{0}^{\bar{z}^{*}} b(z) w^* L^{*} d z+\int_{\bar{z}}^{1} b(z) L d z\right)
 \end{align*}
 
 DFS1977solver.jl has another function that computes the volume traded, called DFS1977volume. 

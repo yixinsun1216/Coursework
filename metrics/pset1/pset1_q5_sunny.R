@@ -47,8 +47,9 @@ f <-
 
 xvars <- reg_data[, c(dname, xnames)]
 yvars <- reg_data[, "pog20s"]
+cluster_var <- reg_data[, "kreis_nr"]
 
-panel_a <- ols(xvars, yvars, reg_data, cluster = "kreis_nr")
+panel_a <- ols(xvars, yvars, reg_data, cluster = )
 
 # =============================================================================
 # Table VI Panel B

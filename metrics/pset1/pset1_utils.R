@@ -13,8 +13,9 @@ ols <- function(X, Y, intercept = TRUE, cluster= NULL){
   # find standard errors
   e <- Y - X %*% beta
   if(!is.null(cluster)){
-    cl <- pull(data, cluster)
-    se <- cluster_se(X, e, cl)
+    se <- cluster_se(X, e, cluster)
+  } else{
+    se <- sqrt(diag(as.numeric(t(e) %*% e)*solve(t(X) %*% X))/(nrow(X) - ncol(X)))
   }
 
   # r_squared
@@ -23,6 +24,18 @@ ols <- function(X, Y, intercept = TRUE, cluster= NULL){
   return(list(coefs = tibble(term = colnames, estimate = beta, std.error = se),
               n = length(Y), adj_r2 = adj_r2))
 }
+
+
+r_squared <- function(y, e, k = NULL, adj = TRUE){
+  y_mean <- 1/length(y) * sum(y)
+  n <- length(y)
+  tot <- sum((y - y_mean)^2)
+  res <- sum(e^2)
+  r2 <- 1 - res / tot
+
+  if(adj) r2 <- 1 - (1 - r2) * (n - 1)/ (n - k - 1)
+}
+
 
 # =============================================================================
 # Clustered Standard Errors
@@ -204,12 +217,3 @@ reg_output <- function(term, estimate, std.error, decimals, extra_rows = NULL){
     select(-type)
 }
 
-r_squared <- function(y, e, k = NULL, adj = TRUE){
-  y_mean <- 1/length(y) * sum(y)
-  n <- length(y)
-  tot <- sum((y - y_mean)^2)
-  res <- sum(e^2)
-  r2 <- 1 - res / tot
-
-  if(adj) r2 <- 1 - (1 - r2) * (n - 1)/ (n - k - 1)
-}
