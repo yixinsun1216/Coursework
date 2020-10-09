@@ -140,3 +140,16 @@ economies_a = DataFrame(Var = ["z", "z^star", "ω", "Volume", "Gains - Home", "G
 write(joinpath(odir,"a_economies.tex"), latexify(economies_a; env=:table))
 
 
+N = 150; G_amt = 10; gain_param = 1.1
+a1 =hcat(ones(N,1), [ gain_param .+ 0.05*randn(G_amt); 0.5*[x/(N-G_amt) for x in 1:(N-G_amt)] .+ 0.55*ones(N-G_amt,1) ]);
+a1[:,2] = sort(a1[:,2])
+
+gain_param = 4
+a2 =hcat(ones(N,1), [ gain_param .+ 0.05*randn(G_amt); 0.5*[x/(N-G_amt) for x in 1:(N-G_amt)] .+ 0.55*ones(N-G_amt,1) ]);
+a2[:,2] = sort(a2[:,2])
+
+DFS1977volume(a1, b, L, g)
+DFS1977solver(a1, b, L, g)
+
+DFS1977volume(a2, b, L, g)
+DFS1977solver(a2, b, L, g)

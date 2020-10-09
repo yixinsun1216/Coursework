@@ -5,6 +5,7 @@
 # =============================================================================
 library(tidyverse)
 library(ggplot2)
+library(ggthemes)
 
 root <- "C:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/metrics/pset1"
 
@@ -15,11 +16,34 @@ source(file.path(root, "pset1_utils.R"))
 N <- 100
 M <- 50
 
-X <- map(1:M, ~ runif(N, -2, 2))
+X <- map(1:M ,~ seq(-2, 2, length.out = N))
 U <- map(1:M, ~ rnorm(N, 0, .3))
 Y <- map2(X, U, function(x, u) sin(2*x) + 2*exp(-16*x^2) + u)
 
-df <- tibble(X = reduce(X, c), Y = reduce(Y, c))
+df <-
+  tibble(X = reduce(X, c), Y = reduce(Y, c)) %>%
+  group_by(X) %>%
+  summarise(Y_mean = mu(Y))
+
+aggregate_M <- function(x, y, func, d){
+  map2_df(x, y, func, d) %>%
+    group_by(X) %>%
+    summarise(Y_mean = mu(Y_hat),
+              Y_min = mu(Y_hat) - stdev(Y_hat),
+              Y_max = mu(Y_hat) + stdev(Y_hat))
+}
+
+MC_plot <- function(d, title){
+  ggplot(d) +
+    geom_line(data = df, aes(X, Y_mean, color = "Y")) +
+    geom_line(aes(X, Y_mean, color = "E[Y|X]")) +
+    geom_ribbon(aes(x = X, ymin = Y_min, ymax = Y_max), fill = "#5ab4ac",
+                alpha = .3) +
+    theme_minimal() +
+    ggtitle(title) +
+    ylab("Y") +
+    scale_color_manual(values = c("#01665e", "#8c510a"), name = "")
+}
 
 # =============================================================================
 # Uniform Kernel
@@ -38,18 +62,13 @@ sieve_poly <- function(x, y, deg = 3){
   return(tibble(X = x, Y_hat = y_hat, degree = deg))
 }
 
+
 # degree 3 and degree 10 polynomial
-sieve_deg3 <- map2_df(X, Y, sieve_poly)
-sieve_deg10 <- map2_df(X, Y, sieve_poly, 10)
+sieve_deg3 <- aggregate_M(X, Y, sieve_poly, 5)
+sieve_deg25 <- aggregate_M(X, Y, sieve_poly, 25)
 
-
-ggplot(df) +
-  geom_point(aes(X, Y)) +
-  geom_point(data = sieve_deg3, aes(X, Y_hat), color = 'red') +
-  geom_point(data = sieve_deg10, aes(X, Y_hat), color = "blue") +
-  theme_minimal()
-
-# what am i suppose to be plotting????
+MC_plot(sieve_deg3, "Sieve Polynomial: degree 3")
+MC_plot(sieve_deg25, "Sieve Polynomial: degree 25")
 
 
 # =============================================================================
@@ -62,29 +81,28 @@ knn <- function(x, y, k = 3){
                function(x1) tibble(index = 1:length(x), dist = abs(x - x1)))
 
   # for each x, find the index of the k closest
-  x_closests <- map(dists,
-                    function(d) arrange(d, dist) %>%
-                      filter(row_number() <= k) %>%
-                      pull(index))
+  x_closest <- map(dists,
+                   function(d) arrange(d, dist) %>%
+                     filter(row_number() <= k) %>%
+                     pull(index))
 
   # calculate fitted y by averaging over the y values of the k observations that
   # were closest to each x
-  y_hat <- map_dbl(x_closest, function(i) sum(y[i]) / deg)
+  y_hat <- map_dbl(x_closest, function(i) sum(y[i]) / k)
 
   return(tibble(X = x, Y_hat = y_hat, K = k))
 }
 
 
 # k = 3 and k = 10
-knn_3 <- map2_df(X, Y, knn)
-knn_10 <- map2_df(X, Y, knn, 10)
+knn_3 <- aggregate_M(X, Y, knn, 5)
+knn_30 <- aggregate_M(X, Y, knn, 30)
+
+MC_plot(knn_3, "KNN: k = 3")
+MC_plot(knn_20, "KNN: k = 30")
 
 
-ggplot(df) +
-  geom_point(aes(X, Y)) +
-  geom_point(data = knn_3, aes(X, Y_hat), color = 'red') +
-  geom_point(data = knn_10, aes(X, Y_hat), color = "blue") +
-  theme_minimal()
+
 
 # =============================================================================
 # Sieve - Berinstein polynomial
@@ -99,11 +117,7 @@ sieve_bernstein <- function(x, y, deg = 3){
   return(tibble(X = x, Y_hat = y_hat, degree = deg))
 }
 
-# degree 3 and degree 10 bernstein polynomials
-bernstein_deg3 <- map2_df(X, Y, sieve_bernstein)
-bernstein_deg10 <- map2_df(X, Y, sieve_bernstein, 10)
-
-
+# degree 3 and degree 25 bernstein polynomials
 ggplot(df) +
   geom_point(aes(X, Y)) +
   geom_point(data = bernstein_deg3, aes(X, Y_hat), color = 'red') +
@@ -111,7 +125,15 @@ ggplot(df) +
   theme_minimal()
 
 
-# transform x into z
+# k = 3 and k = 10
+bernstein_deg3 <- aggregate_M(X, Y, sieve_bernstein, 5)
+bernstein_deg25 <- aggregate_M(X, Y, sieve_bernstein, 25)
+
+MC_plot(bernstein_deg3, "Sieve Bernstein: degree = 3")
+MC_plot(bernstein_deg25, "Sieve Bernstein: degree = 25")
+
+
+
 
 
 
