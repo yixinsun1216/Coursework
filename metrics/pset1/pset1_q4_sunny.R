@@ -266,11 +266,11 @@ sieve_spline <- function(x, y, k = 5){
 
 
 # k = 3 and degree 10 spline
-spline_k20 <- aggregate_M(X, Y, sieve_spline, 3)
 spline_k10 <- aggregate_M(X, Y, sieve_spline, 10)
+spline_k3 <- aggregate_M(X, Y, sieve_spline, 3)
 
-spline_k20_plot <- MC_plot(spline_k20, "Sieve Spline: k = 20")
-spline_k5_plot <- MC_plot(spline_k10, "Sieve Spline: k = 5")
+spline_k10_plot <- MC_plot(spline_k20, "Sieve Spline: k = 10")
+spline_k3_plot <- MC_plot(spline_k3, "Sieve Spline: k = 5")
 
 # =============================================================================
 # Output graphs
@@ -278,8 +278,8 @@ spline_k5_plot <- MC_plot(spline_k10, "Sieve Spline: k = 5")
 # with 6 * 2 = 12 total graphs, plot 2 panels of graphs, each with 3 methods
 output1 <- grid.arrange(unif_h1_plot, unif_h2_plot, ll_h1_plot, ll_h2_plot,
              sieve_deg25_plot, sieve_deg3_plot, ncol = 2)
-ggsave(output1, width = 5, height = 10, file = file.path(root, "monte_carlos1.png"))
+ggsave(output1, width = 9, height = 11, file = file.path(root, "monte_carlos1.png"))
 
 grid.arrange(knn_3_plot, knn_30_plot, bernstein_deg25_plot, bernstein_deg3_plot,
-             spline_k20_plot, spline_k5_plot, ncol = 2)
+             spline_k10_plot, spline_k3_plot, ncol = 2)
 

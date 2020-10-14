@@ -32,8 +32,9 @@ xnames <- c("logpop25c", "perc_JEW25", "perc_PROT25")
 geonames <- c("Longitude", "Latitude")
 
 # =============================================================================
-# Table VI Panel A
+# Replicate Table VI
 # =============================================================================
+# Panel A
 reg_data <-
   filter(df, exist1349) %>%
   select(pog20s, dname, xnames, geonames, kreis_nr) %>%
@@ -45,24 +46,28 @@ f <-
   paste(c("pog20s", paste(c(dname, xnames), collapse = "+")), collapse = "~") %>%
   as.formula()
 
-xvars <- reg_data[, c(dname, xnames)]
+xvars <- reg_data[, xnames]
+dvars <- reg_data[, dname]
 yvars <- reg_data[, "pog20s"]
 cluster_var <- reg_data[, "kreis_nr"]
 
-panel_a <- ols(xvars, yvars, reg_data, cluster = )
+panel_a <- ols(cbind(dvars, xvars), yvars, cluster = cluster_var)
 
-# =============================================================================
-# Table VI Panel B
-# =============================================================================
+
+# Panel B -------------------------------------------------------------
 # Nearest-neighbor matching, ATT + mahalanobis
 # documnetation for nnmatch https://www.stata.com/manuals13/teteffectsnnmatch.pdf
 # more documentation https://scholar.harvard.edu/files/imbens/files/sjpdf-1.html_.pdf
-f <-
-  paste(c("pog20s", paste(xnames, collapse = "+")), collapse = "~") %>%
-  as.formula()
+panel_b <- nnmatch(xvars, yvars, dvars, outcome = "att")
 
-panel_b <- nnmatch(f, dname, reg_data)
+# Panel C -------------------------------------------------------------
+gvars <- reg_data[, c("Latitude", "Longitude")]
+panel_c <- nnmatch(gvars, yvars, dvars, outcome = "att")
 
+# Replicate Table VI Using Propensity Score Matching ------------------
+pscore_att <- propensity(xvars, yvars, dvars, outcome = "att")
+pscore_ate <- propensity(xvars, yvars, dvars, outcome = "ate")
 
-f_c <- as.formula(pog20s~ Latitude + Longitude)
-panel_c <- nnmatch(f_c, dname, reg_data)
+# =============================================================================
+# Format and output results to tex file
+# =============================================================================
