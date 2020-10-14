@@ -9,22 +9,25 @@ stdev <- function(x){
 # =============================================================================
 # OLS regression
 # =============================================================================
-ols <- function(X, Y, intercept = TRUE, cluster= NULL){
+ols <- function(X, Y, intercept = TRUE, cluster= NULL, se_calc = TRUE){
   X <- as.matrix(X)
   Y <- as.matrix(Y)
 
   if(intercept) X <- cbind(1, X)
 
-  beta <- as.vector(solve(t(X) %*% X) %*% (t(X) %*% Y))
+  beta <- as.vector(solve(t(X) %*% X, tol = 1e-20) %*% (t(X) %*% Y))
   colnames <- c("Intercept", names(X))
 
   # find standard errors
   e <- Y - X %*% beta
-  if(!is.null(cluster)){
+  if(!is.null(cluster) & se_calc){
     se <- cluster_se(X, e, cluster)
+  } else if(is.null(cluster) & se_calc){
+    se <- sqrt(diag(as.numeric(t(e) %*% e)*solve(t(X) %*% X, tol = 1e-20))/(nrow(X) - ncol(X)))
   } else{
-    se <- sqrt(diag(as.numeric(t(e) %*% e)*solve(t(X) %*% X))/(nrow(X) - ncol(X)))
+    se <- NA
   }
+
 
   # r_squared
   adj_r2 <- r_squared(Y, e, ncol(X))
@@ -58,7 +61,7 @@ cluster_se <- function(X, e, cl){
     sandwich <- append(sandwich, list(t(x_g) %*% e_g %*% t(e_g) %*% x_g))
   }
 
-  vcov <- solve(t(X) %*% X) %*% reduce(sandwich, `+`) %*% solve(t(X) %*% X)
+  vcov <- solve(t(X) %*% X, tol = 1e-20) %*% reduce(sandwich, `+`) %*% solve(t(X) %*% X)
   se <- sqrt(diag(vcov))
 }
 
