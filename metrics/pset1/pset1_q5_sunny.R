@@ -64,10 +64,29 @@ panel_b <- nnmatch(xvars, yvars, dvars, outcome = "att")
 gvars <- reg_data[, c("Latitude", "Longitude")]
 panel_c <- nnmatch(gvars, yvars, dvars, outcome = "att")
 
-# Replicate Table VI Using Propensity Score Matching ------------------
-pscore_att <- propensity(xvars, yvars, dvars, outcome = "att")
-pscore_ate <- propensity(xvars, yvars, dvars, outcome = "ate")
 
 # =============================================================================
 # Format and output results to tex file
 # =============================================================================
+extra_rows <- tibble(term = c("N", "Adj. R^2"), value = c(panel_a$n, panel_a$adj_r2))
+coefs_a <-
+  panel_a$coefs %>%
+  filter(!str_detect(term, "Intercept"))
+reg_output(coefs_a, extra_rows = extra_rows, decimals = 4) %>%
+  write(file = file.path(root, "panel_a.tex"))
+
+panel_matching <-
+  mutate(panel_b, term = "pog1349 - Matching") %>%
+  bind_rows(mutate(panel_c, term = "pog1349 - Geographic Matching"))
+reg_output(panel_matching, decimals = 4) %>%
+  write(file = file.path(root, "panel_matching.tex"))
+
+panel_pscore <-
+  mutate(pscore_att, term = "pog1349 - Prop. Score ATT") %>%
+  mutate(pscore_ate, term = "pog1349 - Prop. Score ATE")
+
+reg_output(panel_pscore, decimals = 4) %>%
+  write(file = file.path(root, "panel_pscore.tex"))
+
+
+

@@ -10,12 +10,15 @@ stdev <- function(x){
 # OLS regression
 # =============================================================================
 ols <- function(X, Y, intercept = TRUE, cluster= NULL, se_calc = TRUE){
-  colnames <- c("Intercept", names(X))
+  colnames <- names(X)
 
   X <- as.matrix(X)
   Y <- as.matrix(Y)
 
-  if(intercept) X <- cbind(1, X)
+  if(intercept){
+    X <- cbind(1, X)
+    colnames <- c("Intercept", colnames)
+  }
 
   beta <- as.vector(solve(t(X) %*% X, tol = 1e-20) %*% (t(X) %*% Y))
 
@@ -204,7 +207,7 @@ nnmatch <- function(X, Y, D, outcome = "ate", k = 4){
     se <- sqrt(var_hat)
   }
 
-  return(list(coefs = coef, se = se))
+  return(tibble(estimate = coef, std.error = se))
 }
 
 
@@ -272,11 +275,10 @@ propensity <- function(X, Y, D, B = 100, outcome = "ate"){
   # 2. run nnmatch over these samples
   estimates_boot <-
     boot_samples %>%
-    map(function(x) nnmatch(pscore[x], Y[x], D[x], outcome = outcome)) %>%
-    map_dbl(~pluck(.x, 1))
-  se <- stdev(estimates_boot)
+    map_df(function(x) nnmatch(pscore[x], Y[x], D[x], outcome = outcome))
+  se <- stdev(estimates_boot$coefs)
 
-  return(list(coefs = coef, se = se))
+  return(tibble(estimate = estimates$estate, std.error = se))
 }
 
 
@@ -284,8 +286,10 @@ propensity <- function(X, Y, D, B = 100, outcome = "ate"){
 # formatting regression output to display estimate with se error in parentheses
 # underneath
 # =============================================================================
-reg_output <- function(term, estimate, std.error, decimals, extra_rows = NULL){
-  tibble(term = term, estimate = estimate, std.error = std.error) %>%
+reg_output <- function(estimates, decimals = 3,
+                       extra_rows = NULL, format = "latex"){
+  output <-
+    tibble(estimates) %>%
     mutate(std.error = trimws(format(round(std.error, decimals),
                                      nsmall = decimals)),
            estimate = trimws(format(round(estimate, decimals),
@@ -294,11 +298,20 @@ reg_output <- function(term, estimate, std.error, decimals, extra_rows = NULL){
     gather(type, value, -term, -index) %>%
     group_by(index) %>%
     arrange(index, type) %>%
+    mutate(term = if_else(row_number() == 2, "", term)) %>%
     ungroup %>%
     select(-index) %>%
     mutate(value = if_else(type == "std.error", paste0("(", value, ")"),
                            as.character(value)),
            value = format(value, justify = "centre")) %>%
     select(-type)
+  if(!is.null(extra_rows)){
+    extra_rows <-
+      extra_rows %>%
+      mutate(value = trimws(format(round(value, decimals)))) %>%
+      mutate_all(as.character)
+    output <- bind_rows(output, extra_rows)
+  }
+  return(kable(output, format = format, booktabs = TRUE))
 }
 

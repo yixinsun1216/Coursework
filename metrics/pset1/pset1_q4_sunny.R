@@ -223,63 +223,46 @@ sieve_spline <- function(x, y, k = 5){
 
   # create columns for x - r_k values ------------------------
   for(i in 1:k){
-    name <- paste0("rk", i)
+    bool_name <- rlang::sym(paste0("is_rk", i))
+    var_name <- rlang::sym(paste0("rk", i))
+
     data <-
       data %>%
-      mutate(!!name := if_else(x < r_k[i], NA_real_, x - r_k[i]))
+      mutate(!!bool_name := x >= r_k[i]) %>%
+      mutate(!!var_name := !!bool_name * (x - r_k[i])) %>%
+      select(-!!bool_name)
   }
 
-  # split data up into bins ----------------------------------
-  data_list <-
-    data %>%
-    select(x, y, paste0("rk", 1:k)) %>%
-    drop_na() %>%
-    list()
+  basis <-
+    select(data, x, paste0("rk", 1:k)) %>%
+    as.matrix
 
-  for(i in (k-1):1){
-    knots <- paste0("rk", 1:i)
-    data1 <-
-      data %>%
-      select(x, y, all_of(knots)) %>%
-      drop_na() %>%
-      anti_join(reduce(data_list, bind_rows))
-    data_list <- append(data_list, list(data1))
-  }
+  y <- as.matrix(data$y)
 
-  data_list <-
-    filter(data, x < r_k[1]) %>%
-    select(x, y) %>%
-    list() %>%
-    append(data_list, .) %>%
-    rev()
-
-  # fit each block with OLS ---------------------------------
-  fit <-
-    map(data_list, function(d){
-      x1 <- as.matrix(select(d, -y))
-      reg <- ols(x1, d$y, se_calc = FALSE)
-      fit <- cbind(1, x1) %*% as.matrix(reg[[1]]$estimate)})
-  y_fit <- reduce(fit, c)
+  reg <- ols(basis, y)
+  y_fit <- cbind(1, basis) %*% as.matrix(reg[[1]]$estimate)
 
   return(tibble(X = x, Y_hat = y_fit, k = k))
 }
 
-
 # k = 3 and degree 10 spline
-spline_k10 <- aggregate_M(X, Y, sieve_spline, 10)
+spline_k30 <- aggregate_M(X, Y, sieve_spline, 30)
 spline_k3 <- aggregate_M(X, Y, sieve_spline, 3)
 
-spline_k10_plot <- MC_plot(spline_k20, "Sieve Spline: k = 10")
-spline_k3_plot <- MC_plot(spline_k3, "Sieve Spline: k = 5")
+spline_k30_plot <- MC_plot(spline_k30, "Sieve Spline: k = 30")
+spline_k3_plot <- MC_plot(spline_k3, "Sieve Spline: k = 3")
 
 # =============================================================================
 # Output graphs
 # =============================================================================
 # with 6 * 2 = 12 total graphs, plot 2 panels of graphs, each with 3 methods
 output1 <- grid.arrange(unif_h1_plot, unif_h2_plot, ll_h1_plot, ll_h2_plot,
-             sieve_deg25_plot, sieve_deg3_plot, ncol = 2)
-ggsave(output1, width = 9, height = 11, file = file.path(root, "monte_carlos1.png"))
+                        sieve_deg25_plot, sieve_deg3_plot, ncol = 2)
+ggsave(output1, width = 9, height = 11, file = file.path(root, "sunny_monte_carlos1.png"))
 
-grid.arrange(knn_3_plot, knn_30_plot, bernstein_deg25_plot, bernstein_deg3_plot,
-             spline_k10_plot, spline_k3_plot, ncol = 2)
+output2 <- grid.arrange(knn_3_plot, knn_30_plot, bernstein_deg25_plot,
+                        bernstein_deg3_plot, spline_k30_plot, spline_k3_plot,
+                        ncol = 2)
+ggsave(output2, width = 9, height = 11, file = file.path(root, "sunny_monte_carlos2.png"))
+
 
