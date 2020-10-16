@@ -137,7 +137,10 @@ ll_h2_plot <- MC_plot(ll_h2, "Local Linear Regression: h = .3")
 # Sieve - Polynomial
 # =============================================================================
 sieve_poly <- function(x, y, deg = 3){
+  # expand out polynomials
   x_poly <- poly(x, degree = deg)
+
+  # run ols over these expanded out polynomials
   reg <- ols(x_poly, y)
   y_hat <- cbind(1, x_poly) %*% as.matrix(reg[[1]]$estimate)
 

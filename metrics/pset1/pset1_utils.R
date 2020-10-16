@@ -276,9 +276,9 @@ propensity <- function(X, Y, D, B = 100, outcome = "ate"){
   estimates_boot <-
     boot_samples %>%
     map_df(function(x) nnmatch(pscore[x], Y[x], D[x], outcome = outcome))
-  se <- stdev(estimates_boot$coefs)
+  se <- stdev(estimates_boot$estimate)
 
-  return(tibble(estimate = estimates$estate, std.error = se))
+  return(tibble(estimate = estimates$estimate, std.error = se))
 }
 
 

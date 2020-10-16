@@ -1,3 +1,18 @@
+## Class Discussion
+
+* Tax increase leads to scarcity rent drop, so production lasts longer. However, the total amount extracted remains the same. 
+* Scarcity rent: This is the fundamental rule of an efficient resource extraction policy &rightarrow;  the marginal profits at each time period in discounted terms (or in present value) should be equalized over time. Their common level should be equal to the marginal opportunity cost of the limited stock constraint, that is to the marginal scarcity rent of the resource. This scarcity rent is also called the Hotelling scarcity rent
+* Isoelastic demand function - change in price by 1 percent, then you have a change in demand by $\eta%$ 
+  * Gold standard of demand function in EEE? 
+  * Most economists think about marginal policies -> functional form issues become less important. 
+  * One papers like this, what matters for long-run analysis is how does demand behave once you get closer and closer to the choke price. CES gets into more problem
+* Is the Hotelling framework the most suited for this market? Obviously price of oil is not rising at rate of interest 
+* What about the fact that having carbon in the air now is a lot different than having carbon in the air 50 years from now &rightarrow; isn't it enough to just push oil production down the line?
+* Ryan - weird demand system. There's a kink in the demand curve when you hit R = \$250, at which point you get shocked and immediately consume 0 oil. The way to fix this is to have imperfect substitutability between oil and renewables. 
+* Severin Borenstein has been on the soapbox about how we won't get a carbon tax. We should be investing a shitload of money into solar technology and export this technology like crazy. Jim Sallee is the last on the reading list and is work on political economy. 
+  * Extraction path is different between carbon tax and investing in technology. Tax is a shift in demand curve, whereas technology moves the reserve price. In terms of cumulative extraction, paper states they are equivalent. 
+* Pigouvian taxation - what's the source of marginal damage? This is compatible with Hotelling at the end of the day. 
+
 ## Canvas Summary
 
 There is overwhelming support among economists for a carbon tax as an efficient and market-based method of controlling emissions in the face of climate change. Under the Pigouvian framework, a tax internalizes the external costs of fossil fuel combustion, promoting substitution away from fossil fuels towards cleaner energy sources. However, the Hotelling framework emphasizes the impact of a tax on the intertemporal consumption of an exhaustible resource. Under this framework, when there is a choke price (i.e. the price of renewables), then all the resource will be consumed eventually, and the same amount of a resource is consumed overall. This paper incorporates these two frameworks to analyze the dynamic impacts of a carbon tax on overall emissions. 
