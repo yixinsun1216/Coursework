@@ -85,7 +85,7 @@ matrix rownames times = "Runtime (seconds)"
 matrix colnames times = reg xtreg areg reghdfe
 
 
-// Export tables
+* Export tables
 esttab matrix(times) using "$gdir/sunny_table1_timer.tex", replace type ///
 	title("Computation Time") nomtitles
 
