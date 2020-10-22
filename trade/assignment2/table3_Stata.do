@@ -33,14 +33,14 @@ timer off 1
 estimates store reg1
 
 * output to tex
-esttab reg1 using "$gdir/sunny_table1.tex", label nostar keep(log_dist) se r2 /// 
-	replace type title("reghdfe Estimator") nomtitles nonumbers scalars(N) sfmt(%9.0fc) 
+esttab reg1 using "$gdir/sunny_table3_stata.tex", label nostar keep(log_dist) se r2 /// 
+	replace type title("Part 3 - Stata") nonumbers scalars(N) sfmt(%9.0fc) nonotes
 	
 * format and output computation time to csv to be combined with Julia and R timers
 timer list
 scalar times1 = r(t1)
 matrix times = (times1)
 
-mat2txt, m(times) saving("$gdir/stata_time.csv") replace
-	
+mat2txt, matrix(times) saving("$gdir/stata_time.csv") replace
+
 

@@ -24,13 +24,15 @@ grav[:contig] =  categorical(grav[:contig])
 grav[:comlang_off] =  categorical(grav[:comlang_off])
 
 
-grav_reg = @timed reg(grav, @formula(log_flow ~ log_dist + fe(year)*fe(iso_o) + 
-    fe(year)*fe(iso_d) + fe(contig) + fe(comlang_off)), Vcov.robust())
+grav_reg = @timed reg(grav, @formula(log_flow ~ log_dist + fe(year)&fe(iso_o) + 
+    fe(year)&fe(iso_d) + fe(contig) + fe(comlang_off)), Vcov.robust())
 
 # save regression result to tex file
 outfile = joinpath(gdir, "sunny_table3_julia.tex")
 regtable(grav_reg[1]; print_fe_section=false, number_regressions=false, 
-    renderSettings = latexOutput(outfile))
+    renderSettings = latexOutput(outfile), statisticformat = "%0.5f", 
+    labels = Dict([("log_dist", "log\\_dist"), ("log_flow", "log\\_flow")]), 
+    print_estimator_section =false)
 
 # save time result to csv to be joined with stata and R results in R 
 CSV.write(joinpath(gdir, "julia_time.csv"), DataFrame(time = grav_reg[2]))
