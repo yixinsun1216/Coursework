@@ -32,12 +32,11 @@ time <- system.time(
     as.formula(log(flow) ~ log(distw) | exp_year + imp_year + contig + comlang_off) %>%
     felm(data = grav)
 )
-time <- time[3]
 
 # output to tex
-stargazer(grav_reg, dep.var.caption = NULL, title = "Part 3 - R",
+stargazer(grav_reg, dep.var.caption = "", title = "Part 3 - R",
           out = file.path(gdir, "sunny_table3_R.tex"), digits = 4,
-          omit.stat = c("adj.rsq", "ser"), omit.table.layout = "n")
+          omit.stat = c("adj.rsq", "ser"), omit.table.layout = "n", no.space = TRUE)
 
 # format runtimes from stata and julia
 julia_time <-
@@ -51,6 +50,6 @@ stata_time <-
   as.numeric()
 
 # output comparison times to tex table
-tibble("Stata" = stata_time, "Julia" = julia_time, "R" = time) %>%
+tibble("Stata" = stata_time, "Julia" = julia_time, "R" =  time[3]) %>%
   kable(digits = 2, format = "latex", booktabs = TRUE) %>%
   write(file.path(gdir, "sunny_speed_comparison.tex"))

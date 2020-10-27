@@ -24,14 +24,12 @@ $$
    \psi=P g\left(N ; z_{3}, \epsilon_{3}\right) \tag{3}
    $$
    
-
 3. Evolution of capitalized flow of marginal convenience yield that satisfies no arbitrage condition
    $$
    \psi_{t, T}=\left(1+r_{T}\right) P_{t}-F_{t, T}+k_{T} \tag{4} \\
    \Rightarrow \left[1+r_{T}-g\left(N_{t}\right)\right] P_{t}=F_{t, T}-k_{T} 
    $$
    
-
 4. Evolution for futures price
    $$
    F_{t, T}=E_{t} P_{t+T}+\left(r_{T}-\rho_{T}\right) P_{t} \tag{6}
@@ -51,14 +49,6 @@ $$
 
 
 ## Canvas Summary
-
-"[Knittel and Pindyck (2013)](https://www.elibrary.imf.org/view/IMF001/22184-9781498333481/22184-9781498333481/back.xml#A01ref28), using a reduced-form approach, assess whether speculation in (mainly)  oil futures markets, as a driver of price changes, is consistent with  the data on production, consumption, inventory changes, and spot and  futures oil prices (given reasonable assumptions about elasticities of  supply and demand).[8](https://www.elibrary.imf.org/IMF001/22184-9781498333481/22184-9781498333481/back.xml#A01fn8) They show that although they cannot rule out the possibility that  speculation had any effect on oil prices, speculation as an explanation  for the sharp changes in prices can be ruled out for the period since  2004. They argue that, unless one believes that the price elasticities  of both oil supply and demand are close to zero (a conjecture initially  put forward by [Hamilton, 2009](https://www.elibrary.imf.org/view/IMF001/22184-9781498333481/22184-9781498333481/back.xml#A01ref15)), the behavior of inventories and futures-spot spreads are simply  inconsistent with the view that speculation was a significant driver of  spot prices over that period. Across their sample, speculation decreased prices on average or left them essentially unchanged and reduced peak  prices by roughly 5 percent."
-
-
-
-"The theory of storage (Working (1933,1949)) posits relations between intertemporal prices among spot and futures prices.Kaldor(1939)expands on the theory and introduces the notion of convenience yieldto explain intertemporal price differences. Brennan (1958)estimates demand and supply curves for storage andWeymar (1968)relates convenience yield to the probability of inventory stock-outwhere low inventories signal low supply and lead to rising commodity prices and an increasing convenience yield.If there is excessive speculation in the market, the relation suggested by the theory of storage could be distorted. Increasing spec-ulation may increase the overall capacity of the market to absorb risk and decrease the costs of hedging. If risk management becomes cheaper for those willing to store commodities, they will increase their inventories by purchasing: raising demand and also prices.Despite this possibility,Kilian and Murphy (2014),Kilian and Lee (2014),Juvenal and Petrella (2015), andKnittel and Pindyck (2016)document that the crude oil price boom in 2007–2008 was not accompanied by an inventory spike.12This evidence supports thebusiness-as-usual view and mitigates arguments for excessive speculation"
-
-
 
 **Summary:**
 
@@ -80,4 +70,25 @@ They are able to match reduced-form equations to their model to estimate the cum
 I found the figures to be very helpful in explaining the logic of the model, but I found the paper generally hard to digest. Part of this is that I lack intuition on why journalists and politicians latched onto the idea that speculation caused these sharp changes in the oil prices in the first place. Perhaps it is simply that investors are an easy scapegoat and/or that I have become fully entrenched in the idea that futures reduces volatility rather than add to it. 
 
 The authors are quite open with the limits (and benefits!) of the simplicity of the model. I am particularly interested in the assumption that the elasticities of demand and supply in the cash market being constant over their the time frame of their sample. What has been the literature on this? My gut reaction is that elasticities probably changed quite a bit between 1998 and 2012 with the increased interest in renewables, on both the supply and demand side.  
+
+
+
+## Lecture Notes
+
+* $\rho_T > r_T$ because commodities are usually procyclical 
+* Negative convenience yield? No reason it has to be positive in their set up
+
+* Negative oil prices?
+* Constant elasticity of demand?
+* How to think about exogeneity in this paper?
+  * There's no regression involved anywhere that lead to their main graphs. Very different from typical applied micro/energy paper. 
+* What was actually happening?
+  * 2000-2008 - China's growth was totally bonkers
+* The only way speculation can bid up the price of oil is if we saw a massive increase in storage. Storage is not going up like crazy here. 
+
+
+
+Canals in OSM under waterways as a line
+
+
 

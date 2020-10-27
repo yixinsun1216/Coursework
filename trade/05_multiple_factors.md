@@ -23,7 +23,7 @@
 
 * Jones + (Meera?) textbook is quite good for this
 
-* Production functions (HD1) using factors $L$ and $K$ are
+* Production functions (HD1) using factors $L$ and $K$ are 
   $$
   y_{g}=f_{g}\left(L_{g}, K_{g}\right) \quad g=1,2
   $$
@@ -59,12 +59,12 @@
 
 * Four theorems - old Neoclassical literature and canonical set of results in old school trade
   1. Factor price equalization: Can trade in goods substitute for trade
-    in factors?
+      in factors?
     1. You're endowed with factors. If you have less labor compared to capital, can you trades and wind up with the same factor prices?
   2. Stolper-Samuelson: Who wins and who loses from a change in
-    goods prices? 
+      goods prices? 
   3. Rybczynski: How does output mix respond to change in
-    endowments?
+      endowments?
   4. Heckscher-Ohlin: What is the pattern of specialization and trade?
 
 * Let's first take care of uniqueness: Factor price insensitivities
@@ -102,34 +102,33 @@
      - 
 
   2. Stolper-Samuelson Theorem: Theorem
-    An increase in the relative price of one good raises the real return of
-    the factor used intensively in producing that good and lowers the real
-    return of the other factor.
-    Proof (hats here mean log):
-    $\mathrm{WLOG}, \operatorname{let} \frac{a_{1 L}(\omega)}{a_{1 K}(\omega)}>\frac{a_{2 L}(\omega)}{a_{2 K}(\omega)}$ and $\hat{p}_{1}>\hat{p}_{2},$ where $\hat{x} \equiv \frac{\mathrm{d} x}{x}$ 
-    Differentiating the zero-profit conditions yields (by envelope theorem)
-    $$
+      An increase in the relative price of one good raises the real return of
+      the factor used intensively in producing that good and lowers the real
+      return of the other factor.
+      Proof (hats here mean log):
+      $\mathrm{WLOG}, \operatorname{let} \frac{a_{1 L}(\omega)}{a_{1 K}(\omega)}>\frac{a_{2 L}(\omega)}{a_{2 K}(\omega)}$ and $\hat{p}_{1}>\hat{p}_{2},$ where $\hat{x} \equiv \frac{\mathrm{d} x}{x}$ 
+      Differentiating the zero-profit conditions yields (by envelope theorem)
+  $$
     \mathrm{d} p_{g}=a_{g L} \mathrm{d} w+a_{g K} \mathrm{d} r
-    $$
+  $$
     Define the cost share $\theta_{g L}=\frac{w a_{g L}}{c_{g}}$ to obtain
-    $$
+  $$
     \hat{p}_{g}=\theta_{g L} \hat{w}+\left(1-\theta_{g L}\right) \hat{r}
-    $$
+  $$
     Goods price changes are weighted averages of factor, price changes.
-    $$
+  $$
     \frac{a_{1 L}}{a_{1 K}}>\frac{a_{2 L}}{a_{2 K}} \Rightarrow \theta_{1 L}>\theta_{2 L}
-    $$
+  $$
     so $\hat{r}<\hat{p}_{2}<\hat{p}_{1}<\hat{w}$
 
-    1. comparing factor prices to goods prices. Thinking about the returns to those factors (and winners and losers)
-
+      1. comparing factor prices to goods prices. Thinking about the returns to those factors (and winners and losers)
     2. The important thing here is differentiating the zero-profit condition. The reason I can assign these cost shares is because you hire a factor and that produces one good. This doesn't work if you hire a factor and it produces more than one good. 
+      3. Stolper-Samuelson is a shift out of the iso-cost curve. 
+  4.  Rybczynski Theorem: For given goods prices, an increase in the endowment of one factor causes a more-than-proportionate increase in the output of the good using this factor intensively and a decrease in the output of the other good. 
+  
 
-    3. Stolper-Samuelson is a shift out of the iso-cost curve. 
-
-    4.  Rybczynski Theorem: For given goods prices, an increase in the endowment of one factor causes a more-than-proportionate increase in the output of the good using this factor intensively and a decrease in the output of the other good. 
-
-      Differentiating the factor market clearing conditions yields,
+  
+    Differentiating the factor market clearing conditions yields,
       $$
       \mathrm{d} L=a_{1 L} \mathrm{d} y_{1}+a_{2 L} \mathrm{d} y_{2} \text { and } \mathrm{d} K=a_{1 K} \mathrm{d} y_{1}+a_{2 K} \mathrm{d} y_{2}
       $$
@@ -141,6 +140,7 @@
       $$
       \hat{y}_{1}>\hat{L}>\hat{K}>\hat{y}_{2} \text { or } \hat{y}_{1}<\hat{L}<\hat{K}<\hat{y}_{2}
       $$
+      
       Hence, if also (wlog) $\hat{K}>\hat{L},$ we obtain,
       $$
       \hat{y}_{1}<\hat{L}<\hat{K}<\hat{y}_{2}

@@ -1,5 +1,6 @@
 * Set up file paths 
 clear
+
 if "`c(username)'" == "Yixin Sun" {
    global ddir "C:/Users/Yixin Sun/Dropbox/Coursework/field_courses/International Macro and Trade/Assignments/assignment2"
    global gdir "C:/Users/Yixin Sun/Dropbox/Coursework/Coursework/trade/assignment2"
