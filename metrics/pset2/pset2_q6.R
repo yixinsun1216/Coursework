@@ -1,7 +1,7 @@
 # Created by Yixin Sun on October 29, 2020
 library(tidyverse)
 library(MASS)
-gdir <- root <- "C:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/metrics/pset2"
+gdir <-  "C:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/metrics/pset2"
 
 # =============================================================================
 # Helper functions and estimator functions
@@ -48,7 +48,7 @@ tsls <- function(z, x, y){
   # calculate 95% coverage
   e <- y - x %*% beta
   P <- z %*%solve(t(z) %*% z)%*% t(z)
-  var <- as.numeric(t(e) %*% e)*solve(t(x) %*% P %*% x, tol = 1e-20)
+  var <- as.numeric(t(e) %*% e)*solve(t(x) %*% P %*% x)
   se <- sqrt(diag(var/(nrow(x) - ncol(x))))
   ci <- c(beta[2] - 1.96*se[2], beta[2] + 1.96*se[2])
   return(tibble(estimate = beta[2], bias = beta[2] - 1,
@@ -57,7 +57,7 @@ tsls <- function(z, x, y){
 
 # Jackknife
 jackknife <- function(z, x, y){
-  z <- as.matrix(z)
+  z <- cbind(1, z)
   zz <- solve(t(z) %*% z)
   z_i <- split(z, 1:nrow(z))
   h <- map(z_i, function(zi) as.matrix(t(zi) %*% zz %*% zi))
@@ -76,7 +76,7 @@ jackknife <- function(z, x, y){
   # calculate 95% coverage
   e <- y - x %*% beta
   P <- z %*%solve(t(z) %*% z)%*% t(z)
-  var <- as.numeric(t(e) %*% e)*solve(t(x) %*% P %*% x, tol = 1e-20)
+  var <- as.numeric(t(e) %*% e)*solve(t(x) %*% P %*% x)
   se <- sqrt(diag(var/(nrow(x) - ncol(x))))
   ci <- c(beta[2] - 1.96*se[2], beta[2] + 1.96*se[2])
   return(tibble(estimate = beta[2], bias = beta[2] - 1,
@@ -88,7 +88,7 @@ jackknife <- function(z, x, y){
 # =============================================================================
 # Main function - outputs the various methods for different sample sizes
 # =============================================================================
-estimators <- function(N, M = 100){
+estimators <- function(N, M = 500){
   # Generate bivariate normal errors
   UV <- map(1:M, ~ mvrnorm(N, c(0, 0), matrix(c(.25, .2, .2, .25), ncol = 2)))
   U <- map(UV, ~ .x[,1])
@@ -176,13 +176,13 @@ jackknife_many <-
 outtable <-
   bind_rows(ols_output, tsls_output, tsls_many_output,
             jackknife_one, jackknife_many) %>%
-  bind_cols(Value = rep(c("Median", "Bias", "SD"), 5), .)
+  bind_cols(Value = rep(c("Median", "Bias", "SD", "Coverage"), 5), .)
 
 
 kable(outtable, format = "latex", booktabs = TRUE, linesep = "", digits = 3) %>%
-  kableExtra::group_rows("OLS", 1, 3)  %>%
-  kableExtra::group_rows("TSLS - 1 Instrument", 4, 6) %>%
-  kableExtra::group_rows("TSLS - Many Instruments", 7, 9) %>%
-  kableExtra::group_rows("Jackknife - 1 Instrument", 10, 12) %>%
-  kableExtra::group_rows("Jackknife - Many Instruments", 13, 15) %>%
+  kableExtra::group_rows("OLS", 1, 4)  %>%
+  kableExtra::group_rows("TSLS - 1 Instrument", 5, 8) %>%
+  kableExtra::group_rows("TSLS - Many Instruments", 9, 12) %>%
+  kableExtra::group_rows("Jackknife - 1 Instrument", 13, 16) %>%
+  kableExtra::group_rows("Jackknife - Many Instruments", 17, 20) %>%
   write(file.path(gdir, "sunny_q6.tex"))
