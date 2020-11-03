@@ -160,7 +160,7 @@ toc()
 # formatting regression output to display estimate with se error in parentheses
 # underneath
 # =============================================================================
-reg_output <- function(estimates, name, decimals = 3){
+reg_output <- function(estimates, name, decimals = 2){
   output <-
     tibble(estimates) %>%
     mutate(std.error = trimws(format(round(std.error, decimals),
@@ -191,7 +191,7 @@ table_order <- tibble(term = c("p401k", "Constant", "inc", "age", "age2",
 # format all outcome columns, and join together
 outcomes_all <-
   reg_output(ols_outcomes, "OLS") %>%
-  full_join(reg_output(first_stage, "First Stage")) %>%
+  full_join(reg_output(first_stage, "First Stage", decimals = 4)) %>%
   full_join(reg_output(second_stage, "Second Stage")) %>%
   full_join(reg_output(larf_outcome, "Least squares treated")) %>%
   left_join(table_order, .) %>%
