@@ -351,13 +351,13 @@ INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/sansmathaccent/mathkerncmssi8
 INPUT C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map
 INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/cm/cmss12.tfm
 INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/cm/cmssbx10.tfm
-INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/eee1/Presentation/fig1.png
-INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/eee1/Presentation/fig1.png
-INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/eee1/Presentation/fig1.png
-INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/eee1/Presentation/fig1.png
-INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/eee1/Presentation/fig1.png
 INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/cm/cmss9.tfm
 INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/cm/cmsy9.tfm
+INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/eee1/Presentation/fig1.png
+INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/eee1/Presentation/fig1.png
+INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/eee1/Presentation/fig1.png
+INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/eee1/Presentation/fig1.png
+INPUT c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/eee1/Presentation/fig1.png
 INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/cm/cmssi10.tfm
 INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/cm/cmmi9.tfm
 INPUT C:/Program Files/MiKTeX 2.9/fonts/tfm/public/amsfonts/cmextra/cmex9.tfm
@@ -403,6 +403,10 @@ INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb
 INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb
 INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb
 INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb
+INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi6.pfb
+INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi6.pfb
+INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.pfb
+INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.pfb
 INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi9.pfb
 INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi9.pfb
 INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmss10.pfb
@@ -421,6 +425,8 @@ INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmssi9.pfb
 INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmssi9.pfb
 INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb
 INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb
+INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy6.pfb
+INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy6.pfb
 INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb
 INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb
 INPUT C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy9.pfb

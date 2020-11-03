@@ -32,13 +32,22 @@
 \begin{frame}
     \frametitle{Motivation}
     \begin{itemize}
-        \item Economic development often has led to the mass depletion of natural resources (fisheries, hunting, forests, and of course water) \pause 
-        \item India is now the largest user of groundwater in the world, extracting more in a year than in the US and China combined \pause 
-        \item Economists have tools (pricing, property rights) that should lead to efficient outcomes \pause
+        \item Economic development often has led to the mass depletion of natural resources  \pause 
+        \item India is now the largest user of groundwater in the world \pause 
+        \item Economists have tools that should lead to efficient outcomes \pause
         \item But do we balance equity and efficiency? \pause 
     \end{itemize}
 
     Research question: how does the current groundwater rationing system in India balance the trade-off between efficiency and equity?
+
+    \note{
+    {\footnotesize
+    \begin{itemize}
+        \item Economic development often has led to the mass depletion of natural resources (fisheries, hunting, forests, and of course water) 
+        \item India is now the largest user of groundwater in the world
+        \item Economists have tools that should lead to efficient outcomes, which Ryan has introduced to us through Pigou and Coase
+    \end{itemize}
+    }}
 \end{frame}
 
 \begin{frame}
@@ -233,6 +242,7 @@ Weitzman (1977): Is the Price System or Rationing More Effective in Getting a Co
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
     \frametitle{Structural Model of Agricultural Production}
+    \label{structural}
     \begin{gather*}
         y_{i c}=\alpha_{L} l_{i c}+\alpha_{X} x_{i c}+\alpha_{K} k_{i c}+\alpha_{W} w_{i c}+\omega_{Y i c} \\
         \text{farmer $i$ planting crop $c$}
@@ -241,6 +251,9 @@ Weitzman (1977): Is the Price System or Rationing More Effective in Getting a Co
     \begin{align*}
         \omega_{Y i c}=\underbrace{\overbrace{W_{E i c} \beta_{E}}^{\text{known output shifters}}+\overbrace{\omega_{i c}}^{\text{farmer-specific shock}}}_{\text{obs. by farmer}}+\underbrace{\epsilon_{Y i c}}_{\text{unobs. shock at harvest}}
     \end{align*}
+
+    \rightline{\hyperlink{questions}{\beamerbutton{Questions}}}
+
     \note{
         {\footnotesize
         \begin{itemize}
@@ -359,14 +372,15 @@ Weitzman (1977): Is the Price System or Rationing More Effective in Getting a Co
         \item Appreciate a comparison between efficiency and distribution
         \item Comparing current policy to realistic policies that government could take $\rightarrow$ Coase would be proud!
         \item Extremely well written and easy to understand, even with all the moving parts 
+        \item Agricultural survey is very impressive
     \end{itemize}
 \end{frame}
 
 \begin{frame}
     \frametitle{Importance of This Paper}
     \begin{itemize}
-        \item Agriculture is about 16\% of India's GDP, but it's a huge portion of consumer surplus
-        \item About 60\% of Indian population works in the agriculture sector
+        \item Agriculture is ~16\% of India's GDP, but a huge portion of consumer surplus
+        \item ~60\% of Indian population works in the agriculture sector
         \item India's agricultural output accounts for about 7\% of world agricultural output
         \item How we use water today has many feedback components that are made worse with climate change
         \item Direct Benefit Transfers (DBT) of Electricity subsidies 
@@ -388,42 +402,66 @@ Weitzman (1977): Is the Price System or Rationing More Effective in Getting a Co
     \frametitle{How Should We Think About the Future?}
     \label{future}
     \begin{itemize}
-        \item Paper found that the rationing status quo seems close to being efficient, but hard to reconcile this with the fact that "Rajasthan as a state is extracting groundwater at 137\% of the rate that can naturally be recharged." \pause 
+        \item Found that the rationing status quo seems close to being efficient, but "Rajasthan as a state is extracting groundwater at 137\% of the rate that can naturally be recharged." \pause 
         \item Are they picking the right discount rate? \hyperlink{fig4}{\beamerbutton{Fig. 4}} \pause
-        \item Method of estimating costs does not incorporate the feedback components discussed
+        \item Method of estimating costs does not incorporate the feedback components discussed \hyperlink{dynamic}{\beamerbutton{Dynamic Model}}
     \end{itemize}
+    \note{
+        {\footnotesize
+        \begin{itemize}
+           \item This model doesn't interact at all with the weather or climate, which the authors adress in their appendix, and say is because they could not get granular enough data. Fair enough, but interacting with the climate will likely speed up the rate of depletion 
+        \end{itemize}
+    }}
 \end{frame}
 
 \begin{frame}
     \frametitle{Instrument Variable Exclusion Restriction}
     \label{endogeneity}
-    \begin{itemize}
-        \item To estimate marginal benefits from more water, authors use geological features as an instrument for water depth. \hyperlink{hedonic}{\beamerbutton{IV}}
-        \item How does this get rid of the endogeneity concern?
-    \end{itemize}
+    To estimate marginal benefits from more water, authors use geological features as an instrument for water depth. \hyperlink{hedonic}{\beamerbutton{IV}}
+    \vspace{1cm}
+
+    How does this get rid of the endogeneity concern?
     \note{
     {\footnotesize
     \begin{itemize}
-        \item 
+        \item I think I have a hard time thinking about the exclusion restriction here because there are so many instruments, and they use a double lasso approach to pick the instruments. But generally I am thinking that the same selection behavior that would cause a farmer to choose a piece of land with low water depth would be the same selection behavior that would cause them to choose land with certain geological features
+        \item And I know there's not a contemperanous selection issue since land markets are thin, but my thought is that if powerful families own land for many generations, then the reason they own that land is perhaps due to all these geological reasons. So this wouldn't get rid of simultaneity or endogeneity concerns. 
     \end{itemize}
     }}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Possible Extension: Marginal Benefits in Panel Data}
-    This paper estimated marginal benefits using cross-sectional data because "it can recover long-run elasticities of profit with respect to water, net of farmer adaptation"
-
-    What are the implications if we take into account that farmers can adapt or switch crops when the government sets a high enough ration?
+    \frametitle{Possible Extension}
+    \begin{itemize}
+        \item What are the implications if we take into account that farmers can adapt or switch crops when the government sets a high enough ration? Put another way, what other dimensions can we learn if we use panel data? \pause 
+        \item Does quality of electricity matter here? 
+    \end{itemize}    
+    \note{
+    {\footnotesize
+    \begin{itemize}
+        \item What if we were to use panel data to estimate marginal benefits? This paper estimated marginal benefits using cross-sectional data because "it can recover long-run elasticities of profit with respect to water, net of farmer adaptation". 
+        \item Does quality of electricity matter here? What I am wondering is if there are constant outages in some regions but not others, and that is probably interacting with geological features. This gets lumped into productivity right now, but I wonder if we can break that out, or even produce an estimate of how much agricultural profit is lost due to outages. 
+    \end{itemize}
+    }}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Smaller Questions:}
-    \begin{itemize}
-        \item Do farmers usually pay their electricity bills? Perhaps pricing isn't feasible also because no one actually pays for electricity
-        \item Does quality of electricity matter here/is it lumped in with productivity?
+    \frametitle{Questions}
+    \label{questions}
+    \begin{enumerate}
+        \item Do most farmers pay their electricity bills? 
         \item Are microgrids or alternative energy sources used to get around the ration?
-        \item In equation (9), why is it important to include $W_{Eic}$ in the residual if those are observable?
+        \item In equation (9), why is it important to include $W_{Eic}$ in the residual if those are observable? \hyperlink{structural}{\beamerbutton{Structural Eqn}}
+    \end{enumerate}
+
+    \note{
+    {\footnotesize
+    \begin{itemize}
+        \item Do most farmers pay their electricity bills? I am thinking that another reason pricing electricity is not a good idea is simply that people just won't pay 
+        \item Are microgrids or alternative energy sources used to get around the ration? Is that something that is monitored?
+        \item Technical question
     \end{itemize}
+    }}
 \end{frame}
 
 \begin{frame}
@@ -434,6 +472,20 @@ Weitzman (1977): Is the Price System or Rationing More Effective in Getting a Co
     Rationing Regime: $\bar{H}^* = \underset{\bar{H}}{\arg \max}\sum_{i}\left[\widetilde{\Pi}_{i}\left(W_{i}\left(\bar{H}, D_{i}\right)\right)-c_{E} P_{i} \bar{H}-\rho \frac{P_{i}}{D_{i}} \bar{H} \lambda_{W}\right]$
     \vfill
     \rightline{\hyperlink{counterfactuals}{\beamerbutton{Counterfactuals}}}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Extra Slide: Dynamic Model (Appendix E)}
+    \label{pigouvian}
+    Farmer's Problem: $\max _{H_{t} \leq \bar{H}} \Omega\left(W_{t}\left(H_{t}, D_{t}\right)\right)^{\alpha_{W}}-p_{E} P H_{t}$
+    \begin{align*}
+        H_{t}^{*} &=\min \left\{\left(\frac{\Omega \alpha_{W}}{p_{E}}\right)^{\frac{1}{1-\alpha_{W}}}\left(\frac{\rho}{D_{t}}\right)^{\frac{\alpha_{W}}{1-\alpha_{W}}} \frac{1}{P}, \bar{H}\right\} \\
+        W_{t}^{*} &=\rho \frac{P H_{t}^{*}}{D_{t}}
+    \end{align*}
+
+    LOM: $D_{t+1}=D_{t}+\gamma\left(W_{t}-R\right)$
+    
+    \rightline{\hyperlink{future}{\beamerbutton{Discussion}}}
 \end{frame}
 \end{document}
 

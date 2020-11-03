@@ -86,7 +86,7 @@ jackknife <- function(z, x, y){
 
 
 # =============================================================================
-# Main function - outputs the various methods for different sample sizes
+# Main function - runs the various methods for different sample sizes
 # =============================================================================
 estimators <- function(N, M = 500){
   # Generate bivariate normal errors

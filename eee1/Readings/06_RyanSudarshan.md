@@ -88,10 +88,7 @@ $$
 
 ![image-20201030140518352](C:\Users\Yixin Sun\AppData\Roaming\Typora\typora-user-images\image-20201030140518352.png)
 
-* A one standard deviation increase in depth decreases profit by INR 8,900 per Ha in the dry season. This
-  reduction in profit equals 14 percent of output per Ha (Table $1,$ panel $\mathrm{A}$ ) or, for an average farmer,
-  $15 \%$ of household income from all sources over the whole year. A scarcity of groundwater thus
-  significantly harms agricultural livelihoods.
+* A one standard deviation increase in depth decreases profit by INR 8,900 per Ha in the dry season. This reduction in profit equals 14 percent of output per Ha (Table $1,$ panel $\mathrm{A}$ ) or, for an average farmer, $15 \%$ of household income from all sources over the whole year. A scarcity of groundwater thus significantly harms agricultural livelihoods.
 * Effect of depth on profits is a reduced-form estimate that obscures how farmers adapt their production to water scarcity
   * Farmers with deeper wells achieve lower yields and output
   * Farmers adapt to scarcity of groundwater through disinvestment: less likely to use HYV seeds, less likely to use efficient but capital intensive irrigation techniques, and more likely to report their crops as under-irrigated
@@ -164,3 +161,62 @@ $$
   * Shows remarkable amount of dispersion
   * Heterogeneity in the model casts the main finding of the marginal analysis in a new light: even though the six hour ration is roughly efficient, on average, it is set too high for most farmers, and far too low for a substantial minority, and the dispersion illustrates the degree of misallocation of water across farmers
 * Is what's happening here that farmer's have relatively **flat marginal benefits curves**, and there's a bunch of them at different levels due to the heterogeneity in productivity. So then the benefits and losses cancel each other out, but this masks the fact that we are restricting quantities at the wrong place
+
+**Counterfactual effects of Pigouvian reform**
+
+* Take land and labor inputs are fixed rather than endogenous (makes sense here where land markets are thin and 2/3 of labor is suppled by hh on their own farms)
+
+1. Ration set at optimal, surplus-maximizing level, rather than status quo of six hours
+2. Pricing regime that lifts the ration and sets the price of electricity at private marginal cost
+3. Pigouvian regime that lifts the ration and sets the price of electricity at social marginal cost (including the opportunity cost of water in the price of power)
+
+* Also consider 3 simple regimes that allow states to make transfers to refund the additional revenue from Pigouvian pricing
+  1. Flat (uniform) transfers across farmers
+  2. Transfers pro rata on the basis of land size
+  3. Transfers pro rata on the basis of pump capacity 
+
+**Counterfactual results on efficiency**
+
+![image-20201102095500661](C:\Users\Yixin Sun\AppData\Roaming\Typora\typora-user-images\image-20201102095500661.png)
+
+* Ration is set at roughly the efficient level, or slightly too high  (Table 4, Panel B, column 2)
+* Rationing has a large efficiency cost - mean surplus is INR 10,000 per farmer-crop. Pigouvian pricing increases surplus by roughly INR 4,600 per farmer-crop 
+* Surplus gains under a Pigouvian regime are due to increases in productivity, not water conservation - under Pigouvian regime, farmers extract nearly the same amount of water using 20% less power. This is because farmers with shallower wells, who can get more water per unit power, run their pumps more, increasing water extracted per unit power 
+* Increase in profits comes mainly from an increase in agricultural productivity 
+
+**Farmer heterogeneity in response to Pigouvian reform**
+
+* Figure 7: average change in profit, before any compensating transfers, due to a reform that replaces rationing with Pigouvian pricing. Nearly ALL FARMERS LOSE FROM REFORM, before transfers, since electricity prices are more than tenfold higher
+* Average change in profits shows a skewed, U-shaped relationship with land size
+* For low levels of landholding, productive farmers lose more than unproductive farmers; because they are more productive, it is optimal for these farmers to keep using higher amounts of water after the reform, despite that
+  water is newly costly. 
+* At high levels of landholding, however, productive farmers gain from reform, even before transfers. The reason is that productive farmers with large landholdings are likely to have been heavily constrained under the rationing regime. 
+* A farmer that faced a high shadow cost of the ration, if sufficiently large and productive, may profit enough from the lifting of the ration to more than offset the roughly tenfold increase in electricity prices.
+* Shows how difficult it is for the state to set compensatory transfers, since state cannot observe productivity
+
+**Counterfactual results on redistribution**
+
+* Direct effect of Pigouvian reform is regressive, since lifting the ration benefits most the farmers who are productive and have ample land and shallow groundwater
+* State cannot target on productivity, a key determinant of the gains from reform, and therefore, leaves a large number of farmers worse off
+
+
+
+___
+
+## Weitman 1977: Is the Price System or Rationing More Effective in Getting a Commodity to Those Who Need It Most
+
+3 main elements of his model:
+
+1. Provided a measure of each consumer's relative need and of the ideal allocation based on that need. Note that he uses need, rather than preference, because he is specifically thinking about goods such as housing or water rather than widgets, aka when distributional issues are important 
+   1. Need here s the amount that a person would purchase if all consumers had equal incomes and price clears the market
+2. Social objective function, which is the quadratic loss between ideal and actual allocations
+3. Limited-information assumption that constraints the government from simply distributing the commodity according to the ideal allocation and forces the government to choose an allocation system 
+
+"There is a class of commodities whose just distribution is sometimes viewed as a desirable end in itself, independent of how society may be allocating its other resources. While it is always somewhat arbitrary where the line should be drawn, such "natural right goods" as basic food and shelter, security, legal aid, military service, medical assistance, education, justice, or even many others are frequently deemed to be sufficiently vital in some sense to give them a special status. The principal of limited dimensional equity in the distribution of a commodity is an open violation of consumer sovereignty."
+
+* Find that price system has greater comparative effectiveness in sorting out the deficit commodity and in getting it to those who need it most when wants are more widely dispersed or when the society is relatively egalitarian in its income distribution. The price mechanism has greater effectiveness in screening out the deficit commodity and in funneling more of it to those who need it relatively more.
+* Conversely, rationing is more effective as needs for the deficit commodity are more uniform or as there is greater income inequality, because it essentially prevents those with larger incomes from monopolizing consumption of the commodity in question
+* I think the intuition here is that Weitzman's notion of need is affected by income and your own idiosyncratic need for a good. So when there is no income inequality, prices are effective at allocating the good because willingness to pay is an efficient measurement of the need of an individual. However, when there is huge income inequality, a rationing scheme essentially prevents those with larger incomes from monopolizing consumption of the commodity in question
+
+
+
