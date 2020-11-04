@@ -1,6 +1,7 @@
 # Created by Yixin Sun on October 29, 2020
 library(tidyverse)
 library(MASS)
+library(knitr)
 gdir <-  "C:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/metrics/pset2"
 
 # =============================================================================
