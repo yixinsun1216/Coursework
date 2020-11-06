@@ -220,3 +220,22 @@ ___
 
 
 
+----
+
+
+
+
+
+## Class Discussion
+
+* Picking a ration is really conditional on choosing the right discount rate. Their dynamic model work is in Appendix E. They're assuming the shadow value is constant as a function of depth and water capacity. Shadow value is a marginal value which changes depending on the stock. Potentially has a big impact on what this look
+* Thinking deeply about equity vs efficiency - Josh
+  * How do we want to approach formalizing these models
+  * Bread and butter econ social welfare function - it's a money metric utility function where you add up everyone's surplus. Implicitly assuming that (1) you'll weight everyone equally, and (2) marginal utility income is the same
+  * Rawlsian social welfare - heavily illuminated by this idea of think about yourself as being born with a veil of ignorance. So you really want to care about the worst off person in society
+* Nathaniel Hendren Harvard. Amy Finkelstein came out with paper - intuitive discussion of marginal value of public funds 
+* Carbon externalities: when we think about pricing carbon, has there been work on the most equitable way to impose a carbon tax. What does the demand side look like?
+  * Pigou creates loser - a paper later in the class
+* There's two types of uncertainty that we usually see empirical work, the uncertainty of which model specification is correct, and the confidence interval around our target parameter. Taking this paper as an example, they choose .9 as the discount factor for their preferred specification and then report results accordingly, and then have robustness checks. But I guess my question is should we be thinking about how we report uncertainty generally? I think I'm very influenced by polling results with this election in thinking about how we report uncertainty to the media
+  * We all make modelling assumptions and all our models are simplified. Tricky part is trying to figure out what assumptions and simplifications are fine and which ones are material and not ok. Ex: what you worry about with the agricultural production in this paper is that the notion of who's high and who's low productivity is driven by the Cobb-Douglas production function. 
+* Tax on water would be very different than tax on electricity. 

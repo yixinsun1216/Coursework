@@ -325,8 +325,6 @@ outcomes3 <-
   select(-type, -term) %>%
   mutate_all(list(~if_else(is.na(.), "", .)))
 
-kable(outcomes_all, booktabs = TRUE, format = "latex", linesep = "",
+kable(outcomes3, booktabs = TRUE, format = "latex", linesep = "",
       align = "c") %>%
-  add_header_above(c(" "= 2, "Endogenous Treatment" = 3)) %>%
-  add_header_above(c(" " = 2, "Two stage least squares"= 2)) %>%
-  write(file.path(gdir, "sunny_q7.1.tex"))
+  write(file.path(gdir, "sunny_q7.3.tex"))

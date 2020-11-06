@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9.6100 64-bit) (preloaded format=pdflatex 2017.4.9)  4 NOV 2020 10:58
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9.6100 64-bit) (preloaded format=pdflatex 2017.4.9)  5 NOV 2020 09:47
 entering extended mode
 **"c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/eee1/Presentation/RyanSudarshan2020_Presentation.tex"
 ("c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/eee1/Presentation/RyanSudarshan2020_Presentation.tex"
@@ -1158,12 +1158,12 @@ pdfTeX warning (ext4): destination with the same identifier (name{Navigation24})
 
 \pgfpages@shipoutshipoutbox ...physicalpagesizes }
                                                   \endgroup 
-l.418 \end{frame}
+l.420 \end{frame}
                  pdfTeX warning (ext4): destination with the same identifier (name{page.24}) has been already used, duplicate ignored
 
 \pgfpages@shipoutshipoutbox ...physicalpagesizes }
                                                   \endgroup 
-l.418 \end{frame}
+l.420 \end{frame}
                  
 
 ] [26
@@ -1172,12 +1172,12 @@ pdfTeX warning (ext4): destination with the same identifier (name{Navigation25})
 
 \pgfpages@shipoutshipoutbox ...physicalpagesizes }
                                                   \endgroup 
-l.434 \end{frame}
+l.436 \end{frame}
                  pdfTeX warning (ext4): destination with the same identifier (name{page.25}) has been already used, duplicate ignored
 
 \pgfpages@shipoutshipoutbox ...physicalpagesizes }
                                                   \endgroup 
-l.434 \end{frame}
+l.436 \end{frame}
                  
 
 ] [27
@@ -1186,12 +1186,12 @@ pdfTeX warning (ext4): destination with the same identifier (name{Navigation26})
 
 \pgfpages@shipoutshipoutbox ...physicalpagesizes }
                                                   \endgroup 
-l.449 \end{frame}
+l.451 \end{frame}
                  pdfTeX warning (ext4): destination with the same identifier (name{page.26}) has been already used, duplicate ignored
 
 \pgfpages@shipoutshipoutbox ...physicalpagesizes }
                                                   \endgroup 
-l.449 \end{frame}
+l.451 \end{frame}
                  
 
 ] [28
@@ -1200,12 +1200,12 @@ pdfTeX warning (ext4): destination with the same identifier (name{Navigation27})
 
 \pgfpages@shipoutshipoutbox ...physicalpagesizes }
                                                   \endgroup 
-l.468 \end{frame}
+l.470 \end{frame}
                  pdfTeX warning (ext4): destination with the same identifier (name{page.27}) has been already used, duplicate ignored
 
 \pgfpages@shipoutshipoutbox ...physicalpagesizes }
                                                   \endgroup 
-l.468 \end{frame}
+l.470 \end{frame}
                  
 
 ] [29
@@ -1214,12 +1214,12 @@ pdfTeX warning (ext4): destination with the same identifier (name{Navigation28})
 
 \pgfpages@shipoutshipoutbox ...physicalpagesizes }
                                                   \endgroup 
-l.478 \end{frame}
+l.480 \end{frame}
                  pdfTeX warning (ext4): destination with the same identifier (name{page.28}) has been already used, duplicate ignored
 
 \pgfpages@shipoutshipoutbox ...physicalpagesizes }
                                                   \endgroup 
-l.478 \end{frame}
+l.480 \end{frame}
                  
 
 ] [30
@@ -1228,12 +1228,12 @@ pdfTeX warning (ext4): destination with the same identifier (name{Navigation29})
 
 \pgfpages@shipoutshipoutbox ...physicalpagesizes }
                                                   \endgroup 
-l.496 \end{frame}
+l.498 \end{frame}
                  pdfTeX warning (ext4): destination with the same identifier (name{page.29}) has been already used, duplicate ignored
 
 \pgfpages@shipoutshipoutbox ...physicalpagesizes }
                                                   \endgroup 
-l.496 \end{frame}
+l.498 \end{frame}
                  
 
 ]
@@ -1252,25 +1252,25 @@ pdfTeX warning (ext4): destination with the same identifier (name{pigouvian}) ha
 
 \pgfpages@shipoutshipoutbox ...physicalpagesizes }
                                                   \endgroup 
-l.497 \end{document}
+l.499 \end{document}
                     pdfTeX warning (ext4): destination with the same identifier (name{Navigation30}) has been already used, duplicate ignored
 
 \pgfpages@shipoutshipoutbox ...physicalpagesizes }
                                                   \endgroup 
-l.497 \end{document}
+l.499 \end{document}
                     pdfTeX warning (ext4): destination with the same identifier (name{page.30}) has been already used, duplicate ignored
 
 \pgfpages@shipoutshipoutbox ...physicalpagesizes }
                                                   \endgroup 
-l.497 \end{document}
+l.499 \end{document}
                     
 
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 497.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 497.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 499.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 499.
  ("c:/Users\Yixin Sun\Dropbox (Personal)\Coursework\Coursework\eee1\Presentation\RyanSudarshan2020_Presentation.aux")
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 497.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 497.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 499.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 499.
 Package rerunfilecheck Info: File `RyanSudarshan2020_Presentation.out' has not changed.
 (rerunfilecheck)             Checksum: 6C8E81F108C845444207DAE802870CB2;328.
 
@@ -1296,7 +1296,7 @@ Here is how much of TeX's memory you used:
 pdfTeX warning (dest): name{dynamic} has been referenced but does not exist, replaced by a fixed one
 
 <C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi9.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmss10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmss8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmss9.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmssbx10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmssi10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmssi8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmssi9.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy9.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on "c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/eee1/Presentation/RyanSudarshan2020_Presentation.pdf" (30 pages, 556121 bytes).
+Output written on "c:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/eee1/Presentation/RyanSudarshan2020_Presentation.pdf" (30 pages, 556598 bytes).
 PDF statistics:
  317 PDF objects out of 1000 (max. 8388607)
  75 named destinations out of 1000 (max. 500000)
