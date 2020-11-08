@@ -73,6 +73,7 @@ ggplot() +
   geom_line(aes(x = P, y = Vt)) +
   theme_minimal() +
   xlab("V(P)")
+ggsave(file.path(gdir, "sunny_q3.png"), width = 8, height = 6)
 
 # Is the intuition here that we can learn from observing what happens in the real
 # world and adapt our behavior to increase our potential upside from investment/drilling
