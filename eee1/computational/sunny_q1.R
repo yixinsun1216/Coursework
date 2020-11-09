@@ -74,11 +74,12 @@ close <- function(value){
 # next period state
 interpolate_state <- function(state, a){
   next_state <- state - a
+
   if(next_state <= 0){
     out <- matrix(c(1, rep(0, N - 1)), nrow = 1)
   } else{
     states <- close(next_state)
-    high_weight <- 1 - abs(states[2] - next_state) / abs(states[2] - states[1])
+    high_weight <- 1 - abs(St_range[2] - St) / abs((St_range[2] - St_range[1]))
     low_weight <- 1 - high_weight
     out <- matrix(0, ncol = N)
     out[which(stock == states[2])] <- high_weight
@@ -129,16 +130,16 @@ V2 <- model2[[1]]
 policy2 <- model2[[2]]
 
 # part h solve for optimal transition matrix  ---------------------------------
-trans_opt1 <-
-  map(1:N, function(i){
-    state <- ifelse(stock[i] - policy1[i] < 0, 0, stock[i] - policy1[i])
-    Matrix(as.numeric(stock == state), nrow = 1, sparse = TRUE)
-  }) %>%
-  reduce(rbind)
+# trans_opt1 <-
+#   map(1:N, function(i){
+#     state <- max(0, stock[i] - policy1[i])
+#     Matrix(as.numeric(stock == state), nrow = 1, sparse = TRUE)
+#   }) %>%
+#   reduce(rbind)
 #
 # trans_opt2 <-
 #   map(1:N, function(i){
-#     state <- ifelse(stock[i] - policy2[i] < 0, 0, stock[i] - policy2[i])
+#     state <- max(0, stock[i] - policy2[i])
 #     Matrix(as.numeric(stock == state), nrow = 1, sparse = TRUE)
 #   }) %>%
 #   reduce(rbind)

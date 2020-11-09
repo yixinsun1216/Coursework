@@ -326,3 +326,144 @@ $$
 * "Our second type of city specializes in the production of another type of traded good, say, $X_{2} . "$
 * "Different types of cities differ in size because production parameters, in particular $\alpha_{i}$ and $\rho_{i},$ differ between the traded goods of each type of city."
 * "Although utility levels will be equalized between cities, wage rates and housing prices will vary with city type and size."
+
+
+
+
+
+---
+
+
+
+## Ahlfeldt, Redding, Sturm, and Wolf
+
+### TLDR
+
+* Central challenge in economic geography: distinguishing agglomeration and dispersion forces from variation in locational fundamentals. 
+* Empirical challenge: finding exogenous sources of variation in surrounding concentration of economic activity to help disentangle agglomeration and dispersion forces from variation in locational fundamentals 
+* Berlin wall diff in diff:
+  * Division leads to reorientation of the gradient in land prices and employment in West Berlin away from the main pre-war concentration of economic activity in East Berlin
+  * Reunification leads to reemergence of this gradient 
+  * Show that these results are not driven by pre-trends prior to division or reunification
+  * Show that these results are roust to controlling for a host of observable block characteristics
+* Then examine whether the model can account quantitatively for the observed impact of division and reunification
+  * Model implies a gravity equation for commuting flows, which can be used to estimates its commuting parameters
+  * Using these estimates, determine overall measure of productivity, amenities, and density of development for each block
+  * Show that the model with exogenous productivity and amenities is unable to account quantitatively for the observed impact of division and reunification on the pattern of economic activity within West Berlin
+* Next use the exogenous variation from Berlin's division and reunification to structurally estimate both the agglomeration and commuting parameters. 
+  * ID assumption: changes in structural residuals are uncorrelated with exogenous change in the surrounding concentration of economic activity induced by Berlin's division and reunification
+  * ID requires systematic change in pattern of economic activity in West Berlin following division and reunification is explained by the mechanisms of the model (changes in commuting access and production and residential externalities) rather than by systematic changes in pattern of structural residuals (production and residential fundamentals)
+  * **Obviously this is violated in the Katrina case**. Katrina literally changes the the geographic features of New Orleans - how quickly did they rebuild the levees?
+
+
+
+## Main Equations from Theoretical Sections
+
+### 3.4 General Eqm With Exogenous Location Characteristics
+
+GE determined by 7 equations:
+
+1. <u>Population Mobility</u>: expected utility from moving to the city is equal to the reservation level of utility in the wider economy
+   $$
+   \mathbb{E}[u]=\gamma\left[\sum_{r=1}^{s} \sum_{s=1}^{S} T_{r} E_{s}\left(d_{r s} Q_{r}^{1-\beta}\right)^{-\varepsilon}\left(B_{r} w_{s}\right)^{\varepsilon}\right]^{1 / \varepsilon}=\bar{U}
+   $$
+   
+
+2. <u>Residential Choice Probability</u>:
+   $$
+   \pi_{R i}=\sum_{j=1}^{S} \pi_{i j}=\frac{\sum_{j=1}^{S} \Phi_{i j}}{\Phi}
+   $$
+   
+
+3. <u>Workplace Choice Probability</u>
+   $$
+   \pi_{M j}=\sum_{i=1}^{s} \pi_{i j}=\frac{\sum_{i=1}^{S} \Phi_{i j}}{\Phi}
+   $$
+   
+
+4. <u>Residential Land Market Clearing:</u> demand for residential floor space equals the supply of floor space allocated to residential use in each location, $(1-\theta_i)L_i$. $H$ is population
+   $$
+   \mathbb{E}\left[\ell_{i}\right] H_{R i}=(1-\beta) \frac{\mathbb{E}\left[w_{s} \mid i\right] H_{R i}}{Q_{i}}=\left(1-\theta_{i}\right) L_{i}
+   $$
+   
+
+5. <u>Commercial Land Market Clearing:</u> demand for commercial floor space equals the supply of floor space allocated to commercial use in each location, $\theta_jL_j$
+   $$
+   \left(\frac{(1-\alpha) A_{j}}{q_{j}}\right)^{1 / \alpha} H_{M j}=\theta_{j} L_{j}
+   $$
+   
+
+6. <u>Profit max + zero profit</u>: equilibrium floor prices, $q_j$ in each block with positive employment must satisfy 
+   $$
+   q_{j}=(1-\alpha)\left(\frac{\alpha}{w_{j}}\right)^{\alpha /(1-\alpha)} A_{j}^{1 /(1-\alpha)}
+   $$
+   
+
+7. <u>No arbitrage</u>: $\theta_i$ is share of floor spaced used commercial. $\xi_{i} \geq 1$ captures one plus the tax equivalent of land use regulations that restrict commercial land use relative to residential land use
+
+$$
+\begin{array}{l}
+\theta_{i}=1 \quad \text { if } \quad q_{i}>\xi_{i} Q_{i} \\
+\theta_{i} \in[0,1] \quad \text { if } \quad q_{i}=\xi_{i} Q_{i} \\
+\theta_{i}=0 \quad \text { if } \quad q_{i}<\xi_{i} Q_{i}
+\end{array}
+$$
+
+
+
+In this case, there are no agglomeration forces, and hence the model's congestion forces of commuting costs and an inelastic supply of land ensure the existence of a unique equilibrium. 
+
+
+
+### 3.5 Introducing Agglomeration Forces
+
+1. Production externalities
+   $$
+   A_{j}=a_{j} Y_{j}^{\lambda}, \quad Y_{j} \equiv \sum_{s=1}^{S} e^{-\delta \tau_{j s}}\left(\frac{H_{M s}}{K_{s}}\right)
+   $$
+
+   * Allow final goods productivity to depend on production fundamentals $\left(a_{j}\right)$ and production externalities $\left(Y_{j}\right) .$ 
+     * Production fundamentals capture features of physical geography that make a location more or less productive independently of the surrounding density of economic activity (access to natural water). 
+     * Production externalities impose structure on how the productivity of a given block is affected by the characteristics of other blocks
+   * $H_{M s} / K_{s}$ is workplace employment density per unit of land area
+   * Production externalities decline with travel time $\left(\tau_{j s}\right)$ through the iceberg factor $e^{-\delta \tau_{j s}} \in(0,1]$
+   * $\delta$ determines their rate of spatial decay
+   * $\lambda$ controls relative importance in determining overall productivity
+
+2. Residential Amenities
+   $$
+   B_{i}=b_{i} \Omega_{i}^{\eta}, \quad \Omega_{i} \equiv \sum_{r=1}^{S} e^{-\rho \tau_{i r}}\left(\frac{H_{R r}}{K_{r}}\right)
+   $$
+
+   * Allow residential amenities to depend on residential fundamentals ($b_i$) and residential externalities ($\Omega_i$).
+     * Residential fundamentals capture features of physical geography that make a location a more or less attractive place to live independently of the surrounding density of economic activity (e.g., green areas).
+     * Residential externalities again impose structure on how the amenities in a given block are affected by the characteristics of other blocks
+   * $H_{R r} / K_{r}$ is residence employment density per unit of land area
+   * Residential externalities decline with travel time ($\tau_{ir}$) through the iceberg factor $e^{-\rho \tau_{i r}} \in(0,1]$
+   * $\rho$ determines their rate of spatial decay
+   * $\eta$  controls their relative importance in overall residential amenities. Captures the net effect of residence employment density on amenities, including negative spillovers such as air pollution and crime, and positive externalities through the availability of urban amenities
+
+
+
+
+
+### 5 Reduced Form Results
+
+**Evolution of Land Price Gradient Over Time**
+
+![image-20201109124856863](C:\Users\Yixin Sun\AppData\Roaming\Typora\typora-user-images\image-20201109124856863.png)
+
+* Check out the technical data appendix which display the log difference in land prices from 1936 to 1986 for each block. Show the largest declines in land prices following division and largest increases in land prices following reunificaiton are along those segments of the Berlin Wall around the pre-war CBD
+
+
+
+
+
+
+
+
+
+
+
+
+

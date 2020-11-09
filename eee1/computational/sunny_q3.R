@@ -70,7 +70,7 @@ pstar <- P[which(drill == 1)[1]] # woohoo got 41!!!
 
 # Graph showing the value function
 ggplot() +
-  geom_line(aes(x = P, y = Vt)) +
+  geom_line(aes(x = P, y = Vt), color = "purple4") +
   theme_minimal() +
   ylab("V(P)")
 ggsave(file.path(gdir, "sunny_q3.png"), width = 8, height = 6)
