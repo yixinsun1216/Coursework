@@ -72,7 +72,7 @@ pstar <- P[which(drill == 1)[1]] # woohoo got 41!!!
 ggplot() +
   geom_line(aes(x = P, y = Vt)) +
   theme_minimal() +
-  xlab("V(P)")
+  ylab("V(P)")
 ggsave(file.path(gdir, "sunny_q3.png"), width = 8, height = 6)
 
 # Is the intuition here that we can learn from observing what happens in the real

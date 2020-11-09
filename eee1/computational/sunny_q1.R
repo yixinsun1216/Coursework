@@ -36,7 +36,7 @@ iterator <- function(U, Vi, trans, delta){
   # calculate new V
   value <- as.matrix(U + delta*Vnext)
   Vnew <- rowMaxs(value, value = TRUE)
-  policy <- max.col(value)
+  policy <- rowMaxs(value, value = FALSE)
   return(list(V = Vnew, policy = policy))
 }
 
@@ -99,20 +99,22 @@ flow2 <-
   map(action, function(x) ifelse(stock < x, -Inf, utility2(x))) %>%
   reduce(cbind)
 
+# part e index of state next period -------------------------
+index <-
+  action %>%
+  map(~ map_dbl(stock - .x, function(i) ifelse(length(which(stock == i)) == 0, 1,
+                                               which(stock == i)))) %>%
+  reduce(cbind) %>%
+  split(., rep(1:ncol(.), each = nrow(.)))
 
-# part e + f state transition matrix ------------------------------------------
-tic("build transition matrix")
+# part f state transition matrix ------------------------------------------
 transition <-
-  map(action, function(a){
-    state <- ifelse(stock - a < 0, 0, stock - a)
-    map(state, ~ as.numeric(stock == .x)) %>%
-      reduce(rbind) %>%
-      Matrix(sparse = TRUE)
+  map(index, function(i){
+    out <- Matrix(0, nrow = N, ncol = N, sparse = TRUE)
+    out_ind <- cbind(1:N, i)
+    out[out_ind] <- 1
+    return(out)
   })
-save(transition, file = file.path(gdir, "transition.Rda"))
-toc()
-
-load(file.path(gdir, "transition.Rda"))
 
 
 # part g initialize and calculate Vnext ---------------------------------------
