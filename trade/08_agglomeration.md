@@ -1,3 +1,110 @@
+## Economic Geography - Factors can move! Rosen-Roback Framework
+
+* Fundamentally, spatial equilibrium is a no-arbitrage condition
+* Benchmark model of spatial equilibrium is dubbed the "Rosen-Roback" model, due to the theory of equalizing differences (Rosen 19474) applied to cities for both workers and firms (Roback 1982)
+* Goals:
+  * How does change in amenity $s$ alter local prices (wages, rents)?
+  * Infer the value of amenities
+    * Debate about expanding population of US moving to Sunbelt. One story says people move there because as you get higher income, you care about quality of life. Another says housing regulation allows people to build stuff
+* Markets
+  * Labor: price $w,$ quantity $N$
+  * Land: price $r,$ quantity $L=L^{w}+L^{p}$ for workers and production
+    * One type of land, no downtown vs suburb
+  * Goods: price $p=1,$ quantity $X$
+    * Goods trade is totally uninteresting. No trade between cities because there's only one good. 
+    * Spatial distance and costs don't matter. Doesn't matter that Chicago is close to Detroit etc
+* Agents
+  * Workers (homogenous, perfectly mobile)
+  * Firm (perfectly competitive, CRS)
+* Indifference conditions
+  * Workers have same indirect utility in all locations
+  * Firm has zero profit (i.e., unit costs equal 1)
+
+Workers: Preferences and budget constraint
+
+* Indirect utility is given
+  $$
+  V(w, r, s)=\max _{x, l^{c}} u\left(x, l^{c}, s\right) \text { s.t. } x+r l^{c}-w-I=0
+  $$
+* Let $\lambda=\lambda(w, r, s)$ be the marginal utility of a dollar of income, then
+  $$
+  \begin{array}{c}
+  V_{w}=\lambda>0 \quad V_{r}=-\lambda l^{c}<0 \\
+  \Rightarrow V_{r}=-V_{w} l^{c}
+  \end{array}
+  $$
+  * $I$ is non-labor income that is independent of location (i.e. land gets divied up equally between everywhere)
+
+**Equilibrium concept: two key indifference conditions**
+
+* In equilibrium, workers and firms are indifferent across cities with
+  different levels of $s$ and endogenously varying wages $w(s)$ and rents $r(s):$
+
+$$
+\begin{aligned}
+c(w(s), r(s), s) &=1 \\
+V(w(s), r(s), s) &=V^{0}
+\end{aligned}
+$$
+​		where $V^{0}$ is the equilibrium level of indirect utility.
+
+* We will mainly be focusing on prices: $w(s)$ and $r(s)$ - can back out quantities if needed
+
+**Effect of amenity changes on prices**
+
+* If amenities are only valued by workers, then workers are willing to pay more in land rents and receive less in wages to have access to higher levels of amenities
+* If amenities are only valued by firms, firms are willing to pay more in land rents and wages to access higher productivity due to amenities
+* Firms don't use land nor value amenity
+  * Wage equalization across space (because firms don't use land) and don't move with amenity
+  * value of amenity is capitalized entirely in rents
+
+
+
+## Agglomeration Economies
+
+* People are concentrated. Industries are concentrated
+* How do we identify productivity spillovers? 
+  * Estimate directly: faces peer-effects problem
+    * Common shocks vs selection vs actual peer effects? 
+  * Infer from observed spatial equilibrium
+  * Test for multiple equilibria
+
+### Henderson (1974)
+
+* Why do different cities exist?
+  * Local increasing returns that are industry specific. "Localization economies"
+* Annoying device: city developer to pin down uniqueness
+  * City developer freely enters and makes no profit. Instead of ambiguous set of equilibria, the city developer does 2 things: (1) solve coordination problems so you get locally efficiently sized cities, (2) makes equilibrium unique
+  * Distinction between self-organized equilibrium and city developer equilibrium persists
+* Are cities too big or too small? Connection between stability argument and the fact that cities tend to be too large
+
+
+
+## Productive cities: Sorting, selection, and agglomeration - BDRN
+
+* Motivation I: spatial inequalities are ubiquitous 
+* Motivation II: Urban premium
+  * wages and productivity are increasing in city size
+  * Cities attract the most talented people - result of heterogeneous agents
+* Motivation III: Cities vary greatly in size. 
+  * Rank-size rule: Zipfs law
+  * This implies that in the case of cities, the second largest city is one-half the size of the first and the third largest city is one-third the size of the largest and so on.
+  * Want to write down a model that gives Zips Law
+
+* City equilibrium
+
+  1. Proposition 1 (existence and selection). Given population, $L$, and its productivity distribution, $F(\cdot),$ the equilibrium in a city exists and is unique.
+
+  2. Proposition 2 (agglomeration). Given $F_{d} \cdot$ ), larger cities have higher aggregate productivity, per-capita income, and wages than smaller cities. Productivity cutoff for selection does not depend on city size.
+     Per-capita city income is
+     $$
+     \frac{Y}{L}=\left(\int_{\underline{\varphi}}^{+\infty} \varphi^{\frac{1}{\varepsilon}} \mathrm{d} F(\varphi)\right)^{\varepsilon}\left(\int_{0}^{\underline{\varphi}} \varphi^{a} \mathrm{d} F(\varphi)\right) L^{\varepsilon}
+     $$
+
+* HOMEWORK IS ABOUT THIS PART!!!!
+
+
+
 ## Rosen/Roback Model - Glaeser Video
 
 [Video Link](https://www.youtube.com/watch?v=zMmXo1nHetE&feature=youtu.be&t=4085)
@@ -453,11 +560,102 @@ In this case, there are no agglomeration forces, and hence the model's congestio
 
 ![image-20201109124856863](C:\Users\Yixin Sun\AppData\Roaming\Typora\typora-user-images\image-20201109124856863.png)
 
-* Check out the technical data appendix which display the log difference in land prices from 1936 to 1986 for each block. Show the largest declines in land prices following division and largest increases in land prices following reunificaiton are along those segments of the Berlin Wall around the pre-war CBD
+**Difference-in-Difference Estimates**
+$$
+\Delta \ln O_{i}=\alpha+\sum_{k=1}^{K} \mathbb{I}_{i k} \beta_{k}+\ln M_{i} \gamma+u_{i}
+$$
+
+* $\mathbb{I}_{i k}$ is an indicator variable for whether block $i$ lies within a distance grid cell $k$ from the pre-war CBD
+  * $\beta_{k}$ are coefficients to be estimated
+  * $M_{i}$ are time-invariant observable block characteristics (such as proximity to parks and lakes
+  * $\gamma$ captures changes over time in the premium to these time-invariant
+  * **$M$ is probably not time invariant in our case in terms of schools and parks?** Maybe just include this in our writeup
+* Begin by considering distance grid cells of 500 meter intervals. Include grid cells for blocks with distances up to 3.25-3.75 kilometers. So the excluded category is blocks more than 3.75km from the pre-war CBD
+
+![image-20201109130503410](C:\Users\Yixin Sun\AppData\Roaming\Typora\typora-user-images\image-20201109130503410.png)
+
+* (1)-(5) is log difference in price of floor space. From (1) on average, West Berlin blocks within the first grid cell experience around a 55% reduction in the price of floor space between 1936 and 1986 ($1-e^{-0.800}=0.55$) relative to those more than 3.75 kilometers away from the pre-war CBD
+* Reduced-form regressions do not distinguish between different explanations for why access to the pre-war CBD matters, such as loss of access to employment opportunities, production externalities, and/or residential externalities
+* (5) includes controls - they are potentially endogenous to division, but the** consistent results show that the result is not driven by the controls**
+* Analogous results for employment
+* Figure 3 displays the log difference in land prices from 1936 to 1986 for each block. Show the largest declines in land prices following division and largest increases in land prices following reunification are along those segments of the Berlin Wall around the pre-war CBD 
+  * Shows that it is not proximity to the Berlin Wall per se that matters, but the loss of access to the pre-war CBD 
+  * **Want to replicate these figures for our paper, with housing and rental rates** - so we have one set of graphs that uses raw distances to Katrina on the x-axis, then another set of graphs that use some sort of weighted distance to Katrina
+  * **If we have time, also try to rule out pre-trends using earlier ACS data**
 
 
 
+### 6 Gravity, Productivity, and Amenities
 
+Recover productivity, amenities, and density of development just using the model's gravity equation predictions for commuting flows
+
+**6.1 Gravity**
+$$
+\pi_{i j}=\frac{T_{i} E_{j}\left(d_{i j} Q_{i}^{1-\beta}\right)^{-\varepsilon}\left(B_{i} w_{j}\right)^{\varepsilon}}{\sum_{r=1}^{S} \sum_{s=1}^{S} T_{r} E_{s}\left(d_{r s} Q_{r}^{1-\beta}\right)^{-\varepsilon}\left(B_{r} w_{s}\right)^{\varepsilon}} \equiv \frac{\Phi_{i j}}{\Phi} \tag{4}
+$$
+From (4), we can get a reduced form version of the gravity equation
+$$
+\ln \pi_{i j}=-\nu \tau_{i j}+\vartheta_{i}+s_{j}
+$$
+
+* where the residence fixed effects $\left(\vartheta_{i}\right)$ capture residence characteristics $\left\{B_{i}, T_{i}, Q_{i}\right\}$ 
+* the workplace fixed effects $\left(s_{j}\right)$ capture workplace characteristics $\left\{w_{j}, E_{j}\right\}$
+* the denominator in (4) is a constant that is absorbed into the fixed effects
+* commuting costs are $d_{i j}=e^{\kappa \tau_{i j}}$
+* Travel times $\tau_{i j}$ are measured in minutes
+* $\nu=\varepsilon \kappa$ is the semi-elasticity of commuting flows with respect to travel times and is a combination of the commuting cost parameter $\kappa$ and the commuting heterogeneity parameter $\varepsilon$
+* Across a range of different specifications, they find a precisely estimated value of $\nu = \varepsilon\kappa$ of around 0.07
+* Figure 4: regress both log bilateral commuting probabilities and travel times on workplace and residence fixed effects and graph residuals from these two regressions against one another - see that there's an approximately linear relationship between the two residuals
+
+Using the estimate for $\nu = 0.07$ and transforming wages, we can solve for the transformed wage using
+$$
+H_{M j t}=\sum_{i=1}^{S} \frac{\omega_{j t} / e^{\nu \tau_{i j t}}}{\sum_{s=1}^{S} \omega_{s t} / e^{\nu \tau_{i s t}}} H_{R i t}
+$$
+
+
+**6.2 Productivity and Amenities**
+
+Use the gravity equation estimation to recover overall adjusted productivity, amenities, and the density of development, we can use the profit max and zero profits (12) to find the log adjusted final goods and productivity relative to its geometric mean
+$$
+\ln \left(\frac{\tilde{A}_{i t}}{\tilde{A}_{t}}\right)=(1-\alpha) \ln \left(\frac{\mathbb{Q}_{i t}}{\overline{\mathbb{Q}}_{t}}\right)+\frac{\alpha}{\varepsilon} \ln \left(\frac{\omega_{i t}}{\bar{\omega}_{t}}\right)
+$$
+where $\overline{\tilde{A}}_{t}= \exp \left\{\frac{1}{S} \sum_{s=1}^{S} \ln \tilde{A}_{s t}\right\}$
+
+From residential choice probabilities (5) and population mobility with the larger economy (9), log residential amenities relative to their geometric mean are
+$$
+\ln \left(\frac{\tilde{B}_{i t}}{\tilde{B}_{t}}\right)=\frac{1}{\varepsilon} \ln \left(\frac{H_{R i t}}{\bar{H}_{R t}}\right)+(1-\beta) \ln \left(\frac{\mathbb{Q}_{i t}}{\overline{\mathbb{Q}}_{t}}\right)-\frac{1}{\varepsilon} \ln \left(\frac{W_{i t}}{\bar{W}_{t}}\right)
+$$
+where $W_{i t}=\sum_{s=1}^{S} \omega_{s t} / e^{v \tau_{i s t}}, \quad \omega_{s t}=\tilde{w}_{s t}^{\varepsilon}=E_{s t} w_{s t}^{\varepsilon}$
+
+Set parameters according to existing literature:
+
+* $1-\beta = 0.25$ &rightarrow; share of consumer expenditure on residential floor space
+* $1-\alpha=.2$ &rightarrow; share of firm expenditure on commercial floor space
+* $1-\mu=.25$ &rightarrow; share of land in construction costs
+
+We have $\sigma_{\ln \tilde{w}_{i t}}^{2}=(1 / \varepsilon)^{2} \sigma_{\ln \omega_{i t}}^{2}$ so choose $\varepsilon$ to minimize the squared difference between the variance across districts of log adjusted wages in the model and log wages in the data, which yields $\varepsilon = 6.83$. This means $\kappa = 0.01$ 
+
+
+
+**Lecture Notes**
+
+* $\nu$ reported twice - section 6 it's .07, and then .1 in section 7
+* Paper is mixing formal model and exogenous variation
+* Tim Kehoe has been very good at evaluating trade models
+
+
+
+## Empirical Examination
+
+* Davis, Gregory (2020) - Placed Based Redistribution in Simple Location Choice Models
+  * Frechet vs Weibull: marginal utilities can differ even when allocations and elasticities for marginal households coincide, thus making the problems differ even when positive predictions coincide
+
+**Spatial Economics for Granular Setting**
+
+* 3 ingredients: productivities, amenities, and transportation costs
+* Spatial linkages govern the incidence of local economic shocks
+* Want "empirically relevant quantitative model to perform general equilibrium counterfactual policy exercises"
+* 
 
 
 

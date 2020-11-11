@@ -43,6 +43,8 @@ profits <-
   cbind(0, .) %>%
   as.matrix()
 
+# function that calculates Vnext, U + delta*Vnext, and returns the maximum
+# V as well as the policy that induced the optimal
 price_iterator <- function(pi, Vi, trans, delta){
   # first set up Vnext
   Vnext <- cbind(trans %*% Vi, 0)
@@ -54,6 +56,7 @@ price_iterator <- function(pi, Vi, trans, delta){
   return(list(V = Vnew, policy = policy))
 }
 
+# iterate on value function
 tol <- 10^-8
 diff <- 10000
 Vt <- matrix(0, nrow = length(P), ncol = 1)
@@ -64,9 +67,7 @@ while(diff > tol){
   drill <- step[[2]]
   print(diff)
 }
-
 pstar <- P[which(drill == 1)[1]] # woohoo got 41!!!
-
 
 # Graph showing the value function
 ggplot() +
@@ -74,11 +75,3 @@ ggplot() +
   theme_minimal() +
   ylab("V(P)")
 ggsave(file.path(gdir, "sunny_q3.png"), width = 8, height = 6)
-
-# Is the intuition here that we can learn from observing what happens in the real
-# world and adapt our behavior to increase our potential upside from investment/drilling
-# Is this graph linear at the end because there's no more value from learning/flexibility past
-# P = 41? Is this basically because at higher prices, there's less uncertainty because stdev / price
-# is smaller, thus there's lower option value?
-
-
