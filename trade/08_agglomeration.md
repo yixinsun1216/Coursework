@@ -475,37 +475,31 @@ GE determined by 7 equations:
    \mathbb{E}[u]=\gamma\left[\sum_{r=1}^{s} \sum_{s=1}^{S} T_{r} E_{s}\left(d_{r s} Q_{r}^{1-\beta}\right)^{-\varepsilon}\left(B_{r} w_{s}\right)^{\varepsilon}\right]^{1 / \varepsilon}=\bar{U}
    $$
    
-
 2. <u>Residential Choice Probability</u>:
    $$
    \pi_{R i}=\sum_{j=1}^{S} \pi_{i j}=\frac{\sum_{j=1}^{S} \Phi_{i j}}{\Phi}
    $$
    
-
 3. <u>Workplace Choice Probability</u>
    $$
    \pi_{M j}=\sum_{i=1}^{s} \pi_{i j}=\frac{\sum_{i=1}^{S} \Phi_{i j}}{\Phi}
    $$
    
-
 4. <u>Residential Land Market Clearing:</u> demand for residential floor space equals the supply of floor space allocated to residential use in each location, $(1-\theta_i)L_i$. $H$ is population
    $$
    \mathbb{E}\left[\ell_{i}\right] H_{R i}=(1-\beta) \frac{\mathbb{E}\left[w_{s} \mid i\right] H_{R i}}{Q_{i}}=\left(1-\theta_{i}\right) L_{i}
    $$
    
-
 5. <u>Commercial Land Market Clearing:</u> demand for commercial floor space equals the supply of floor space allocated to commercial use in each location, $\theta_jL_j$
    $$
    \left(\frac{(1-\alpha) A_{j}}{q_{j}}\right)^{1 / \alpha} H_{M j}=\theta_{j} L_{j}
    $$
    
-
 6. <u>Profit max + zero profit</u>: equilibrium floor prices, $q_j$ in each block with positive employment must satisfy 
    $$
    q_{j}=(1-\alpha)\left(\frac{\alpha}{w_{j}}\right)^{\alpha /(1-\alpha)} A_{j}^{1 /(1-\alpha)}
    $$
    
-
 7. <u>No arbitrage</u>: $\theta_i$ is share of floor spaced used commercial. $\xi_{i} \geq 1$ captures one plus the tax equivalent of land use regulations that restrict commercial land use relative to residential land use
 
 $$
@@ -659,9 +653,150 @@ We have $\sigma_{\ln \tilde{w}_{i t}}^{2}=(1 / \varepsilon)^{2} \sigma_{\ln \ome
 
 
 
+----
 
 
 
+# Behrens, Duranton, Robert-Nicoud (2014)
+
+3 Motivations:
+
+1. Spatial inequalities are ubiquitous
+
+2. Big cities pay big wages &rightarrow; urban premium
+
+3. Cities vary greatly in size &rightarrow; rank-size rule and Zipf's law
+
+   1. "The mathematics of cities was  launched in 1949 when George Zipf, a linguist working at Harvard,... noticed  that if you tabulate the biggest cities in a given country and rank them  according to their populations, the largest city is always about twice as big as  the second largest, and three times as big as the third largest, and so on. In  other words, the population of a city is, to a good approximation, inversely  proportional to its rank."
+
+   2. A few large cities, many small towns
+      $$
+      \ln Rank_{c}=\ln size_{C}+\zeta \ln size_{c}
+      $$
+      where $C$ is the largest city in the country (Tokyo, Paris, NYC)
+
+      - Zipf's law: $\zeta=-1$
+
+* Paper proposes a model that integrates three main reasons for urban premia: 
+  1. Agglomeration economies: economies external to firms taking place within cities lead to citywide increasing returns
+  2. Sorting: more talented individuals may ex ante choose to locate in larger cities
+  3. Selection: larger cities make for larger markets where selection is tougher so that only the most productive firms may ex post profitably operate there
+     * Ignore natural advantage
+
+## II. The Model
+
+**Timing**
+
+1. Talent $t$ of each agent is revealed (c.d.f. $G_{t}$ )
+2. Agents choose a city
+3. Luck $s$ of each agent is revealed (c.d.f. $\left.G_{s}\right)$ 
+   1. Entrepreneurial productivity is $\varphi \equiv t \times s \quad (\text{cdf } F)$ 
+   2. Worker productivity is $\varphi^{a}$
+4. Occupational selection (workers vs entrepreneurs)
+5. Market clearing, production, consumption
+
+**Consumers**
+
+* Consume a final good and land, with unit demand for land 
+* Risk neutral so utility is linear in final good consumption
+
+**Production**
+
+* Two-step production process
+
+* Homogenous aggregate output (freely tradable numeraire) in city $c$
+  $$
+  Y_{c}=\left[\int_{\Omega} x_{c}(i)^{\frac{1}{1+\varepsilon}} \mathrm{d} i\right]^{1+\varepsilon}
+  $$
+  produced using local intermediates provided by entrepreneurs
+  $$
+  x_{c}(i)=\varphi(i) l_{c}(i), \quad \text { with } \quad \varphi(i)=t(i) \times s(i)
+  $$
+
+**Urban Structure**
+
+* Each resident of a city of population $L$ pays $\theta L^\gamma$ as an urban cost to reside in that city. 
+
+* Population of each city is $L_{c} \equiv \int_{\underline{t}}^{\bar{t}} L_{c}(t) d t$
+
+* Adding up constraint for each type of talent requires that 
+  $$
+  \Lambda g_{t}(t)=\int_{0}^{\bar{c}} L_{c}(t) d c \quad \forall t \in[\underline{t}, \bar{t}]
+  $$
+  where $g_{t}$ is the probability distribution function of talent. Equation (4) states that the mass of individuals of talent $t$ across all cities must be equal to the mass of individuals of talent $t$ in the population. Summing equation (4) across all talents then implies satisfying the full population condition of the model. $\Lambda$ is the mass of the continuum of individuals in the economy 
+
+## III. Selection and Agglomeration
+
+* Solving the model backward &rightarrow; solve first for prices, quantities, and occupations in each city $c$
+
+* At this stage, individuals take as given:
+  - location and own productivity
+  - cumulative productivity distribution $F_{c}(\cdot)$
+  - city size $L_{c}$
+
+* Individuals self-select into either workers or entrepreneurs
+
+  - We impose $a \varepsilon<1$
+  - i.e. productive agents have a comparative advantage in entrepreneurship
+
+* Profit maximization yields
+  $$
+  \pi(\varphi)=\frac{\varepsilon}{1+\varepsilon} Y\left[\frac{\varphi}{\Phi}\right]^{\frac{1}{\varepsilon}} \quad \text { where } \quad \Phi \equiv\left[\int_{\Omega} \varphi(j)^{\frac{1}{\varepsilon}} \mathrm{d} j\right]^{\varepsilon}
+  $$
+  - Complementarity between $Y$ and $\varphi$ 
+  - Offsetting market crowding or toughness via $\Phi$ (aggregate city productivity)
+
+* Agent with productivity $\varphi$ becomes entrepreneur iff
+  $$
+  \pi(\varphi)>w \varphi^{a}
+  $$
+
+* yields productivity cutoff for selection into entrepreneurship
+
+$$
+\underline{\varphi} \equiv\left[\Phi\left(\frac{1+\varepsilon}{\varepsilon} \frac{w}{Y}\right)^{\varepsilon}\right]^{\frac{1}{1-a \varepsilon}}
+$$
+
+**Proposition 1 (existence and selection).** Given population, $L$, and its productivity distribution, $F(\cdot),$ the equilibrium in a city exists and is unique.
+
+* Productivity cutoff for selection does not depend on city size, conditional on the distribution of productivity. This is because larger cities have both a higher demand (which lowers the selection cutoff) and more entrepreneurs (which raises it). These two effects exactly offset each other in this framework
+* Sorting induces selection: if larger cities attract more talented individuals, they will be tougher markets 
+* Conditional on sorting, there are no differences in selection across cities
+
+**Proposition 2 (agglomeration).** Given the productivity distribution, $F(\cdot)$, the elasticity of aggregate productivity, per capita income, and the wage rate with respect to city population is $\varepsilon$. Scaling up the distribution of talent by a factor $\lambda$ scales up output per worker by a factor $\lambda^{1+a}$ and the wage rate by a factor $\lambda$.
+
+* Given $F(\cdot),$ larger cities have higher aggregate productivity, per-capita income, and wages than smaller cities. 
+* Per-capita city income is
+
+$$
+\frac{Y}{L}=\left(\int_{\underline{\varphi}}^{+\infty} \varphi^{\frac{1}{\varepsilon}} \mathrm{d} F(\varphi)\right)^{\varepsilon}\left(\int_{0}^{\underline{\varphi}} \varphi^{a} \mathrm{~d} F(\varphi)\right) L^{\varepsilon}
+$$
+
+* 
+  * So we see that $Y/L$ is proportional to $L^\varepsilon$ 
+* Increase in population increases the number of entrepreneurs and thus the number of intermediate inputs. Final producers become more productive as they have access to a wider range of varieties. 
+* Scaling up the talent of everyone in a city raises the selection cutoff, which leads to more productive firms and increases the wage rate
+
+**Proposition 3 (Complementarity between talent and city population).** More talented individuals benefit more from being located in larger cities. Expected indirect utility is such that
+$$
+\left.\frac{\partial^{2} \mathbb{E} V(t)}{\partial t \partial L}\right|_{F(\cdot)} \geq 0
+$$
+
+* 
 
 
 
+## IV. Sorting and Cities 
+
+* this section focuses on locational choice and the sorting of individuals across cities depending on talent 
+
+* Location choice to maximize $\mathbb{E} V_{c}(t)$ for $c$ $F(\cdot)$ is endogenously determined (endogenous city composition)
+
+* Distribution of luck identical across all cities
+
+* Assignment problem: matching function $\mu: T \rightarrow C$ maps talents into cities $c, c^{\prime} \in C$ :
+  $$
+  \mu(t)=\left\{c: \mathbb{E} V_{c}(t) \geq \mathbb{E} V_{c^{\prime}}(t), \forall c^{\prime} \in C\right\}
+  $$
+
+* Self-organized equilibrium: Nobody wants to deviate given the location choices of all other individuals

@@ -1,0 +1,132 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath} 
+\usepackage{pdfpages}
+\usepackage{bbm}
+\usepackage{pdfpages}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{dsfont}
+\usepackage{natbib}
+\usepackage{tabularx}
+\usepackage[flushleft]{threeparttable}
+\usepackage{booktabs}
+\usepackage{pdflscape}
+\usepackage{graphicx}
+%\usepackage{subfig}
+\usepackage{subcaption}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+	filecolor=magenta,   
+	citecolor = black,   
+    urlcolor=blue,
+}
+
+
+%\setlength\parindent{0pt}
+
+\title{Comprehension Check 3}
+\author{Yixin Sun}
+
+\begin{document}
+\maketitle
+
+\section*{Question 1}
+In the paper, the authors define population of a city by
+\begin{gather*}
+    L(c)=S(\bar{\tau}(c)) = \pi\bar{\tau}^2\\
+    \Rightarrow \bar{\tau} = \sqrt{\frac{L}{\pi}}
+\end{gather*}
+The paper also shows, from Lemma 1, that 
+\begin{align*}
+    \underline{\gamma} &\equiv A(c) T(\bar{\tau}(c)) \\
+    &= 1 \times (d_1 - d_2\bar{\tau}) \\
+    &= d_1 - d_2\sqrt{\frac{L}{\pi}}
+\end{align*}
+
+\section*{Question 2}
+From Lemma 3, we are given the function for rental rates:
+\begin{align*}
+    r_{\Gamma}(\gamma)=  \int_{\underline{\gamma}}^{\gamma} G(K(x)) d x
+\end{align*}
+Combining this with Lemma 2 and the given functional form for $G(\omega)$, we can rewrite this as 
+\begin{align*}
+    r_{\Gamma}(\gamma) = \int_{\underline{\gamma}}^{\gamma}  gF^{-1}\left(\frac{L-S_{\Gamma}(x)}{L}\right) dx
+\end{align*}
+In this single country case, we can rewrite $S_\Gamma(x)$ 
+\begin{align*}
+    S_\Gamma(\gamma) &= S\left(T^{-1}\left(\frac{\gamma}{A(c)}\right)\right) \\
+    &= S(T^{-1}(\gamma)) \\
+    &= S\left(\frac{d_1 - \gamma}{d_2}\right) \\
+    &= \pi\left(\frac{d_1 - \gamma}{d_2}\right)^2
+\end{align*}
+
+We want to evaluate this for the $\gamma$ such that $\tau = 0$. Call this $\bar{\gamma}$. Plugging in given equations, we get 
+\begin{align*}
+    \bar{\gamma} &= d_1 - d_2\underline{\tau} \\
+    &= d_1
+\end{align*}
+Thus the rental rate can be written as
+\begin{align*}
+    r(\bar{\gamma})=\int_{\underline{\gamma}}^{d_1} g F^{-1}\left(\frac{L-\pi\left(\frac{d_1 - \gamma}{d_2}\right)^2}{L}\right) d x
+\end{align*}
+We can now use the fact that 
+\begin{align*}
+    \omega \sim Unif[\underline{\omega}, \bar{\omega}] &\Rightarrow F(\omega)\equiv \frac{\omega-\underline{\omega}}{\bar{\omega}-\underline{\omega}} \\
+    &\Rightarrow F^{-1}(y) = y(\bar{\omega}-\underline{\omega})+\underline{\omega}
+\end{align*}
+
+We finally get the expression
+\begin{align*}
+    r(\bar{\gamma}) &= \int_{\underline{\gamma}}^{d_1} g\left[\left(\frac{L-\pi\left(\frac{d_{1}-x}{d_{2}}\right)^{2}}{L}\right)(\bar{\omega}-\underline{\omega})+\underline{\omega}\right] d x \\
+    &= \int_{\underline{\gamma}}^{d_1} g (\bar{\omega}-\underline{\omega}) dx + \int_{\underline{\gamma}}^{d_1} \underline{\omega} dx - \frac{g\pi}{d_2^2L}\int_{\underline{\gamma}}^{d_1} (d_1 - x)^2dx
+\end{align*}
+
+\section*{Question 3}
+First note that we know that $r(\underline{\gamma}) = 0$. Using this and our results from part 1, we can solve for $\underline{\omega}$. 
+
+\begin{align*}
+    r(\underline{\gamma}) = 0 &= g\left[\left(\frac{L-\pi\left(\frac{d_{1}-\underline{\gamma}}{d_{2}}\right)^{2}}{L}\right)(\bar{\omega}-\underline{\omega})+\underline{\omega}\right] \\
+    &= g\left[\left(\frac{L-\pi\left(\frac{d_{1}-\left(d_1 - d_2\sqrt{\frac{L}{\pi}}\right)}{d_{2}}\right)^{2}}{L}\right)(\bar{\omega}-\underline{\omega})+\underline{\omega}\right]  \\
+    \Rightarrow &= \underline{\omega} = 0
+\end{align*}
+
+If $g$ increases, the whole equilibrium rent schedule shifts upwards.  the rent at the edge of the city doesn't change since $\underline{\omega} = 0$ and thus $g\underline{\omega} = 0$, same as before. Therefore, the rent schedule also rotates counterclockwise for this to hold.
+
+The equilibrium utility for skill level $\omega$ is:
+\begin{align*}
+    U(c, \tau, \sigma ; \omega)&=A(c) T(\tau) H(\omega, \sigma) p(\sigma)-r(c, \tau) 
+\end{align*}
+We have defined 
+\begin{align*}
+    G(\omega) \equiv H(\omega, M(\omega)) p(M(\omega))
+\end{align*}
+So we can rewrite utility as 
+\begin{align*}
+    U(c, \tau, \sigma ; \omega)&=T(\tau) G(\omega)-r(c, \tau) \\
+    &=\left(d_{1}-d_{2} \tau\right) g \omega-\int_{\underline{\gamma}}^{\gamma} g\left[\left(\frac{L-\pi\left(\frac{d_{1}-x}{d_{2}}\right)^{2}}{L}\right) \bar{\omega}\right] d x
+\end{align*}
+Thus increasing $g$ should lead to a proportional increase in the utility. 
+
+\section*{Question 4}
+From the expression in part 3, we can write the utility of $\bar{\omega}$ as
+\begin{align*}
+    U(c, \tau, \sigma ; \bar{\omega})=\left(d_{1}-d_{2} \tau\right) g \bar{\omega}-\int_{\underline{\gamma}}^{\gamma} g\left[\left(\frac{L-\pi\left(\frac{d_{1}-x}{d_{2}}\right)^{2}}{L}\right)(\bar{\omega}-\underline{\omega})+\underline{\omega}\right] d x
+\end{align*}
+So we see that an increase in $\underline{\omega}$ would lead to a $g\left[\left(\frac{L-\pi\left(\frac{d_{1}-\gamma}{d_{2}}\right)^{2}}{L}\right)\right]$ decrease for each $\gamma$. We know $\pi, L > 0$ as given by the problem, ... \textcolor{blue}{Intuition is utility should decrease but how the heck do I sign this??}
+
+\section*{Question 5}
+\begin{align*}
+    U(c, \tau, \sigma ; \underline{\omega})&=\left(d_{1}-d_{2} \tau\right) g \underline{\omega}-g\left[\left(\frac{L-\pi\left(\frac{d_{1}-\underline{\gamma}}{d_{2}}\right)^{2}}{L}\right)(\bar{\omega}-\underline{\omega})+\underline{\omega}\right] \\
+    &= \left(d_{1}-d_{2} \tau\right) g \underline{\omega} - g\underline{\omega}
+\end{align*}
+So $\bar{\omega}$ does not factor into $\underline{\omega}$'s utility function. 
+
+\textcolor{blue}{Is what I am doing ok here???}
+\end{document}
+
+

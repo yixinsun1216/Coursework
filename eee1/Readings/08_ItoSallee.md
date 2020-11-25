@@ -1,3 +1,21 @@
+## Lecture Notes
+
+* Maybe we can use this type of analysis in thinking about energy transitions - using evictions and other bad outcomes at the welfare weights
+  * Is this even feasible to explain to a policymaker?
+* Figure 1: under these different types of standard, how would cars move
+  * (a) flat standard but no trading. Anybody who is not ex ante complying have to move northwest. Massive heterogeneity in compliance costs
+  * (b) Target-based standard. All the cars have to move, but the amount you have to move isn't quite as heterogeneous. 
+  * (c) With compliance trading. Equalization of compliance costs on the margin - same quadratic loss function then everyone should be experiencing the same shift
+* Attribute basing indexes stringency to attribute
+  * Incentive to generate too much attribute
+  * intensity standards do the same thing, but indexing stringency to output. Get same intuition and incentives. 
+* Bunching analysis 
+  * 
+
+
+
+
+
 ## Economics of Attribute-Based Regulation
 
 ### TLDR
@@ -156,14 +174,30 @@ $s \neq \phi$
 
 ## 4 Comparing Costs and Benefits of Attribute Basing
 
+* Japanese fuel economy standards introduced in 1979 and have changed 4 times since
+* Firm compliance is determined by their sales-weighted average fuel economy
+* Within each weight bucket, the new standard is set as a percentage improvement over highest fuel economy vehicle in that segment
+
 ### 4.1 A Subsidy Policy and Descriptive Evidence from Panel Data
 
 * If a car had a fuel economy higher than the subsidy cutoff, consumers purchasing that car received a direct subsidy of approximately \$700 for kei-cars and \$1000 for other cars 
   * Cars with fuel economy 10% and 20% higher than the subsidy cutoff received more generous subsidies in the form of tax exemptions
 * This creates quasi-experimental variation in incentives to change weight ($a$) and fuel economy $(e)$ 
+* Variation in incentives to change weight and fuel economy: Different set of changes required to comply 
+  * Some vehicles only need to make small improvements to gain the subsidy (such as a small change in weight) while others have to make large improvements
+* Figure 5 
+  * Arrows are cars that complied. 
+  * Dots might have moved but didn't comply
+  * The policy they're looking at is not a requirement, but rather a subsidy.
 
 ### 4.2 A Discrete Choice Model of Vehicle Redesign
 
+* Change in welfare due to introduction of subsidy: private welfare loss from change in car attributes
+* Can be interpreted as 
+  * Regulatory compliance cost
+  * Change in consumer surplus 
+* Change in welfare due to introduction of subsidy: private welfare loss from change in car attributes
+* Simulation shows stark difference in weight and compliance cost
 * 
 
 
@@ -188,7 +222,18 @@ From the simple model, the authors lay out several propositions.
 
 <u>Proposition 4:</u> When welfare weights vary (when there are distributional concerns), the optimal subsidy involves attribute basing. They posit that these distributional concerns are a key to why ABR is used in real policies, but it comes at the cost of distorting attribute choices. 
 
-To empirically investigate the costs and benefits of ABR, the paper turns to the Japanese regulation setting. 
+To empirically investigate the costs and benefits of ABR, the paper turns to the Japanese "notched" fuel economy regulation, where fuel-economy standard is a step function of the weight of a car. The paper begins by testing for bunching, where firms increase the weight of the car until they are at exactly the notch level. They find statistically significant excess bunching at all notches, leading to a 10% increase in car weight. This leads to both welfare distortions, and is associated with extra 103 deaths over the lifetime of those cars, according to their back of the envelope calculation.
+
+The paper then exploits quasi-experimental variation from a change in fuel-economy standards. Before 2009, Japanese regulation allowed fleet averaging, so there was a sort of compliance trading within firms. After 2009, fuel-economy standards became model-specific. Using information about cars that were modified to become eligible for the subsidy, the paper constructs three counterfactual policy scenarios: ABR standards, flat standard, and a flat standard with compliance trading. They find that ABR does improve efficiency, but also distorts the attributes and can only partially equalize marginal compliance costs, consistent with model predictions. 
 
 
+
+**Discussion**
+
+This is the first paper we've read where I had a much easier time following the theory section than the empirical section, I think due to the novelty of seeing this type of double-notched quasi-experimental variation. I thought the theory following two implications were intuitive and well-substantiated
+
+1. Attributes that are more closely related to the compliance cost and less elastic would be better
+2. Distortions are perhaps a feature rather than a bug, because of distributional concerns that policymakers have
+
+This method of examining welfare weights in examining attribute-based regulation seems to have great use for policymakers, especially with so many major cities pledging to strive for equitable energy transitions. I wonder, for example, how to apply this to building efficiency regulation when low-income and disenfranchised people typically live in older homes. 
 
