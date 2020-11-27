@@ -32,15 +32,6 @@ m1_int <- function(p_low, p_high){
 }
 
 beta_s <- function(s_fun){
-    output <- m1_int(0, .12)*s_fun(1) + m1_int(0, .29)*s_fun(2) +
-      m1_int(0, .48)*s_fun(3) + m1_int(0, .78)*s_fun(4) +
-      m0_int(.12, 1)*s_fun(1) + m0_int(.29, 1)*s_fun(2)+
-      m0_int(.48, 1)* s_fun(3) + m0_int(.78, 1)*s_fun(4)
-    return(output/4)
-}
-
-
-beta_s <- function(s_fun){
   s <- map_dbl(1:4, s_fun)
   w1 <- rev(cumsum(rev(s)) / 4)
   w0 <- cumsum(s) / 4
@@ -61,55 +52,6 @@ bernstein_integral <- function(u_low, u_high, k, K){
   bfun <- function(u) choose(K, k)*u^k*(1-u)^(K - k)
   integrate(bfun, lower = u_low, upper = u_high)$value
 }
-
-# function for integral of bernstein polynomial for ith value
-bernstein_i <- function(i, k, K, u_low, u_high){
-  bfun <- function(u) (-1)^(i - k)*choose(K, i)*choose(i, k)*u^i
-  integrate(bfun, lower = u_low, upp = u_high)$value
-}
-
-# evaluate sum of the tractable version of bernstein polynomial
-bernstein_mono <- function(u_low, u_high, k, K){
-  int_sum <- 0
-  for(i in k:K){
-    int_sum <- int_sum + bernstein_i(i, k, K, u_low, u_high)
-  }
-  return(int_sum)
-}
-
-# gamma_sdk <- function(k, K, d, s_fun){
-#   if(d == 0){
-#     output <- bernstein_integral(k, K, .12, 1)*s_fun(1)+
-#       bernstein_integral(k, K, .29, 1)*s_fun(2) +
-#       bernstein_integral(k, K, .48, 1)*s_fun(3) +
-#       bernstein_integral(k, K, .78, 1)*s_fun(4)
-#   }
-#   if(d == 1){
-#     output <- bernstein_integral(k, K, 0, .12)*s_fun(1)+
-#       bernstein_integral(k, K, 0, .29)*s_fun(2) +
-#       bernstein_integral(k, K, 0, .48)*s_fun(3) +
-#       bernstein_integral(k, K, 0, .78)*s_fun(4)
-#   }
-#   return(output/4)
-# }
-#
-#
-# # function for calculating \gamma_dk for objective function
-# gamma_obj_dk <- function(k, K, d){
-#   if(d == 0){
-#     output <- (bernstein_integral(k, K, .12, 1) +
-#       bernstein_integral(k, K, .29, 1) +
-#       bernstein_integral(k, K, .48, 1) +
-#       bernstein_integral(k, K, .78, 1))/ed
-#   }
-#   if(d == 1){
-#     output <- (bernstein_integral(k, K, 0, .12) +
-#       bernstein_integral(k, K, 0, .29)+
-#       bernstein_integral(k, K, 0, .48) +
-#       bernstein_integral(k, K, 0, .78))/-ed
-#   }
-#   return(output/4)
-# }
 
 gamma_sdk <- function(k, K, d, s_fun){
   s <- map_dbl(1:4, s_fun)
@@ -138,19 +80,39 @@ gamma_obj_dk <- function(k, K, d){
 # ==========================================================================
 # Main function that runs gurobi over different polynomial degrees
 # ==========================================================================
-solve_bounds <- function(deg, sense){
-  gamma_obj <- c(map_dbl(1:deg, gamma_obj_dk, deg, 1),  map_dbl(1:deg, gamma_obj_dk, deg, 0))
-  gamma_iv <- c(map_dbl(1:deg, gamma_sdk, deg, 1, s_iv),  map_dbl(1:deg, gamma_sdk, deg, 0, s_iv))
-  gamma_tsls <- c(map_dbl(1:deg, gamma_sdk, deg, 1, s_tsls),  map_dbl(1:deg, gamma_sdk, deg, 0, s_tsls))
+solve_bounds <- function(deg, sense, mono = FALSE){
+  gamma_obj <- c(map_dbl(0:deg, gamma_obj_dk, deg, 1),  map_dbl(0:deg, gamma_obj_dk, deg, 0))
+  gamma_iv <- c(map_dbl(0:deg, gamma_sdk, deg, 1, s_iv),  map_dbl(0:deg, gamma_sdk, deg, 0, s_iv))
+  gamma_tsls <- c(map_dbl(0:deg, gamma_sdk, deg, 1, s_tsls),  map_dbl(0:deg, gamma_sdk, deg, 0, s_tsls))
 
+  # add shape constraints if specified that we want monotone decreasing thetas
+  if(mono){
+    shape1 <- matrix(0, nrow = deg, ncol = 2*(deg + 1))
+    shape0 <- matrix(0, nrow = deg, ncol = 2*(deg + 1))
+    for(i in 1:deg){
+      shape1[i, i] <- 1
+      shape1[i, i+1] <- -1
+      shape0[i, i+deg + 1] <- 1
+      shape0[i, i+2+deg] <- -1
+    }
+    constraints <- rbind(matrix(gamma_iv, nrow = 1), matrix(gamma_tsls, nrow = 1), shape1, shape0)
+    equalities <- c("=", "=", rep("<", deg*2))
+    rhs_vals <- c(beta_iv, beta_tsls, rep(0, deg*2))
+  } else{
+    constraints <- rbind(matrix(gamma_iv, nrow = 1), matrix(gamma_tsls, nrow = 1))
+    equalities <- c("=", "=")
+    rhs_vals <- c(beta_iv, beta_tsls)
+  }
+
+  # create my model list for make a valid Gurobi object
   model <- list()
-  model$A <- rbind(matrix(gamma_iv, nrow = 1), matrix(gamma_tsls, nrow = 1))
+  model$A <- constraints
   model$obj <- gamma_obj
   model$modelsense <- sense
-  model$rhs <- c(beta_iv, beta_tsls)
-  model$sense <- c("=", "=")
-  #model$lb <- rep(0, length(gamma_obj))
-  #model$ub <- rep(1, length(gamma_obj))
+  model$rhs <- rhs_vals
+  model$sense <- equalities
+  model$lb <- 0
+  model$ub <- 1
   result <- gurobi(model)
 
   return(result$objval)
@@ -162,15 +124,27 @@ solve_bounds <- function(deg, sense){
 upper_bound <- map_dbl(1:19, solve_bounds, "max")
 lower_bound <- map_dbl(1:19, solve_bounds, "min")
 
+upper_bound_mono <- map_dbl(1:19, solve_bounds, "max", TRUE)
+lower_bound_mono <- map_dbl(1:19, solve_bounds, "min", TRUE)
+
+# calculating ATT
+w0 <- -1/ed*c(1, .75, .5, .25)
+w1 <- 1/ed*c(1, .75, .5, .25)
+att <- sum(map2_dbl(c(0, pscores[-4]), pscores, m1_int)*w1 + map2_dbl(c(0, pscores[-4]), pscores, m0_int)*w0)
 
 ggplot() +
   geom_point(aes(x = 1:19, y =lower_bound), color = "turquoise4") +
   geom_point(aes(x = 1:19,y = upper_bound), color = "turquoise4") +
   geom_line(aes(x = 1:19,y = lower_bound), color = "turquoise4") +
   geom_line(aes(x = 1:19,y = upper_bound), color = "turquoise4") +
+  geom_point(aes(x = 1:19, y =lower_bound_mono), color = "darkorange3") +
+  geom_point(aes(x = 1:19,y = upper_bound_mono), color = "darkorange3") +
+  geom_line(aes(x = 1:19,y = lower_bound_mono), color = "darkorange3") +
+  geom_line(aes(x = 1:19,y = upper_bound_mono), color = "darkorange3") +
+  geom_hline(yintercept = att, linetype = "dashed", color = "maroon4") +
+  geom_text(aes(17, att, label = "ATT", vjust = -.5), size = 3, color = "maroon4") +
   theme_minimal() +
-  ylab("upper and lower bounds")
+  ylab("upper and lower bounds") +
+  xlab("Polynomial Degree")
 
 
-
-# COMPARE TO FIGURE 4 TO FIGURE OUT WHAT'S WRONG
