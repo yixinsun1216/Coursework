@@ -82,11 +82,8 @@ estimates <- function(x, y, d, z, single = FALSE){
   diff <- outcomes$y1_imp - outcomes$y0_imp
 
   if(ncol(z) == 1){
-    #late <- (mean(outcomes$y1[z == 1]) - mean(outcomes$y0[z == 0])) / (mean(d[z==1]) - mean(d[z==0]))
     late <- sum(x$u*diff)/sum(x$u)
   } else{
-    #late1 <- (mean(outcomes$y1[z[,1] == 1]) - mean(outcomes$y0[z[,1] == 0])) / (mean(d[z[,1]==1]) - mean(d[z[,1]==0]))
-    #late2 <- (mean(outcomes$y1[z[,2] == 1]) - mean(outcomes$y0[z[,2] == 0])) / (mean(d[z[,2]==1]) - mean(d[z[,2]==0]))
     late1 <- sum(x$u[z[,1] == 1]*diff[z[,1] == 1]) / sum(x$u[z[,1] == 1])
     late2 <-sum(x$u[z[,2] == 1]*diff[z[,2] == 1]) / sum(x$u[z[,2] == 1])
     late <- mean(z[,1])/(mean(z[,1]) + mean(z[,2]))*late1 + mean(z[,2])/(mean(z[,1]) + mean(z[,2]))*late2
@@ -103,8 +100,12 @@ run_specifications <- function(z_ind){
   pscore <- probit(bind_cols(xvars, z_ind), dvar)
   d_ind <- pull(dvar, 1)
   x_mean <- summarise_all(xvars, mean)
-  u_grid <- runif(1000, 0, 1)
+  u_grid <- runif(1000, 0, 1) # create grid of u's to construct MTE graph
 
+  # for each specification:
+  # 1. construct matrix of variables to run OLS with
+  # 2. Run OLS to get ATE, ATT, ATU, LATE, and coefficients for MTRs
+  # 3. Use the coefficients to construct MTE curve
   # part (i) ----------------------------------------------
   regvars_i <- cbind( data.frame(u = pscore), xvars)
   estimates_i <- estimates(regvars_i, yvar, d_ind, z_ind)
@@ -149,7 +150,7 @@ run_specifications <- function(z_ind){
     vars <- as.matrix(cbind(1, x, x^2, x^3, x_mean))
     vars %*% as.matrix(estimates_v$m1$estimate) - vars %*% as.matrix(estimates_v$m0$estimate)})
 
-  # Put everything into a table ---------------------------
+  # Put ATE, ATT, ATU, and LATE into a table ----------------
   output <-
     list(estimates_i, estimates_ii, estimates_iii, estimates_iv, estimates_v) %>%
     map2(1:5, function(x, y){
@@ -157,6 +158,7 @@ run_specifications <- function(z_ind){
       tibble(estimator = colnames(est), !!paste0("value", y) := c(t(est)))}) %>%
     reduce(left_join)
 
+  # Graph MTE against u for all specifications -------------
   mte <-
     list(mte_i, mte_ii, mte_iii, mte_iv, mte_v) %>%
     map2_dfr(1:5, function(x, y){
@@ -165,7 +167,6 @@ run_specifications <- function(z_ind){
     mutate(u = rep(u_grid, 5),
            est = paste("Specification", est))
 
-  # Graph MTE against u for all specifications -------------
   ggplot(mte) +
     geom_smooth(aes(x = u, y = mte)) +
     theme_minimal() +
@@ -191,6 +192,3 @@ bind_rows(samesex, twins, both) %>%
   kableExtra::group_rows("Twins Instrument", 5, 8) %>%
   kableExtra::group_rows("Both Instruments", 9, 12) %>%
   writeLines(file.path(gdir, "sunny_q6_estimators.tex"))
-
-# how do I for LATE???
-# https://eml.berkeley.edu//~crwalters/papers/multiple_Z.pdf
