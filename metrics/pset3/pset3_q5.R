@@ -35,16 +35,9 @@ ols <- function(x, y){
 
   x <- as.matrix(x)
   y <- as.matrix(y)
-
   x <- cbind(1, x)
 
   beta <- as.vector(solve(t(x) %*% x, tol = 1e-20) %*% (t(x) %*% y))
-
-  # # calculate robust standard error
-  # e <- diag(as.vector(y - x %*% beta)^2, ncol = length(y))
-  # meat <- t(x) %*% e %*% x
-  # var <- solve(t(x) %*% x) %*% meat %*% solve(t(x) %*% x)
-  # se <- sqrt(diag(var))
 
   return(tibble(term = colnames, estimate = beta))
 }
@@ -81,16 +74,18 @@ estimates <- function(x, y, d, z, single = FALSE){
   atu <- mean(outcomes$y1[d == 0]) - mean(outcomes$y0[d == 0])
   diff <- outcomes$y1_imp - outcomes$y0_imp
 
-  if(ncol(z) == 1){
-    late <- sum(x$u*diff)/sum(x$u)
-  } else{
-    late1 <- sum(x$u[z[,1] == 1]*diff[z[,1] == 1]) / sum(x$u[z[,1] == 1])
-    late2 <-sum(x$u[z[,2] == 1]*diff[z[,2] == 1]) / sum(x$u[z[,2] == 1])
-    late <- mean(z[,1])/(mean(z[,1]) + mean(z[,2]))*late1 + mean(z[,2])/(mean(z[,1]) + mean(z[,2]))*late2
-  }
+  late <- sum(x$u*diff)/sum(x$u)
+
+  # if(ncol(z) == 1){
+  # } else{
+  #   late1 <- sum(x$u[z[,1] == 1]*diff[z[,1] == 1]) / sum(x$u[z[,1] == 1])
+  #   late2 <-sum(x$u[z[,2] == 1]*diff[z[,2] == 1]) / sum(x$u[z[,2] == 1])
+  #   late <- mean(z[,1])/(mean(z[,1]) + mean(z[,2]))*late1 + mean(z[,2])/(mean(z[,1]) + mean(z[,2]))*late2
+  # }
 
   return(list(ate = ate, att = att, atu = atu, late = late,
               m1 = m1, m0 = m0))
+  #return(list(m1 = m1, m0 = m0))
 }
 
 # =============================================================================
@@ -109,8 +104,11 @@ run_specifications <- function(z_ind){
   # part (i) ----------------------------------------------
   regvars_i <- cbind( data.frame(u = pscore), xvars)
   estimates_i <- estimates(regvars_i, yvar, d_ind, z_ind)
+  estimates_i$m1$estimate[2] <- estimates_i$m1$estimate[2]*2
+  estimates_i$m0$estimate[2] <- estimates_i$m0$estimate[2]*2
+  estimates_i$m0$estimate[1] <- estimates_i$m0$estimate[1] - estimates_i$m0$estimate[2]
   mte_i <- map_dbl(u_grid, function(x){
-    vars <- as.matrix(cbind(1, x, x_mean))
+    vars <- as.matrix(cbind(1, x/2, x_mean))
     vars %*% as.matrix(estimates_i$m1$estimate) - vars %*% as.matrix(estimates_i$m0$estimate)})
 
   # part (ii) ----------------------------------------------
@@ -119,10 +117,15 @@ run_specifications <- function(z_ind){
   u1 <- data.frame(u1 = matrix(d1*pscore))
   regvars_ii <- cbind(xvars, data.frame(u = pscore), u1, d0 = d0)
   estimates_ii <- estimates(regvars_ii, yvar, d_ind, z_ind, single = TRUE)
+  estimates_ii$m1$estimate[11] <- estimates_ii$m1$estimate[11]*2
+  estimates_ii$m1$estimate[12] <- estimates_ii$m1$estimate[12]*2
+  estimates_ii$m0$estimate[11] <- estimates_ii$m0$estimate[11]*2
+  estimates_ii$m0$estimate[1] <- estimates_ii$m0$estimate[1] - estimates_ii$m0$estimate[11]
   mte_ii <- map_dbl(u_grid, function(x){
     vars1 <- as.matrix(cbind(1, x_mean, x, x))
     vars0 <- as.matrix(cbind(1, x_mean, x, 1))
     vars1 %*% as.matrix(estimates_ii$m1$estimate) - vars0 %*% as.matrix(estimates_ii$m0$estimate)})
+
 
   # part (iii) ----------------------------------------------
   # first multiply x with u
@@ -182,7 +185,8 @@ run_specifications <- function(z_ind){
 # =============================================================================
 samesex <- run_specifications(zvar_ss)
 twins <- run_specifications(zvar_twins)
-both <- run_specifications(cbind(zvar_ss, zvar_twins))
+combined <- as.numeric(factor(paste(zvar_ss$samesex, zvar_twins$twins, sep = "-")))
+both <- run_specifications(combined)
 
 # output pretty table
 bind_rows(samesex, twins, both) %>%

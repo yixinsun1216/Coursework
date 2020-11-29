@@ -53,6 +53,10 @@ bernstein_integral <- function(u_low, u_high, k, K){
   integrate(bfun, lower = u_low, upper = u_high)$value
 }
 
+spline_integral <- function(u_low, u_high){
+
+}
+
 gamma_sdk <- function(k, K, d, s_fun){
   s <- map_dbl(1:4, s_fun)
   if(d == 0){
@@ -80,28 +84,70 @@ gamma_obj_dk <- function(k, K, d){
 # ==========================================================================
 # Main function that runs gurobi over different polynomial degrees
 # ==========================================================================
-solve_bounds <- function(deg, sense, mono = FALSE){
-  gamma_obj <- c(map_dbl(0:deg, gamma_obj_dk, deg, 1),  map_dbl(0:deg, gamma_obj_dk, deg, 0))
-  gamma_iv <- c(map_dbl(0:deg, gamma_sdk, deg, 1, s_iv),  map_dbl(0:deg, gamma_sdk, deg, 0, s_iv))
-  gamma_tsls <- c(map_dbl(0:deg, gamma_sdk, deg, 1, s_tsls),  map_dbl(0:deg, gamma_sdk, deg, 0, s_tsls))
-
-  # add shape constraints if specified that we want monotone decreasing thetas
-  if(mono){
-    shape1 <- matrix(0, nrow = deg, ncol = 2*(deg + 1))
-    shape0 <- matrix(0, nrow = deg, ncol = 2*(deg + 1))
-    for(i in 1:deg){
-      shape1[i, i] <- 1
-      shape1[i, i+1] <- -1
-      shape0[i, i+deg + 1] <- 1
-      shape0[i, i+2+deg] <- -1
+solve_bounds <- function(deg, sense, mono = FALSE, nonparametric = FALSE){
+  if(!nonparametric){
+    gamma_obj <- c(map_dbl(0:deg, gamma_obj_dk, deg, 1),  map_dbl(0:deg, gamma_obj_dk, deg, 0))
+    gamma_iv <- c(map_dbl(0:deg, gamma_sdk, deg, 1, s_iv),  map_dbl(0:deg, gamma_sdk, deg, 0, s_iv))
+    gamma_tsls <- c(map_dbl(0:deg, gamma_sdk, deg, 1, s_tsls),  map_dbl(0:deg, gamma_sdk, deg, 0, s_tsls))
+    # add shape constraints if specified that we want monotone decreasing thetas
+    if(mono){
+      shape1 <- matrix(0, nrow = deg, ncol = 2*(deg + 1))
+      shape0 <- matrix(0, nrow = deg, ncol = 2*(deg + 1))
+      for(i in 1:deg){
+        shape1[i, i] <- 1
+        shape1[i, i+1] <- -1
+        shape0[i, i+deg + 1] <- 1
+        shape0[i, i+2+deg] <- -1
+      }
+      constraints <- rbind(matrix(gamma_iv, nrow = 1), matrix(gamma_tsls, nrow = 1), shape1, shape0)
+      equalities <- c("=", "=", rep("<", deg*2))
+      rhs_vals <- c(beta_iv, beta_tsls, rep(0, deg*2))
+    } else{
+      constraints <- rbind(matrix(gamma_iv, nrow = 1), matrix(gamma_tsls, nrow = 1))
+      equalities <- c("=", "=")
+      rhs_vals <- c(beta_iv, beta_tsls)
     }
-    constraints <- rbind(matrix(gamma_iv, nrow = 1), matrix(gamma_tsls, nrow = 1), shape1, shape0)
-    equalities <- c("=", "=", rep("<", deg*2))
-    rhs_vals <- c(beta_iv, beta_tsls, rep(0, deg*2))
-  } else{
-    constraints <- rbind(matrix(gamma_iv, nrow = 1), matrix(gamma_tsls, nrow = 1))
-    equalities <- c("=", "=")
-    rhs_vals <- c(beta_iv, beta_tsls)
+  }
+  if(nonparametric){
+    s_iv_values <- map_dbl(1:4, s_iv)
+    w0_iv <- c(0, cumsum(s_iv_values) / 4)
+    w1_iv <-  c(rev(cumsum(rev(s_iv_values)) / 4), 0)
+
+    gamma_iv1 <- map2_dbl(c(0, pscores), c(pscores, 1), function(x, y) y - x)*w1_iv
+    gamma_iv0 <- map2_dbl(c(0, pscores), c(pscores, 1), function(x, y) y - x)*w0_iv
+    gamma_iv <- c(gamma_iv1, gamma_iv0)
+
+    s_tsls_values <- map_dbl(1:4, s_tsls)
+    w0_tsls <- c(0, cumsum(s_tsls_values) / 4)
+    w1_tsls <-  c(rev(cumsum(rev(s_tsls_values)) / 4), 0)
+
+    gamma_tsls1 <- map2_dbl(c(0, pscores), c(pscores, 1), function(x, y) y - x)*w1_tsls
+    gamma_tsls0 <- map2_dbl(c(0, pscores), c(pscores, 1), function(x, y) y - x)*w0_tsls
+    gamma_tsls <- c(gamma_tsls1, gamma_tsls0)
+
+    w1 <- 1/ed*c(1, .75, .5, .25, 0)
+    w0 <- -1/ed*c(1, .75, .5, .25, 0)
+    gamma_obj1 <- map2_dbl(c(0, pscores), c(pscores, 1), function(x, y) y - x)*w1
+    gamma_obj0 <- map2_dbl(c(0, pscores), c(pscores, 1), function(x, y) y - x)*w0
+    gamma_obj <- c(gamma_obj1, gamma_obj0)
+
+    if(mono){
+      shape1 <- matrix(0, nrow = 4, ncol = 2*(4 + 1))
+      shape0 <- matrix(0, nrow = 4, ncol = 2*(4 + 1))
+      for(i in 1:4){
+        shape1[i, i] <- 1
+        shape1[i, i+1] <- -1
+        shape0[i, i+4 + 1] <- 1
+        shape0[i, i+2+4] <- -1
+      }
+      constraints <- rbind(matrix(gamma_iv, nrow = 1), matrix(gamma_tsls, nrow = 1), shape1, shape0)
+      equalities <- c("=", "=", rep("<", 4*2))
+      rhs_vals <- c(beta_iv, beta_tsls, rep(0, 4*2))
+    } else{
+      constraints <- rbind(matrix(gamma_iv, nrow = 1), matrix(gamma_tsls, nrow = 1))
+      equalities <- c("=", "=")
+      rhs_vals <- c(beta_iv, beta_tsls)
+    }
   }
 
   # create my model list for make a valid Gurobi object
@@ -127,6 +173,14 @@ lower_bound <- map_dbl(1:19, solve_bounds, "min")
 upper_bound_mono <- map_dbl(1:19, solve_bounds, "max", TRUE)
 lower_bound_mono <- map_dbl(1:19, solve_bounds, "min", TRUE)
 
+# nonparametric bounds
+upper_bound_non <- solve_bounds(1, "max", FALSE, TRUE)
+lower_bound_non <- solve_bounds(1, "min", FALSE, TRUE)
+
+upper_bound_non_mono <- solve_bounds(1, "max", TRUE, TRUE)
+lower_bound_non_mono <- solve_bounds(1, "min", TRUE, TRUE)
+
+
 # calculating ATT
 w0 <- -1/ed*c(1, .75, .5, .25)
 w1 <- 1/ed*c(1, .75, .5, .25)
@@ -134,7 +188,7 @@ att <- sum(map2_dbl(c(0, pscores[-4]), pscores, m1_int)*w1 + map2_dbl(c(0, pscor
 
 ggplot() +
   geom_point(aes(x = 1:19, y =lower_bound), color = "turquoise4") +
-  geom_point(aes(x = 1:19,y = upper_bound), color = "turquoise4") +
+  geom_point(aes(x = 1:19,y = upper_bound), colour = "turquoise4") +
   geom_line(aes(x = 1:19,y = lower_bound), color = "turquoise4") +
   geom_line(aes(x = 1:19,y = upper_bound), color = "turquoise4") +
   geom_point(aes(x = 1:19, y =lower_bound_mono), color = "darkorange3") +
@@ -142,9 +196,17 @@ ggplot() +
   geom_line(aes(x = 1:19,y = lower_bound_mono), color = "darkorange3") +
   geom_line(aes(x = 1:19,y = upper_bound_mono), color = "darkorange3") +
   geom_hline(yintercept = att, linetype = "dashed", color = "maroon4") +
+  geom_hline(yintercept = upper_bound_non, linetype = "dashed", color = "turquoise4") +
+  geom_hline(yintercept = lower_bound_non, linetype = "dashed", color = "turquoise4") +
+  geom_point(aes(x = 1:19, y = upper_bound_non), color = "turquoise4", shape = 15) +
+  geom_point(aes(x = 1:19, y = lower_bound_non), color = "turquoise4", shape = 15) +
+  geom_point(aes(x = 1:19, y = upper_bound_non_mono), color = "darkorange3", shape = 15) +
+  geom_point(aes(x = 1:19, y = lower_bound_non_mono), color = "darkorange3", shape = 15) +
+  geom_hline(yintercept = upper_bound_non_mono, linetype = "dashed", color = "darkorange3") +
+  geom_hline(yintercept = lower_bound_non_mono, linetype = "dashed", color = "darkorange3") +
   geom_text(aes(17, att, label = "ATT", vjust = -.5), size = 3, color = "maroon4") +
   theme_minimal() +
   ylab("upper and lower bounds") +
-  xlab("Polynomial Degree")
-
-
+  xlab("Polynomial Degree") +
+  ylim(c(-.7, .25))
+ggsave(file.path(gdir, "sunny_q6.png"))
