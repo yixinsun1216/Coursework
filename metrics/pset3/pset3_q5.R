@@ -42,6 +42,15 @@ ols <- function(x, y){
   return(tibble(term = colnames, estimate = beta))
 }
 
+tsls <- function(z, d, x, y){
+  colnames <- c("Constant", names(d), names(x))
+  z <- as.matrix(cbind(1, z, x))
+  treat <- as.matrix(cbind(1, d, x))
+  y <- as.matrix(y)
+  pi <- as.matrix(solve(t(z) %*% z) %*% (t(z) %*% treat))
+  beta <- solve(t(pi) %*% t(z) %*% treat) %*% (t(pi) %*% t(z) %*% y)
+  return(beta[2])
+}
 
 estimates <- function(x, y, d, z, single = FALSE){
   if(single){
@@ -73,19 +82,10 @@ estimates <- function(x, y, d, z, single = FALSE){
   att <- mean(outcomes$y1[d == 1]) - mean(outcomes$y0[d == 1])
   atu <- mean(outcomes$y1[d == 0]) - mean(outcomes$y0[d == 0])
   diff <- outcomes$y1_imp - outcomes$y0_imp
-
   late <- sum(x$u*diff)/sum(x$u)
-
-  # if(ncol(z) == 1){
-  # } else{
-  #   late1 <- sum(x$u[z[,1] == 1]*diff[z[,1] == 1]) / sum(x$u[z[,1] == 1])
-  #   late2 <-sum(x$u[z[,2] == 1]*diff[z[,2] == 1]) / sum(x$u[z[,2] == 1])
-  #   late <- mean(z[,1])/(mean(z[,1]) + mean(z[,2]))*late1 + mean(z[,2])/(mean(z[,1]) + mean(z[,2]))*late2
-  # }
 
   return(list(ate = ate, att = att, atu = atu, late = late,
               m1 = m1, m0 = m0))
-  #return(list(m1 = m1, m0 = m0))
 }
 
 # =============================================================================
@@ -105,10 +105,10 @@ run_specifications <- function(z_ind){
   regvars_i <- cbind( data.frame(u = pscore), xvars)
   estimates_i <- estimates(regvars_i, yvar, d_ind, z_ind)
   estimates_i$m1$estimate[2] <- estimates_i$m1$estimate[2]*2
-  estimates_i$m0$estimate[2] <- estimates_i$m0$estimate[2]*2
   estimates_i$m0$estimate[1] <- estimates_i$m0$estimate[1] - estimates_i$m0$estimate[2]
+  estimates_i$m0$estimate[2] <- estimates_i$m0$estimate[2]*2
   mte_i <- map_dbl(u_grid, function(x){
-    vars <- as.matrix(cbind(1, x/2, x_mean))
+    vars <- as.matrix(cbind(1, x, x_mean))
     vars %*% as.matrix(estimates_i$m1$estimate) - vars %*% as.matrix(estimates_i$m0$estimate)})
 
   # part (ii) ----------------------------------------------
@@ -119,8 +119,8 @@ run_specifications <- function(z_ind){
   estimates_ii <- estimates(regvars_ii, yvar, d_ind, z_ind, single = TRUE)
   estimates_ii$m1$estimate[11] <- estimates_ii$m1$estimate[11]*2
   estimates_ii$m1$estimate[12] <- estimates_ii$m1$estimate[12]*2
-  estimates_ii$m0$estimate[11] <- estimates_ii$m0$estimate[11]*2
   estimates_ii$m0$estimate[1] <- estimates_ii$m0$estimate[1] - estimates_ii$m0$estimate[11]
+  estimates_ii$m0$estimate[11] <- estimates_ii$m0$estimate[11]*2
   mte_ii <- map_dbl(u_grid, function(x){
     vars1 <- as.matrix(cbind(1, x_mean, x, x))
     vars0 <- as.matrix(cbind(1, x_mean, x, 1))
@@ -132,9 +132,14 @@ run_specifications <- function(z_ind){
   xu <-
     map_dfc(as.list(xvars), function(x) data.frame(matrix(x*pscore))) %>%
     setNames(paste0(colnames(xvars), "_u"))
-
   regvars_iii <- cbind( data.frame(u = pscore), xvars, xu)
   estimates_iii <- estimates(regvars_iii, yvar, d_ind, z_ind)
+  estimates_iii$m1$estimate[2] <- estimates_iii$m1$estimate[2]*2
+  estimates_iii$m1$estimate[12:20] <- estimates_iii$m1$estimate[12:20]*2
+  estimates_iii$m0$estimate[1] <- estimates_iii$m0$estimate[1] - estimates_iii$m0$estimate[2]
+  estimates_iii$m0$estimate[2] <- estimates_iii$m0$estimate[2]*2
+  estimates_iii$m0$estimate[3:11] <- estimates_iii$m0$estimate[3:11] - estimates_iii$m0$estimate[12:20]
+  estimates_iii$m0$estimate[12:20] <- estimates_iii$m0$estimate[12:20]*2
   mte_iii <- map_dbl(u_grid, function(x){
     vars <- as.matrix(cbind(1, x, x_mean, x*x_mean))
     vars %*% as.matrix(estimates_iii$m1$estimate) - vars %*% as.matrix(estimates_iii$m0$estimate)})
@@ -142,6 +147,11 @@ run_specifications <- function(z_ind){
   # part (iv) ----------------------------------------------
   regvars_iv <- cbind( data.frame(u = pscore, u2 = pscore^2), xvars)
   estimates_iv <- estimates(regvars_iv, yvar, d_ind, z_ind)
+  estimates_iv$m1$estimate[2] <- estimates_iv$m1$estimate[2]*2
+  estimates_iv$m1$estimate[3] <- estimates_iv$m1$estimate[3]*3
+  estimates_iv$m0$estimate[1] <- estimates_iv$m0$estimate[1] - estimates_iv$m0$estimate[2]
+  estimates_iv$m0$estimate[2] <- (estimates_iv$m0$estimate[2] - estimates_iv$m0$estimate[3])*2
+  estimates_iv$m0$estimate[3] <- 3*estimates_iv$m0$estimate[3]
   mte_iv <- map_dbl(u_grid, function(x){
     vars <- as.matrix(cbind(1, x, x^2, x_mean))
     vars %*% as.matrix(estimates_iv$m1$estimate) - vars %*% as.matrix(estimates_iv$m0$estimate)})
@@ -149,6 +159,13 @@ run_specifications <- function(z_ind){
   # part (v) ----------------------------------------------
   regvars_v <- cbind( data.frame(u = pscore, u2 = pscore^2, u3 = pscore^3), xvars)
   estimates_v <- estimates(regvars_v, yvar, d_ind, z_ind)
+  estimates_v$m1$estimate[2] <- estimates_v$m1$estimate[2]*2
+  estimates_v$m1$estimate[3] <- estimates_v$m1$estimate[3]*3
+  estimates_v$m1$estimate[4] <- estimates_v$m1$estimate[4]*4
+  estimates_v$m0$estimate[1] <- estimates_v$m0$estimate[1] - estimates_v$m0$estimate[2]
+  estimates_v$m0$estimate[2] <- (estimates_v$m0$estimate[2] - estimates_v$m0$estimate[3])*2
+  estimates_v$m0$estimate[3] <- 3*(estimates_v$m0$estimate[3] - estimates_v$m0$estimate[4])
+  estimates_v$m0$estimate[4] <- 4*estimates_v$m0$estimate[4]
   mte_v <- map_dbl(u_grid, function(x){
     vars <- as.matrix(cbind(1, x, x^2, x^3, x_mean))
     vars %*% as.matrix(estimates_v$m1$estimate) - vars %*% as.matrix(estimates_v$m0$estimate)})
@@ -171,11 +188,11 @@ run_specifications <- function(z_ind){
            est = paste("Specification", est))
 
   ggplot(mte) +
-    geom_smooth(aes(x = u, y = mte)) +
+    geom_line(aes(x = u, y = mte), color = "tomato4") +
     theme_minimal() +
     facet_wrap(~est, ncol = 2, scales = "free")
   ggsave(file = file.path(gdir, paste0("sunny_mte_", paste(colnames(z_ind), collapse = "_"), ".png")),
-         height = 10, width = 8)
+         height = 10, width = 9)
 
   return(output)
 }
@@ -185,7 +202,7 @@ run_specifications <- function(z_ind){
 # =============================================================================
 samesex <- run_specifications(zvar_ss)
 twins <- run_specifications(zvar_twins)
-combined <- as.numeric(factor(paste(zvar_ss$samesex, zvar_twins$twins, sep = "-")))
+combined <- tibble(combined = as.numeric(factor(paste(zvar_ss$samesex, zvar_twins$twins, sep = "-"))))
 both <- run_specifications(combined)
 
 # output pretty table
@@ -195,4 +212,11 @@ bind_rows(samesex, twins, both) %>%
   kableExtra::group_rows("Same Sex Instrument", 1, 4)  %>%
   kableExtra::group_rows("Twins Instrument", 5, 8) %>%
   kableExtra::group_rows("Both Instruments", 9, 12) %>%
-  writeLines(file.path(gdir, "sunny_q6_estimators.tex"))
+  writeLines(file.path(gdir, "sunny_q5_estimators.tex"))
+
+# create table of TSLS regressions
+tibble(Instrument = c("Same Sex", "Twins", "Both"),
+       Estimate = map_dbl(list(zvar_ss, zvar_twins, combined),
+                          tsls, dvar, xvars, yvar)) %>%
+  kable(format = "latex", booktabs = TRUE, linesep = "", digits = 3) %>%
+  writeLines(file.path(gdir, "sunny_q5_tsls.tex"))
