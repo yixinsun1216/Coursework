@@ -241,7 +241,6 @@ Steps to Actually Implementing ATT
    \omega_0^\star(u, z) = -\omega_{1}^{\star}(u, z)
    $$
    
-
 3. Calculate 2 sets of $\beta_s$ and for each row of data, calculate weights for our IV-like estimands (Table 3)
 
    1.  IV: 
@@ -250,8 +249,7 @@ Steps to Actually Implementing ATT
       s(d,z) = \frac{z-E[Z]}{\operatorname{Cov}(D, Z)}
       $$
       
-
-   2. TSLS (jth component):
+2. TSLS (jth component):
       $$
       \beta_s = e_{j}^{\prime}\left(\Pi E\left[\widetilde{Z} \tilde{X}^{\prime}\right]\right)^{-1}(\Pi E[\widetilde{Z} Y]) \\
       s(d,z) = e_{j}^{\prime}\left(\Pi E\left[\widetilde{Z} \tilde{X}^{\prime}\right]\right)^{-1} \Pi \widetilde{Z} \\
@@ -260,17 +258,17 @@ Steps to Actually Implementing ATT
       \Pi \equiv E\left[\widetilde{X} \widetilde{Z}^{\prime}\right] E\left[\widetilde{Z} \widetilde{Z}^{\prime}\right]^{-1}
       $$
       
-
-      Should we be using just the TSLS that doesn't change with with j? 
-
-      Remember that
+   
+   Should we be using just the TSLS that doesn't change with with j? 
+   
+   Remember that
       $$
       \begin{array}{l}
       \omega_{0 s}(u, z) \equiv s(0, z) \mathbb{1}[u>p(z)] \\
       \omega_{1 s}(u, z) \equiv s(1, z) \mathbb{1}[u \leq p(z)]
       \end{array}
       $$
-
+   
 4. For each row of data, generate Bernstein polynomial basis:
    $$
    b_{k}^{K}(z) \equiv\left(\begin{array}{l}
@@ -287,3 +285,55 @@ Steps to Actually Implementing ATT
    Now I am optimizing one objective function subject to 2 constraints. The constraints are 2 equations and $m$ unknown $\theta_{dk}$'s. 
 
 6. Once I take the max and min from step 5 using gurobi, then I can solve for the max and min $\beta^\star$
+
+
+
+
+
+### Nonparametric Bounds - Mogstad et al (2017)
+
+* Maximization Problem:
+
+$$
+\bar{\beta}_{\mathrm{fd}}^{\star} \equiv \sup _{m \in \mathcal{M}_{\mathrm{fd}}} \Gamma^{*}(m) \quad \text { s.t. } \quad \Gamma_{s}(m)=\beta_{s} \quad \text { for all } s \in \mathcal{S} \tag{20}
+$$
+
+* Finite linear basis:
+
+$$
+\mathcal{M}_{\mathrm{fd}} \equiv\left\{\left(m_{0}, m_{1}\right) \in \mathcal{M}: m_{d}(u, x)=\sum_{k=1}^{K_{d}} \theta_{d k} b_{d k}(u, x) \text { for some }\left\{\theta_{d k}\right\}_{k=1}^{K_{d}}, d=0,1\right\}
+$$
+
+* Rewrite (20) as
+
+$$
+\begin{aligned}
+\bar{\beta}_{\mathrm{fd}}^{*} \equiv & \sup _{\left(\theta_{0}, \theta_{1}\right) \in \Theta} \sum_{k=1}^{K_{0}} \theta_{0 k} \Gamma_{0}^{*}\left(b_{0 k}\right)+\sum_{k=1}^{K_{1}} \theta_{1 k} \Gamma_{1}^{\star}\left(b_{1 k}\right) \\
+& \text { s.t. } \quad \sum_{k=1}^{K_{0}} \theta_{0 k} \Gamma_{0 s}\left(b_{0 k}\right)+\sum_{k=1}^{K_{1}} \theta_{1 k} \Gamma_{1 s}\left(b_{1 k}\right)=\beta_{s} \quad \text { for all } s \in \mathcal{S}
+\end{aligned}
+$$
+
+* where we have decomposed $\Gamma^{\star}(m) \equiv \Gamma_{0}^{\star}\left(m_{0}\right)+\Gamma_{1}^{\star}\left(m_{1}\right)$ with
+
+$$
+\Gamma_{d}^{*}\left(m_{d}\right) \equiv E\left[\int_{0}^{1} m_{d}(u, X) \omega_{d}^{\star}(u, Z) d \mu^{*}(u)\right] \quad \text { for } d=0,1
+$$
+
+* and similarly for $\Gamma_{s}(m)=\Gamma_{0 s}\left(m_{0}\right)+\Gamma_{1 s}\left(m_{1}\right)$ with
+
+$$
+\Gamma_{d s}\left(m_{d}\right) \equiv E\left[\int_{0}^{1} m_{d}(u, X) \omega_{d s}(u, Z) d \mu^{\star}(u)\right] \text { for } d=0,1
+$$
+
+* In some situations, $\mathcal{M}$ can be replaced by a finite-dimensional set $\mathcal{M}_{\text {fd }}$ without affecting the bounds on the target parameter, that is, while ensuring $\bar{\beta}_{\mathrm{fd}}^{*}=\bar{\beta}^{*} $ &rightarrow; nonparametric bounds on target parameter. 
+
+* Define a partition $\left\{\mathcal{U}_{j}\right\}_{i=1}^{J}$ of [0,1] such that $\omega_{d}^{*}(u, z)$ and $\mathbb{1}\left[\begin{array}{ll}u & \leq p(z)] \end{array}\right.$ are a constant of $u$. 
+
+  * Let $\left\{x_{1}, \ldots x_{L}\right\}$ denote the support of $X$ and then use
+    $$
+    b_{j l}(u, x) \equiv \mathbb{1}\left[u \in \mathcal{U}_{j}, x=x_{l}\right] \quad \text { for } 1 \leq j \leq J \text { and } 1 \leq l \leq L
+    $$
+
+  * $K_d = JL$ 
+
+  * 

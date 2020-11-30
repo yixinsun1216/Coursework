@@ -89,6 +89,7 @@ solve_bounds <- function(deg, sense, mono = FALSE, nonparametric = FALSE){
     gamma_obj <- c(map_dbl(0:deg, gamma_obj_dk, deg, 1),  map_dbl(0:deg, gamma_obj_dk, deg, 0))
     gamma_iv <- c(map_dbl(0:deg, gamma_sdk, deg, 1, s_iv),  map_dbl(0:deg, gamma_sdk, deg, 0, s_iv))
     gamma_tsls <- c(map_dbl(0:deg, gamma_sdk, deg, 1, s_tsls),  map_dbl(0:deg, gamma_sdk, deg, 0, s_tsls))
+
     # add shape constraints if specified that we want monotone decreasing thetas
     if(mono){
       shape1 <- matrix(0, nrow = deg, ncol = 2*(deg + 1))
@@ -180,33 +181,48 @@ lower_bound_non <- solve_bounds(1, "min", FALSE, TRUE)
 upper_bound_non_mono <- solve_bounds(1, "max", TRUE, TRUE)
 lower_bound_non_mono <- solve_bounds(1, "min", TRUE, TRUE)
 
-
 # calculating ATT
 w0 <- -1/ed*c(1, .75, .5, .25)
 w1 <- 1/ed*c(1, .75, .5, .25)
 att <- sum(map2_dbl(c(0, pscores[-4]), pscores, m1_int)*w1 + map2_dbl(c(0, pscores[-4]), pscores, m0_int)*w0)
 
-ggplot() +
-  geom_point(aes(x = 1:19, y =lower_bound), color = "turquoise4") +
-  geom_point(aes(x = 1:19,y = upper_bound), colour = "turquoise4") +
-  geom_line(aes(x = 1:19,y = lower_bound), color = "turquoise4") +
-  geom_line(aes(x = 1:19,y = upper_bound), color = "turquoise4") +
-  geom_point(aes(x = 1:19, y =lower_bound_mono), color = "darkorange3") +
-  geom_point(aes(x = 1:19,y = upper_bound_mono), color = "darkorange3") +
-  geom_line(aes(x = 1:19,y = lower_bound_mono), color = "darkorange3") +
-  geom_line(aes(x = 1:19,y = upper_bound_mono), color = "darkorange3") +
-  geom_hline(yintercept = att, linetype = "dashed", color = "maroon4") +
-  geom_hline(yintercept = upper_bound_non, linetype = "dashed", color = "turquoise4") +
-  geom_hline(yintercept = lower_bound_non, linetype = "dashed", color = "turquoise4") +
-  geom_point(aes(x = 1:19, y = upper_bound_non), color = "turquoise4", shape = 15) +
-  geom_point(aes(x = 1:19, y = lower_bound_non), color = "turquoise4", shape = 15) +
-  geom_point(aes(x = 1:19, y = upper_bound_non_mono), color = "darkorange3", shape = 15) +
-  geom_point(aes(x = 1:19, y = lower_bound_non_mono), color = "darkorange3", shape = 15) +
-  geom_hline(yintercept = upper_bound_non_mono, linetype = "dashed", color = "darkorange3") +
-  geom_hline(yintercept = lower_bound_non_mono, linetype = "dashed", color = "darkorange3") +
-  geom_text(aes(17, att, label = "ATT", vjust = -.5), size = 3, color = "maroon4") +
+# combine bounds together for ease of creating a common legend
+bounds_all <-
+  tibble(values = c(lower_bound, lower_bound_mono, rep(lower_bound_non, 19), rep(lower_bound_non_mono, 19),
+                    upper_bound, upper_bound_mono, rep(upper_bound_non, 19), rep(upper_bound_non_mono, 19)),
+         monotone = c(rep(FALSE, 19), rep(TRUE, 19), rep(FALSE, 19), rep(TRUE, 19),
+                      rep(FALSE, 19), rep(TRUE, 19), rep(FALSE, 19), rep(TRUE, 19)),
+         func_form = c(rep("Polynomial", 19), rep("Polynomial", 19),
+                       rep("Nonparametric", 19), rep("Nonparametric", 19),
+                       rep("Polynomial", 19), rep("Polynomial", 19),
+                       rep("Nonparametric", 19), rep("Nonparametric", 19)),
+         group = c(rep(1, 19), rep(2, 19),
+                   rep(3, 19), rep(4, 19),
+                   rep(5, 19), rep(6, 19),
+                   rep(7, 19), rep(8, 19)),
+         polynomial = rep(1:19, 8))
+
+ggplot(bounds_all, aes(x = polynomial, y = values, colour = interaction(monotone, func_form),
+                       shape = monotone, group = group, linetype = func_form)) +
+  geom_line() +
+  geom_point() +
+  scale_color_manual(values = c("turquoise4", "darkorange3", "turquoise4", "darkorange3"),
+                     name = "",
+                     labels = c("Nonparametric", "Nonparametric and decreasing",
+                                "Polynomial", "Polynomial and decreasing")) +
+  scale_linetype_manual(values = c("dotted", "solid")) +
+  scale_shape_manual(values = c(16, 15)) +
+  guides(colour = guide_legend(override.aes = list(shape = c(16, 15, 16, 15),
+                                                   colour = c("turquoise4", "darkorange3", "turquoise4", "darkorange3"),
+                                                   linetype = c("dotted", "dotted", "solid", "solid"))),
+         shape = FALSE,
+         linetype = FALSE) +
   theme_minimal() +
+  theme(legend.position = "bottom") +
+  geom_hline(yintercept = att, linetype = "dashed", color = "maroon4") +
+  geom_text(aes(17, att, label = "ATT", vjust = -.5), size = 3, color = "maroon4")  +
   ylab("upper and lower bounds") +
   xlab("Polynomial Degree") +
-  ylim(c(-.7, .25))
-ggsave(file.path(gdir, "sunny_q6.png"))
+  scale_x_continuous(expand = c(0, 0), limits = c(.85, 19.5))
+
+ggsave(file.path(gdir, "sunny_q6.png"), width=8, height = 5)
