@@ -38,7 +38,7 @@ $$
 A R_{j, \tau}^{*}=R_{j, \tau}-E\left(R_{j, \tau} \mid X_{\tau}\right)
 $$
 
-​	* denotes that this is the true impact of the change in policy, rather than the estimated effect
+​		* denotes that this is the true impact of the change in policy, rather than the estimated effect
 
 * $E\left(R_{j, \tau} \mid X_{\tau}\right)$ is the normal return function. Estimate this using reduced-form model 
   $$
