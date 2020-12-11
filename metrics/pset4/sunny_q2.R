@@ -59,7 +59,7 @@ cluster_se <- function(X, e, cl){
 wild_bootstrap <- function(x, y, cl){
   cluster_vals <- unique(cl)
   x_cons <- x[,colnames(x) != "Dr1"]
-  y_cons <- y - sin(4)*x[,colnames(x) == "Dr1"]
+  y_cons <- y - sin(1) *x[,colnames(x) == "Dr1"]
   beta_cons <- as.vector(solve(t(x_cons) %*% x_cons, tol = 1e-20) %*% (t(x_cons) %*% y_cons))
   u_cons <- y_cons - x_cons %*% beta_cons
 
@@ -295,13 +295,13 @@ event_tstat <- function(N, rho, theta = 1){
     err %>%
     map(function(x) ols(simulation[[1]], simulation[[2]], x, simulation[[5]])) %>%
     map(function(x) filter(x, term == "Dr1")) %>%
-    map_dbl(function(x) abs(x$estimate - sin(4)) / (x$se/sqrt(N)) < 1.96)
+    map_dbl(function(x) abs(x$estimate - sin(1) ) / (x$se/sqrt(N)) < 1.96)
 
   wild_ols <- ols(simulation[[1]], simulation[[2]], "wild", simulation[[5]])
   wald_boot <- map_dbl(1:100, function(b) wild_bootstrap(simulation[[1]], simulation[[2]], simulation[[5]]))
   wald_boot <- quantile(wald_boot, .95)
   dr1 <- filter(wild_ols, term == "Dr1")
-  wald_all <- c(wald_all, abs(dr1$estimate - sin(4)) / (dr1$se / sqrt(N)) < wald_boot)
+  wald_all <- c(wald_all, abs(dr1$estimate - sin(1) ) / (dr1$se / sqrt(N)) < wald_boot)
 
   return(tibble(error = c(err, "wild"), reject = wald_all))
 }
