@@ -32,11 +32,10 @@ df_treated <-
 treatment <- 16
 
 # =============================================================================
-# Estimator Functions
+# MASC Weights Functions
 # =============================================================================
-# matching
+# matching weights
 nnmatch <- function(m = 4, untreated, treated, treat_year){
-  #browser()
   treated_pre <- treated[1:(treat_year - 1)]
   untreated_pre <- untreated[1:(treat_year -1),]
 
@@ -47,6 +46,7 @@ nnmatch <- function(m = 4, untreated, treated, treat_year){
   return(weights)
 }
 
+# weights for synthetic control
 synthetic_control <- function(untreated, treated, treat_year) {
   objective <- -2 * as.matrix((t(treated))) %*% as.matrix(untreated)
   constant <- t(treated) %*% treated
@@ -67,6 +67,7 @@ synthetic_control <- function(untreated, treated, treat_year) {
   return(result$x)
 }
 
+# generate sc and matching weights that will be used in MASC calc
 solve_masc <- function(untreated, treated, treat_year, m = 3) {
   treated_pre <- matrix(treated[1:(treat_year - 1)], ncol = ncol(treated))
   untreated_pre <- matrix(untreated[1:(treat_year -1),], ncol = ncol(untreated))
@@ -84,6 +85,8 @@ solve_masc <- function(untreated, treated, treat_year, m = 3) {
 # m \in {1, 2, ... , 10}
 # equally weight all folds
 # so the parameters we need to choose are phi and m
+
+# calculates gamma_sc and gamma_match for a given m
 find_Y <- function(treat, m, untreated, treated){
   #browser()
   weights_all <- solve_masc(untreated, treated, treat, m)
@@ -96,27 +99,28 @@ find_Y <- function(treat, m, untreated, treated){
   return(data.frame(Y_sc = Y_sc, Y_match = Y_match, Y_treated = Y_treated))
 }
 
-# this function finds the optimal phi for a given m.
+# finds the optimal phi for a given m.
 cv_phi <- function(m = 3, untreated, treated, treat_year, folds = 8:14) {
+  # calculate gammas for given m
+  Y_all <- map_df(folds + 1, find_Y, m, untreated, treated)
 
-    Y_all <- map_df(folds + 1, find_Y, m, untreated, treated)
+  # analytic expression for phi
+  Y_treated <- matrix(Y_all$Y_treated)
+  Y_sc <- matrix(Y_all$Y_sc)
+  Y_match <- matrix(Y_all$Y_match)
+  phi<-t(Y_treated-Y_sc)%*%(Y_match-Y_sc)/((t(Y_match-Y_sc))%*%(Y_match-Y_sc))
+  phi<-max(0,phi)
+  phi<-as.numeric(min(1,phi))
 
-    # analytic expression for phi
-    Y_treated <- matrix(Y_all$Y_treated)
-    Y_sc <- matrix(Y_all$Y_sc)
-    Y_match <- matrix(Y_all$Y_match)
-    phi<-t(Y_treated-Y_sc)%*%(Y_match-Y_sc)/((t(Y_match-Y_sc))%*%(Y_match-Y_sc))
-    phi<-max(0,phi)
-    phi<-as.numeric(min(1,phi))
+  error <- sum((Y_treated-phi*Y_match-(1-phi)*Y_sc)^2)
 
-    error <- sum((Y_treated-phi*Y_match-(1-phi)*Y_sc)^2)
-
-    return(tibble(cv_error = error, phi = phi, m = m))
-  }
+  return(tibble(cv_error = error, phi = phi, m = m))
+}
 
 # =============================================================================
 # Penalized Synthetic Control
 # =============================================================================
+# objective function for gurobi to minimize
 penalized_sc_obj <- function(untreated, treated, pi){
   # first component
   sc <- (-2) * as.matrix((t(treated))) %*% as.matrix(untreated)
@@ -127,8 +131,8 @@ penalized_sc_obj <- function(untreated, treated, pi){
   return((1-pi)*sc + pi*nn)
 }
 
+# weights for penalized synthetic control
 penalized_sc <- function(untreated, treated, treat_year = 16, pi){
-  # Computes the weights for the SC pen using beautiful gurobi
   treated_pre <- treated[1:(treat_year - 1)]
   untreated_pre <- untreated[1:(treat_year -1),]
 
@@ -151,18 +155,19 @@ penalized_sc <- function(untreated, treated, treat_year = 16, pi){
   return(result$x)
 }
 
-cv_pi  <- function(pi, untreated, treated, folds = 8:14, m = 3) {
-
-  find_psc <- function(treat, m, untreated, treated){
+cv_pi  <- function(pi, untreated, treated, folds = 8:14) {
+  # analogous to find_Y - calcualte gamma_{pen sc} for given pi and fold
+  find_psc <- function(treat, untreated, treated){
     psc_weights <- penalized_sc(untreated, treated, treat, pi)
     Y_psc <- untreated[treat,]%*% psc_weights
     Y_treated <- treated[treat]
     return(data.frame(Y_psc = Y_psc, Y_treated = Y_treated))
   }
 
+  # loop over a bunch of all folds to calculate all gamma_{pen sc}
   Y_all <- map_df(folds + 1, find_psc, m, untreated, treated)
 
-  # analytic expression for phi
+  # find the cv error associated with given pi
   Y_treated <- matrix(Y_all$Y_treated)
   Y_psc <- matrix(Y_all$Y_psc)
   error <- sum((Y_treated - Y_psc)^2)
@@ -236,4 +241,5 @@ masc <- function(m_tune, untreated = df_untreated, treated = df_treated, treat_y
   ggsave(file.path(gdir, "sunny_figure11.png"), width = 8, height = 6)
 }
 
+# run final function that gives all the output we want
 masc(1:10)
