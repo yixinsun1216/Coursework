@@ -156,7 +156,7 @@ penalized_sc <- function(untreated, treated, treat_year = 16, pi){
 }
 
 cv_pi  <- function(pi, untreated, treated, folds = 8:14) {
-  # analogous to find_Y - calcualte gamma_{pen sc} for given pi and fold
+  # analogous to find_Y - calculate gamma_{pen sc} for given pi and fold
   find_psc <- function(treat, untreated, treated){
     psc_weights <- penalized_sc(untreated, treated, treat, pi)
     Y_psc <- untreated[treat,]%*% psc_weights

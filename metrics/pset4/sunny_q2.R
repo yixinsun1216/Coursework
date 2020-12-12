@@ -57,25 +57,31 @@ cluster_se <- function(X, e, cl){
 }
 
 wild_bootstrap <- function(x, y, cl){
+  # run constrained regression by subtracting null*Dr1 from Y, and running a
+  # regression with Y - null*Dr1 on the other fixed effects
   cluster_vals <- unique(cl)
   x_cons <- x[,colnames(x) != "Dr1"]
-  y_cons <- y - sin(1) *x[,colnames(x) == "Dr1"]
+  y_cons <- y - null *x[,colnames(x) == "Dr1"]
   beta_cons <- as.vector(solve(t(x_cons) %*% x_cons, tol = 1e-20) %*% (t(x_cons) %*% y_cons))
   u_cons <- y_cons - x_cons %*% beta_cons
 
   # generate independent Rademacher draws for each cluster
-  rad <- tibble(rad = sample(c(-1, 1), size = length(cluster_vals), replace = TRUE), cluster = cluster_vals)
+  rad <- tibble(rad = sample(c(-1, 1), size = length(cluster_vals), replace = TRUE),
+                cluster = cluster_vals)
   rad_all <- full_join(rad, tibble(cluster = cl), by = "cluster")$rad
+
+  # run unconstrained regression of new Ys on X
   uwild <- u_cons*rad_all
   ywild <- x_cons%*%beta_cons + uwild
-
   beta_wild <- as.vector(solve(t(x) %*% x, tol = 1e-20) %*% (t(x) %*% ywild))
-  e <- ywild - x%*%beta_wild
 
+  # calculate cluster robust standard errors using these new residuals
+  e <- ywild - x%*%beta_wild
   se <- cluster_se(x, e, cl)[colnames(x) == "Dr1"]
 
+  # form cluster-robust wald statistic
   dr1 <- beta_wild[colnames(x) == "Dr1"]
-  wald <- abs(dr1 - sin(1)) / (se/sqrt(length(y)))
+  wald <- abs(dr1 - null) / se
   return(wald)
 }
 
@@ -209,106 +215,107 @@ event_plot <- function(B1, B2, theta){
 }
 
 
+# =============================================================================
+# (B) Plotting figures for theta = -2
+# =============================================================================
+# theta = -2
+tic()
+betas_1K <- future_map_dfr(1:M, function(x) event_simulation(1000))
+toc()
 
+tic()
+betas_10K <- future_map_dfr(1:M, function(x) event_simulation(10000))
+toc()
 
-# # =============================================================================
-# # (B) Plotting figures for theta = -2
-# # =============================================================================
-# # theta = -2
-# tic()
-# betas_1K <- future_map_dfr(1:M, function(x) event_simulation(1000))
-# toc()
-#
-# tic()
-# betas_10K <- future_map_dfr(1:M, function(x) event_simulation(10000))
-# toc()
-#
-# event_plot(betas_1K, betas_10K, -2)
-#
-# # =============================================================================
-# # (C) theta = {1, 0}
-# # =============================================================================
-# # theta = 0
-# plan(multisession, workers = 3)
-#
-# tic()
-# betas_1K <- future_map_dfr(1:M, function(x) event_simulation(1000, theta = 0))
-# toc()
-#
-# tic()
-# betas_10K <- future_map_dfr(1:M, function(x) event_simulation(10000, theta = 0))
-# toc()
-#
-# event_plot(betas_1K, betas_10K, 0)
-#
-# # theta = 1
-# plan(multisession, workers = 3)
-#
-# tic()
-# betas_1K <- future_map_dfr(1:M, function(x) event_simulation(1000, theta = 1))
-# toc()
-#
-# tic()
-# betas_10K <- future_map_dfr(1:M, function(x) event_simulation(10000, theta = 1))
-# toc()
-#
-# event_plot(betas_1K, betas_10K, 1)
-#
-# # =============================================================================
-# # (D) Consistent estimator for ATE(2)
-# # =============================================================================
-# # calculating ATE_3(2) for part (d)
-# event_ate <- function(theta, N = 10000, time = 3, event = 2){
-#   simulation <- event_simulation(N, theta)
-#   Yi <- simulation[[2]]
-#   Ei <- simulation[[3]]
-#   ti <- simulation[[4]]
-#   term1 <- mean(Yi[Ei==event & ti == time])
-#   term2 <- mean(Yi[Ei == event & ti == 1])
-#   term3 <- mean(Yi[Ei == time + 1 & ti == time]) - mean(Yi[Ei == time + 1 & ti == 1])
-#
-#   return(term1 - term2 + term3)
-# }
-#
-# # calculating the true value of ATE_3(2)
-# true_ate <- function(theta, time = 3, event = 2){
-#   sin(time - theta*event)
-# }
-#
-# ate_all <- map_dbl(c(-2, 0, 1), event_ate)
-# ate_true <- map_dbl(c(-2, 0, 1), true_ate)
-#
-# tibble("$\theta$" = c(-2, 0, 1), Estimate = ate_all, "True ATE" = ate_true) %>%
-#   kable(format = "latex", booktabs = TRUE, linesep = "", digits = 3) %>%
-#   writeLines(file.path(gdir, "sunny_q2d.tex"))
+event_plot(betas_1K, betas_10K, -2)
+
+# =============================================================================
+# (C) theta = {1, 0}
+# =============================================================================
+# theta = 0
+plan(multisession, workers = 3)
+
+tic()
+betas_1K <- future_map_dfr(1:M, function(x) event_simulation(1000, theta = 0))
+toc()
+
+tic()
+betas_10K <- future_map_dfr(1:M, function(x) event_simulation(10000, theta = 0))
+toc()
+
+event_plot(betas_1K, betas_10K, 0)
+
+# theta = 1
+plan(multisession, workers = 3)
+
+tic()
+betas_1K <- future_map_dfr(1:M, function(x) event_simulation(1000, theta = 1))
+toc()
+
+tic()
+betas_10K <- future_map_dfr(1:M, function(x) event_simulation(10000, theta = 1))
+toc()
+
+event_plot(betas_1K, betas_10K, 1)
+
+# =============================================================================
+# (D) Consistent estimator for ATE(2)
+# =============================================================================
+# calculating ATE_3(2) for part (d)
+event_ate <- function(theta, N = 10000, time = 3, event = 2){
+  simulation <- event_simulation(N, theta)
+  Yi <- simulation[[2]]
+  Ei <- simulation[[3]]
+  ti <- simulation[[4]]
+  term1 <- mean(Yi[Ei==event & ti == time])
+  term2 <- mean(Yi[Ei == event & ti == 1])
+  term3 <- mean(Yi[Ei == time + 1 & ti == time]) - mean(Yi[Ei == time + 1 & ti == 1])
+
+  return(term1 - term2 + term3)
+}
+
+# calculating the true value of ATE_3(2)
+true_ate <- function(theta, time = 3, event = 2){
+  sin(time - theta*event)
+}
+
+ate_all <- map_dbl(c(-2, 0, 1), event_ate)
+ate_true <- map_dbl(c(-2, 0, 1), true_ate)
+
+tibble("$\theta$" = c(-2, 0, 1), Estimate = ate_all, "True ATE" = ate_true) %>%
+  kable(format = "latex", booktabs = TRUE, linesep = "", digits = 3) %>%
+  writeLines(file.path(gdir, "sunny_q2d.tex"))
 
 # =============================================================================
 # (E) t-tests
 # =============================================================================
 # return whether or not the t-stat is greater than 1.96
+null <- sin(1) - sin(-1) - sin(-4)
+
+# run one test of whether or not we reject the null hypothesis
 event_tstat <- function(N, rho, theta = 1){
-  #plan(multisession, workers = 3)
   simulation <- event_simulation(N, theta, rho)
   err <- c("homo", "robust", "cluster")
 
+  # calculate wald statistic for homoscedastic, robust, and cluster se
   wald_all <-
     err %>%
     map(function(x) ols(simulation[[1]], simulation[[2]], x, simulation[[5]])) %>%
     map(function(x) filter(x, term == "Dr1")) %>%
-    map_dbl(function(x) abs(x$estimate - sin(1) ) / (x$se/sqrt(N)) < 1.96)
+    map_dbl(function(x) abs(x$estimate - null ) / (x$se) > 1.96)
 
+  # run 200 bootstraps to get 200 cluster-robust wald statistic and find 95 percentile
   wild_ols <- ols(simulation[[1]], simulation[[2]], "wild", simulation[[5]])
-  wald_boot <- map_dbl(1:100, function(b) wild_bootstrap(simulation[[1]], simulation[[2]], simulation[[5]]))
+  wald_boot <- map_dbl(1:200, function(b) wild_bootstrap(simulation[[1]], simulation[[2]], simulation[[5]]))
   wald_boot <- quantile(wald_boot, .95)
   dr1 <- filter(wild_ols, term == "Dr1")
-  wald_all <- c(wald_all, abs(dr1$estimate - sin(1) ) / (dr1$se / sqrt(N)) < wald_boot)
+  wald_all <- c(wald_all, abs(dr1$estimate - null ) / (dr1$se) > wald_boot)
 
   return(tibble(error = c(err, "wild"), reject = wald_all))
 }
 
 # run event_stat() over M simulations to find the proportion of time we reject
-#plan(multisession, workers = 3)
-run_tstat <- function(N, rho, M = 500, theta = 1){
+run_tstat <- function(N, rho, M = 1000, theta = 1){
   tic(paste("N =", N, "and rho =", rho))
   test <-
     map_dfr(1:M, function(x) tryCatch(event_tstat(N, rho, theta = theta),
@@ -321,6 +328,7 @@ run_tstat <- function(N, rho, M = 500, theta = 1){
   return(test)
 }
 
+# set up all combinations of rhos and Ns
 rhos <- c(0, .5, 1)
 Ns <- c(20, 50, 200)
 combos <- map(cross2(rhos, Ns), unlist)
@@ -331,6 +339,7 @@ tic()
 tests <- map2_df(Ns_all, rhos_all, run_tstat)
 toc()
 
+# prepare to output to latex
 tests_output <-
   tests %>%
   mutate(error = factor(error, levels = c("homo", "robust", "cluster", "wild"))) %>%
