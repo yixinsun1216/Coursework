@@ -118,12 +118,12 @@ ridge <- function(data, lambda = 20){
 beta_ridge <- map2_dfc(X, Y, function(x, y) ridge(cbind(y, x)))
 beta_ridge_mean <- rowMeans(beta_ridge)
 
+# bind together lasso coefficients, ridge coefficients, and ols estimates plucked from last week
 out <- cbind(beta_lasso_mean[1:2], beta_ridge_mean[1:2], c(1.010, -0.990))
 rownames(out) <- c("beta1", "beta2")
 kable(out, digits = 3, col.names = c("Lasso", "Ridge", "OLS"),
       format = "latex", booktabs = TRUE) %>%
   writeLines("part1e.tex")
-
 
 
 # ============================
@@ -268,9 +268,14 @@ rownames(betas_b_out) <- paste0("beta", 1:length(betas_b_out))
 
 # plot true betas against estimated betas
 ggplot() +
-  geom_line(aes(x = 1:50, y = betas_b_out, color = "estimated")) +
-  geom_line(aes(x = 1:50, y = c(5, rep(0, 49)), color = "actual")) +
-  theme_minimal()
+  geom_line(aes(x = 1:50, y = betas_b_out, color = "lasso estimate")) +
+  geom_line(aes(x = 1:50, y = .9*c(5, rep(0, 49)), color = "true value")) +
+  theme_minimal() +
+  theme(legend.title = element_blank()) +
+  ylab("Coefficient Estimate") +
+  xlab("Beta Number")
+
+ggsave("estimate_2b.png",  width = 8, height = 5)
 
 
 # ============================
@@ -293,10 +298,14 @@ rownames(betas_c_out) <- paste0("beta", 1:length(betas_c_out))
 
 # plot true betas against estimated betas
 ggplot() +
-  geom_line(aes(x = 1:50, y = betas_c_out, color = "estimated")) +
-  geom_line(aes(x = 1:50, y = beta_c, color = "actual")) +
-  geom_line(aes(x = 1:50, y = ols(data_c[[1]][-1,], data_c[[2]]), color = "ols")) +
-  theme_minimal()
+  geom_line(aes(x = 1:50, y = betas_c_out, color = "lasso estimate")) +
+  geom_line(aes(x = 1:50, y = .9*beta_c, color = "true value")) +
+  #geom_line(aes(x = 1:50, y = ols(data_c[[1]][-1,], data_c[[2]]), color = "ols")) +
+  theme_minimal() +
+  theme(legend.title = element_blank()) +
+  ylab("Coefficient Estimate") +
+  xlab("Beta Number")
+ggsave("estimate_2c.png",  width = 8, height = 5)
 
 # ============================
 # Exercise 2d
@@ -322,6 +331,10 @@ rownames(betas_d_out) <- paste0("beta", 1:length(betas_d_out))
 
 # plot true betas against estimated betas
 ggplot() +
-  geom_line(aes(x = 1:50, y = betas_d_out, color = "estimated")) +
-  geom_line(aes(x = 1:50, y = c(5, rep(0, 49)), color = "actual")) +
-  theme_minimal()
+  geom_line(aes(x = 1:50, y = betas_d_out, color = "lasso estimate")) +
+  geom_line(aes(x = 1:50, y = .9*c(5, rep(0, 49)), color = "true value")) +
+  theme_minimal() +
+  theme(legend.title = element_blank()) +
+  ylab("Coefficient Estimate") +
+  xlab("Beta Number")
+ggsave("estimates_2d.png",  width = 8, height = 5)
