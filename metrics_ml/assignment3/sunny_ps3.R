@@ -6,6 +6,7 @@ library(knitr)
 library(kableExtra)
 library(furrr)
 library(modelr)
+library(MASS)
 gdir <- "C:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/metrics_ml/assignment3"
 
 # ===================================================================
@@ -81,19 +82,20 @@ tree.update <- function(data, split, assign, min.size, max.depth){
 
     # now update split and assign
     # for the split matrix, we want to add a new row
-    split_updated <- rbind(split, c(best_grow$term_id[1], best_grow$depth[1], best_grow$kstar[1], best_grow$xstar[1]))
+    split_updated <- rbind(split, c(best_grow$term_id[1], best_grow$depth[1],
+                                    best_grow$kstar[1], best_grow$xstar[1]))
 
     # for assign, we want the xs that were in the terminal node that we split on
     # to get updated term_ids
     assign_updated <-
       assign %>%
-      left_join(select(best_grow, -term_id, -depth), by = "id") %>%
+      left_join(dplyr::select(best_grow, -term_id, -depth), by = "id") %>%
       mutate(term_id = case_when(
         partition ~ 2*term_id,
         !partition ~ 2*term_id + 1,
         is.na(partition) ~ term_id),
         depth = if_else(is.na(partition), depth, depth + 1)) %>%
-      select(id, term_id, depth)
+      dplyr::select(id, term_id, depth)
 
 
     return(list(split = split_updated,
@@ -115,7 +117,7 @@ tree <- function (data, min.size = 10, max.depth = 10){
     mutate(term_id = if_else(partition, 2, 3),
            depth = 1,
            id = 1:nrow(data)) %>%
-    select(term_id, depth, id)
+    dplyr::select(term_id, depth, id)
 
   updated_tree <- list(split = split1, assign = assign1)
 
@@ -165,22 +167,25 @@ tree.predict <- function(data, tree_grown){
   }
 
   # join the assigned Y with the leaves dataset to get predicted Y
-  ypred <- tibble(leaf_id = y_assign) %>%
-    left_join(tree_leaves) %>%
+  ypred <- tibble(leaf_id = y_assign, id = 1:length(y_assign)) %>%
+    left_join(tree_leaves, by = "leaf_id") %>%
+    arrange(id) %>%
     pull(Ymean)
 
   return(ypred)
 }
 
 
+test <- tree.predict(data, tree(data, 3, 3))
 
 # ===================================================================
 # Part E
 # ===================================================================
 N <- 1000
-X1 <- rnorm(N, 0, 1)
-X2 <- rnorm(N, 0, 1)
-eps <- rnorm(N, 0, 1)
+vars <- mvrnorm(N, rep(0,3), diag(1, nrow = 3))
+X1 <- vars[,1]
+X2 <- vars[,2]
+eps <- vars[,3]
 
 Y <- 3 * min(X1, X2) + eps
 
@@ -189,33 +194,62 @@ Y <- 3 * min(X1, X2) + eps
 df <- cbind(Y, X1, X2)
 
 tree.cv <- function(data, min.size = 10, max.depth = 10, k = 10){
+  # generate cross validation folds of my data
   data <-
     as.data.frame(data) %>%
-    mutate(row_id = row_number())
+    mutate(row_id = row_number(),
+           fold = c(replicate(nrow(data) / 10, sample(1:k, k))))
 
-  # generate cross validation folds of my data
-  folds <- crossv_kfold(data.frame(data), k)
+  data_split <- split(data, data$fold)
+  tree_test <- tibble(row_id = NA, yhat = NA)
 
-  # for each training fold, use the k - 1 folds to train the tree
-  tree_train <- map(folds$train, function(x) {
-    df1 <- select(as.data.frame(x), -row_id)
-    tree(df1, min.size, max.depth)
-  })
+  for(i in 1:k){
+    # for each training fold, use the k - 1 folds to train the tree
+    df_train <-
+      filter(data, fold != i) %>%
+      select(-row_id, -fold)
 
-  # use the trained trees, predict Y using the holdout test sample
-  yhat <- map2(folds$test, tree_train, function(x, y){
-    xin <- select(as.data.frame(x), -row_id)
-    tree.predict(xin, y)}
-    ) %>%
-    reduce(c)
+    tree_train <- tree(df_train, min.size, max.depth)
 
-  # pull row_ids from folds dataset and use this to join yhat with original Y values
-  # now we can calculate MSE!
+    # then use the test fold to produce predicted Y
+    df_test <-
+      filter(data, fold == i) %>%
+      select(-row_id, -fold)
+
+    tree_test <-
+      tibble(row_id = filter(data, fold == i)$row_id,
+             yhat = tree.predict(df_test, tree_train)) %>%
+      rbind(tree_test)
+  }
+
+  # compute squared errors
   ypred <-
-    tibble(yhat = yhat,
-           row_id = reduce(map(folds$test, ~as.data.frame(.x)$row_id), c)) %>%
-    left_join(data, by = "row_id") %>%
+    data %>%
+    left_join(tree_test) %>%
     mutate(err2 = (Y - yhat)^2)
+
+  # folds <- crossv_kfold(data.frame(data), k)
+  #
+  # # for each training fold, use the k - 1 folds to train the tree
+  # tree_train <- map(folds$train, function(x) {
+  #   df1 <- dplyr::select(as.data.frame(x), -row_id)
+  #   tree(df1, min.size, max.depth)
+  # })
+  #
+  # # use the trained trees, predict Y using the holdout test sample
+  # yhat <- map2(folds$test, tree_train, function(x, y){
+  #   xin <- dplyr::select(as.data.frame(x), -row_id)
+  #   tree.predict(xin, y)}
+  #   ) %>%
+  #   reduce(c)
+  #
+  # # pull row_ids from folds dataset and use this to join yhat with original Y values
+  # # now we can calculate MSE!
+  # ypred <-
+  #   tibble(yhat = yhat,
+  #          row_id = reduce(map(folds$test, ~as.data.frame(.x)$row_id), c)) %>%
+  #   left_join(data, by = "row_id") %>%
+  #   mutate(err2 = (Y - yhat)^2)
 
   return(mean(ypred$err2))
 }
@@ -226,11 +260,10 @@ ols_mse <- function(data){
   beta <- solve(t(x) %*% x) %*% (t(x) %*% y)
 
   yhat <- x %*% beta
-
   return(mean((y - yhat)^2))
 }
 
-d_tree_mse <- tree.cv(df)
+d_tree_mse <- tree.cv(df, 5, 10)
 d_ols_mse <- ols_mse(df)
 
 # ===================================================================
