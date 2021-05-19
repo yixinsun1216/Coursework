@@ -193,7 +193,7 @@ Y <- 3 * min(X1, X2) + eps
 # and then computes the MSE
 df <- cbind(Y, X1, X2)
 
-tree.cv <- function(data, min.size = 10, max.depth = 10, k = 10){
+estimate.cv <- function(data, min.size = 10, max.depth = 10, k = 10){
   # generate cross validation folds of my data
   data <-
     as.data.frame(data) %>%
@@ -201,70 +201,56 @@ tree.cv <- function(data, min.size = 10, max.depth = 10, k = 10){
            fold = c(replicate(nrow(data) / 10, sample(1:k, k))))
 
   data_split <- split(data, data$fold)
-  tree_test <- tibble(row_id = NA, yhat = NA)
+  yhat_all <- tibble(row_id = NA, yhat_tree = NA, yhat_ols = NA)
 
   for(i in 1:k){
-    # for each training fold, use the k - 1 folds to train the tree
+    # for each training fold, use the k - 1 folds to train the tree and OLS
     df_train <-
       filter(data, fold != i) %>%
       select(-row_id, -fold)
 
     tree_train <- tree(df_train, min.size, max.depth)
+    ols_train <- ols(df_train)
 
     # then use the test fold to produce predicted Y
     df_test <-
       filter(data, fold == i) %>%
       select(-row_id, -fold)
 
-    tree_test <-
+    yhat_all <-
       tibble(row_id = filter(data, fold == i)$row_id,
-             yhat = tree.predict(df_test, tree_train)) %>%
-      rbind(tree_test)
+             yhat_tree = tree.predict(df_test, tree_train),
+             yhat_ols = ols.predict(df_test, ols_train)) %>%
+      rbind(yhat_all)
   }
 
   # compute squared errors
   ypred <-
     data %>%
-    left_join(tree_test) %>%
-    mutate(err2 = (Y - yhat)^2)
+    left_join(yhat_all) %>%
+    mutate(tree_mse = (Y - yhat_tree)^2,
+           ols_mse = (Y - yhat_ols)^2)
 
-  # folds <- crossv_kfold(data.frame(data), k)
-  #
-  # # for each training fold, use the k - 1 folds to train the tree
-  # tree_train <- map(folds$train, function(x) {
-  #   df1 <- dplyr::select(as.data.frame(x), -row_id)
-  #   tree(df1, min.size, max.depth)
-  # })
-  #
-  # # use the trained trees, predict Y using the holdout test sample
-  # yhat <- map2(folds$test, tree_train, function(x, y){
-  #   xin <- dplyr::select(as.data.frame(x), -row_id)
-  #   tree.predict(xin, y)}
-  #   ) %>%
-  #   reduce(c)
-  #
-  # # pull row_ids from folds dataset and use this to join yhat with original Y values
-  # # now we can calculate MSE!
-  # ypred <-
-  #   tibble(yhat = yhat,
-  #          row_id = reduce(map(folds$test, ~as.data.frame(.x)$row_id), c)) %>%
-  #   left_join(data, by = "row_id") %>%
-  #   mutate(err2 = (Y - yhat)^2)
-
-  return(mean(ypred$err2))
+  return(list(tree_mse = mean(ypred$tree_mse), ols_mse = mean(ypred$ols_mse)))
 }
 
-ols_mse <- function(data){
+ols <- function(data){
   x <- cbind(1, as.matrix(data[,-1]))
   y <- as.matrix(data[,1])
   beta <- solve(t(x) %*% x) %*% (t(x) %*% y)
-
-  yhat <- x %*% beta
-  return(mean((y - yhat)^2))
+  return(beta)
 }
 
-d_tree_mse <- tree.cv(df, 5, 10)
-d_ols_mse <- ols_mse(df)
+ols.predict <- function(data, beta){
+  x <- cbind(1, as.matrix(data[,-1]))
+  y <- as.matrix(data[,1])
+  beta <- solve(t(x) %*% x) %*% (t(x) %*% y)
+  return(x %*% beta)
+}
+
+mse <- estimate.cv(df, 5, 10)
+mse[[1]]
+mse[[2]]
 
 # ===================================================================
 # Part F
