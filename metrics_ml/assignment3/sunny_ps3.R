@@ -194,7 +194,7 @@ Y <- 3 * min(X1, X2) + eps
 df <- cbind(Y, X1, X2)
 
 estimate.cv <- function(data, min.size = 10, max.depth = 10, k = 10){
-  # generate cross validation folds of my data
+  # generate k folds of my data so that each y ends up in one test set
   data <-
     as.data.frame(data) %>%
     mutate(row_id = row_number(),
@@ -248,7 +248,7 @@ ols.predict <- function(data, beta){
   return(x %*% beta)
 }
 
-mse <- estimate.cv(df, 5, 10)
+mse <- estimate.cv(df, 10, 10)
 mse[[1]]
 mse[[2]]
 
@@ -258,5 +258,6 @@ mse[[2]]
 Ytilde <- 3 * X1 - 3*X2 + eps
 df_tilde <- cbind(Ytilde, X1, X2)
 
-f_tree_mse <- tree.cv(df_tilde)
-f_ols_mse <- ols_mse(df_tilde)
+f_mse <- estimate.cv(df, 10, 10)
+f_mse[[1]]
+f_mse[[2]]
