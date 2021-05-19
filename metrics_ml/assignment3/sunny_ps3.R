@@ -5,6 +5,7 @@ library(tictoc)
 library(knitr)
 library(kableExtra)
 library(furrr)
+library(modelr)
 gdir <- "C:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/metrics_ml/assignment3"
 
 # ===================================================================
@@ -86,7 +87,7 @@ tree.update <- function(data, split, assign, min.size, max.depth){
     # to get updated term_ids
     assign_updated <-
       assign %>%
-      left_join(select(best_grow, -term_id, -depth)) %>%
+      left_join(select(best_grow, -term_id, -depth), by = "id") %>%
       mutate(term_id = case_when(
         partition ~ 2*term_id,
         !partition ~ 2*term_id + 1,
@@ -105,6 +106,7 @@ tree.update <- function(data, split, assign, min.size, max.depth){
 # Part C
 # ===================================================================
 tree <- function (data, min.size = 10, max.depth = 10){
+
   # use tree.grow on whole dataset to get the first split
   grow1 <- tree.grow(data)
   split1 <- tibble(leaf_id = 1, depth = 0, kstar = grow1$kstar[1], threshold = grow1$xstar[1])
@@ -136,13 +138,38 @@ tree <- function (data, min.size = 10, max.depth = 10){
 # ===================================================================
 # Part D
 # ===================================================================
-tree.predict <- function(data, tree){
-  # for each Y, move through rows of split matrix  and categorize the Y variable
-  for(j in 1:nrow(data)){
-    yj <- data[j, 1]
-    xj <- data[j, -1]
+tree.predict <- function(data, tree_grown){
+  y <- data[,1]
+  x <- data[,-1]
+  tree_split <- tree_grown$split
+  tree_assign <- tree_grown$assign
+  tree_leaves <- tree_grown$leaves
 
+  # initial assignment of y from first row of split
+  kinit <- tree_split$kstar[1]
+  thresh_init <- tree_split$threshold[1]
+  y_assign <- ifelse(x[,kinit] <= thresh_init, 2, 2 + 1)
+
+  # Move through rows of split matrix and categorize the Y variable
+  # according to threshold
+  for(j in 2:nrow(tree_split)){
+    kstar <- tree_split$kstar[j]
+    thresh <- tree_split$threshold[j]
+    leaf_id <- tree_split$leaf_id[j]
+
+    y_assign  <- case_when(
+      y_assign != leaf_id ~ y_assign,
+      x[,kstar] <= thresh & y_assign == leaf_id ~ leaf_id*2,
+      x[,kstar] > thresh & y_assign == leaf_id ~ leaf_id*2 + 1
+    )
   }
+
+  # join the assigned Y with the leaves dataset to get predicted Y
+  ypred <- tibble(leaf_id = y_assign) %>%
+    left_join(tree_leaves) %>%
+    pull(Ymean)
+
+  return(ypred)
 }
 
 
@@ -157,5 +184,60 @@ eps <- rnorm(N, 0, 1)
 
 Y <- 3 * min(X1, X2) + eps
 
-# what am i cross-validating here if i'm not trying to figure out the optimal tuning parameter?
+# function that uses cross validation to estimate y using tree function
+# and then computes the MSE
+df <- cbind(Y, X1, X2)
 
+tree.cv <- function(data, min.size = 10, max.depth = 10, k = 10){
+  data <-
+    as.data.frame(data) %>%
+    mutate(row_id = row_number())
+
+  # generate cross validation folds of my data
+  folds <- crossv_kfold(data.frame(data), k)
+
+  # for each training fold, use the k - 1 folds to train the tree
+  tree_train <- map(folds$train, function(x) {
+    df1 <- select(as.data.frame(x), -row_id)
+    tree(df1, min.size, max.depth)
+  })
+
+  # use the trained trees, predict Y using the holdout test sample
+  yhat <- map2(folds$test, tree_train, function(x, y){
+    xin <- select(as.data.frame(x), -row_id)
+    tree.predict(xin, y)}
+    ) %>%
+    reduce(c)
+
+  # pull row_ids from folds dataset and use this to join yhat with original Y values
+  # now we can calculate MSE!
+  ypred <-
+    tibble(yhat = yhat,
+           row_id = reduce(map(folds$test, ~as.data.frame(.x)$row_id), c)) %>%
+    left_join(data, by = "row_id") %>%
+    mutate(err2 = (Y - yhat)^2)
+
+  return(mean(ypred$err2))
+}
+
+ols_mse <- function(data){
+  x <- cbind(1, as.matrix(data[,-1]))
+  y <- as.matrix(data[,1])
+  beta <- solve(t(x) %*% x) %*% (t(x) %*% y)
+
+  yhat <- x %*% beta
+
+  return(mean((y - yhat)^2))
+}
+
+d_tree_mse <- tree.cv(df)
+d_ols_mse <- ols_mse(df)
+
+# ===================================================================
+# Part F
+# ===================================================================
+Ytilde <- 3 * X1 - 3*X2 + eps
+df_tilde <- cbind(Ytilde, X1, X2)
+
+f_tree_mse <- tree.cv(df_tilde)
+f_ols_mse <- ols_mse(df_tilde)
