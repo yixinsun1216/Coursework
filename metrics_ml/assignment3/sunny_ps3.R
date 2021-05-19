@@ -12,7 +12,7 @@ gdir <- "C:/Users/Yixin Sun/Dropbox (Personal)/Coursework/Coursework/metrics_ml/
 # ===================================================================
 # Part A
 # ===================================================================
-data <- tibble(Y = c(0, 1, 1, 0, 1, 0, 1, 1, 0, 0),
+data_test <- tibble(Y = c(0, 1, 1, 0, 1, 0, 1, 1, 0, 0),
              X = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10))
 
 sse_gain <- function(Ys, Xs, Is){
@@ -176,7 +176,7 @@ tree.predict <- function(data, tree_grown){
 }
 
 
-test <- tree.predict(data, tree(data, 3, 3))
+test <- tree.predict(data_test, tree(data_test, 3, 3))
 
 # ===================================================================
 # Part E
@@ -200,14 +200,13 @@ estimate.cv <- function(data, min.size = 10, max.depth = 10, k = 10){
     mutate(row_id = row_number(),
            fold = c(replicate(nrow(data) / 10, sample(1:k, k))))
 
-  data_split <- split(data, data$fold)
   yhat_all <- tibble(row_id = NA, yhat_tree = NA, yhat_ols = NA)
 
   for(i in 1:k){
     # for each training fold, use the k - 1 folds to train the tree and OLS
     df_train <-
       filter(data, fold != i) %>%
-      select(-row_id, -fold)
+      dplyr::select(-row_id, -fold)
 
     tree_train <- tree(df_train, min.size, max.depth)
     ols_train <- ols(df_train)
@@ -215,12 +214,12 @@ estimate.cv <- function(data, min.size = 10, max.depth = 10, k = 10){
     # then use the test fold to produce predicted Y
     df_test <-
       filter(data, fold == i) %>%
-      select(-row_id, -fold)
+      dplyr::select(-row_id, -fold)
 
     yhat_all <-
       tibble(row_id = filter(data, fold == i)$row_id,
              yhat_tree = tree.predict(df_test, tree_train),
-             yhat_ols = ols.predict(df_test, ols_train)) %>%
+             yhat_ols = as.vector(ols.predict(df_test, ols_train))) %>%
       rbind(yhat_all)
   }
 
@@ -228,8 +227,8 @@ estimate.cv <- function(data, min.size = 10, max.depth = 10, k = 10){
   ypred <-
     data %>%
     left_join(yhat_all) %>%
-    mutate(tree_mse = (Y - yhat_tree)^2,
-           ols_mse = (Y - yhat_ols)^2)
+    mutate(tree_mse = (.[,1] - yhat_tree)^2,
+           ols_mse = (.[,1] - yhat_ols)^2)
 
   return(list(tree_mse = mean(ypred$tree_mse), ols_mse = mean(ypred$ols_mse)))
 }
@@ -243,14 +242,12 @@ ols <- function(data){
 
 ols.predict <- function(data, beta){
   x <- cbind(1, as.matrix(data[,-1]))
-  y <- as.matrix(data[,1])
-  beta <- solve(t(x) %*% x) %*% (t(x) %*% y)
   return(x %*% beta)
 }
 
 mse <- estimate.cv(df, 10, 10)
-mse[[1]]
-mse[[2]]
+print(mse[[1]])
+print(mse[[2]])
 
 # ===================================================================
 # Part F
@@ -258,6 +255,6 @@ mse[[2]]
 Ytilde <- 3 * X1 - 3*X2 + eps
 df_tilde <- cbind(Ytilde, X1, X2)
 
-f_mse <- estimate.cv(df, 10, 10)
-f_mse[[1]]
-f_mse[[2]]
+f_mse <- estimate.cv(df_tilde, 10, 10)
+print(f_mse[[1]])
+print(f_mse[[2]])
